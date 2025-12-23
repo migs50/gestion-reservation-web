@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('demandeur_id')->constrained('users');
-            $table->foreignId('ressource_id')->constrained('ressources'); //UPDATED BY ADAM (ressource_ID ets aussi ajoutees au app\models\ressource.php
+            $table->foreignId('ressource_id')->constrained('ressources'); //UPDATED BY ADAM (ressource_ID ets aussi ajoutees au app\models\reservation.php
             $table->foreignId('decideur_id')->nullable()->constrained('users')->nullOnDelete();
             $table->dateTime('debut');
             $table->dateTime('fin');
