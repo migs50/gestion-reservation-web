@@ -2,30 +2,26 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class DemandeCompte extends Model
 {
-    use HasFactory;
-
-    protected $table = 'demandes_compte';
+    protected $table = 'demande_comptes';
 
     protected $fillable = [
-        'nom',
-        'prenom',
+        'nom_complet',
         'email',
         'telephone',
-        'affiliation',
-        'projet',
+        'type_demande',
         'justification',
-        'duree_estimee',
-        'ressources_demandees',
         'statut',
-        'commentaire_admin',
+        'decided_by',
+        'note_decision'
     ];
 
     protected $casts = [
-        'ressources_demandees' => 'array',
+        'decided_by' => 'integer',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
 }

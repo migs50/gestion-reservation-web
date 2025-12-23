@@ -4,25 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Ressource extends Model
+class Attribut extends Model
 {
-    protected $table = 'ressources';
+    protected $table = 'attributs';
 
     protected $fillable = [
         'categorie_id',
-        'manager_id',
         'nom',
-        'code_inv',
-        'etat',
-        'actif',
-        'emplacement',
-        'description'
+        'type_valeur',
+        'unite'
     ];
 
     protected $casts = [
         'categorie_id' => 'integer',
-        'manager_id' => 'integer',
-        'actif' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
     ];

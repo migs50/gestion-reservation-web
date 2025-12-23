@@ -4,24 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Ressource extends Model
+class Regle extends Model
 {
-    protected $table = 'ressources';
+    protected $table = 'regles';
 
     protected $fillable = [
         'categorie_id',
-        'manager_id',
-        'nom',
-        'code_inv',
-        'etat',
-        'actif',
-        'emplacement',
-        'description'
+        'auteur_id',
+        'titre',
+        'contenu',
+        'actif'
     ];
 
     protected $casts = [
         'categorie_id' => 'integer',
-        'manager_id' => 'integer',
+        'auteur_id' => 'integer',
         'actif' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
