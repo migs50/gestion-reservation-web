@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Ressource;
 
 use Illuminate\Http\Request;
 
@@ -19,17 +20,21 @@ class GuestController extends Controller
      */
     public function catalogue()
     {
-        // Pour l'instant, retourner la vue sans données
-        // Plus tard, on récupérera les ressources depuis la base de données
-        
-        return view('guest.catalogue');
+    
+        $ressources = Ressource::with('reservations')->get();
+
+        return view('guest.catalogue', compact('ressources'));
     }
 
-    /**
+   /**
      * Afficher les règles d'utilisation
      */
     public function regles()
     {
         return view('guest.regles');
     }
+
 }
+
+
+

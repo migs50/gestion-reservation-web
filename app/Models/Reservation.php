@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Reservation extends Model
 {
@@ -10,20 +12,37 @@ class Reservation extends Model
 
     protected $fillable = [
         'demandeur_id',
+        'ressource_id',
         'decideur_id',
         'debut',
         'fin',
         'justification',
         'statut',
-        'note_decision'
+        'note_decision',
     ];
 
     protected $casts = [
         'demandeur_id' => 'integer',
-        'decideur_id' => 'integer',
-        'debut' => 'datetime',
-        'fin' => 'datetime',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime'
+        'ressource_id' => 'integer',
+        'decideur_id'  => 'integer',
+        'debut'        => 'datetime',
+        'fin'          => 'datetime',
+        'created_at'   => 'datetime',
+        'updated_at'   => 'datetime',
     ];
+
+    public function ressource(): BelongsTo
+    {
+        return $this->belongsTo(Ressource::class);
+    }
+
+    public function demandeur(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'demandeur_id');
+    }
+
+    public function decideur(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'decideur_id');
+    }
 }
