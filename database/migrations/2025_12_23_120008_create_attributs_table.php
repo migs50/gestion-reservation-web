@@ -17,7 +17,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique(['categorie_id', 'nom'], 'uq_cat_nom');
-            $table->index('categorie_id', 'idx_cat');
         });
     }
 

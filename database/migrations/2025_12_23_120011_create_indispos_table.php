@@ -19,8 +19,8 @@ return new class extends Migration
             $table->boolean('actif');
             $table->timestamps();
 
-            $table->index(['ressource_id', 'actif', 'debut', 'fin'], 'idx_res_dates');
-            $table->index('type', 'idx_type');
+            $table->index(['actif', 'debut', 'fin'], 'indispos_actif_dates');
+            $table->index('type', 'indispos_type');
         });
     }
 

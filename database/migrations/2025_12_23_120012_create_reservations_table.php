@@ -20,9 +20,8 @@ return new class extends Migration
             $table->text('note_decision')->nullable();
             $table->timestamps();
 
-            $table->index(['demandeur_id', 'statut'], 'idx_dem');
-            $table->index('decideur_id', 'idx_dec');
-            $table->index(['debut', 'fin'], 'idx_dates');
+            $table->index('statut', 'reservations_statut');
+            $table->index(['debut', 'fin'], 'reservations_dates');
         });
     }
 

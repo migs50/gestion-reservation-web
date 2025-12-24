@@ -16,9 +16,6 @@ return new class extends Migration
             $table->text('contenu');
             $table->boolean('actif');
             $table->timestamps();
-
-            $table->index('categorie_id', 'idx_cat');
-            $table->index('auteur_id', 'idx_auteur');
         });
     }
 

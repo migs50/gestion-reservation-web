@@ -14,13 +14,13 @@ return new class extends Migration
             $table->string('action', 120);
             $table->string('objet', 80);
             $table->unsignedBigInteger('objet_id')->nullable();
+            $table->text('details')->nullable();
             $table->json('donnees')->nullable();
             $table->string('ip', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->timestamps();
 
-            $table->index('acteur_id', 'idx_acteur');
-            $table->index(['objet', 'objet_id'], 'idx_objet');
+            $table->index(['objet', 'objet_id'], 'journals_objet');
         });
     }
 

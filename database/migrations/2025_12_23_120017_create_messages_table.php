@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -17,13 +16,7 @@ return new class extends Migration
             $table->text('contenu');
             $table->boolean('cache');
             $table->timestamps();
-
-            $table->index('discussion_id', 'idx_disc');
-            $table->index('incident_id', 'idx_inc');
-            $table->index('auteur_id', 'idx_auteur');
         });
-
-        DB::statement("ALTER TABLE messages ADD CONSTRAINT ck_canal CHECK ((discussion_id IS NULL) <> (incident_id IS NULL))");
     }
 
     public function down(): void

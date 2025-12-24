@@ -45,4 +45,9 @@ class Reservation extends Model
     {
         return $this->belongsTo(User::class, 'decideur_id');
     }
+
+    public function affectations(): HasMany
+    {
+        return $this->hasMany(Affectation::class);
+    }
 }

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->date('v_date')->nullable();
 
             $table->primary(['ressource_id', 'attribut_id']);
-            $table->index('attribut_id', 'idx_attr');
         });
     }
 

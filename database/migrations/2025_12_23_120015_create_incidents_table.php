@@ -18,9 +18,7 @@ return new class extends Migration
             $table->enum('statut', ['open', 'in_progress', 'resolved', 'closed']);
             $table->timestamps();
 
-            $table->index('statut', 'idx_statut');
-            $table->index('ressource_id', 'idx_res');
-            $table->index('assigne_id', 'idx_assigne');
+            $table->index('statut', 'incidents_statut');
         });
     }
 

@@ -22,4 +22,12 @@ class Notification extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
     ];
+
+    /**
+     * Get the user that owns the notification
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

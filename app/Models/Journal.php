@@ -13,6 +13,7 @@ class Journal extends Model
         'action',
         'objet',
         'objet_id',
+        'details',
         'donnees',
         'ip',
         'user_agent'
@@ -25,4 +26,34 @@ class Journal extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
     ];
+
+    /**
+     * Get the user who performed the action
+     */
+    public function acteur()
+    {
+        return $this->belongsTo(User::class, 'acteur_id');
+    }
+
+    /**
+     * Get a human-readable action label
+     */
+    public function getActionLabelAttribute()
+    {
+        $labels = [
+            'login' => 'Connexion',
+            'logout' => 'Déconnexion',
+            'create' => 'Création',
+            'update' => 'Modification',
+            'delete' => 'Suppression',
+            'approve' => 'Approbation',
+            'reject' => 'Refus',
+            'cancel' => 'Annulation',
+            'activate' => 'Activation',
+            'complete' => 'Finalisation',
+            'state_change' => 'Changement d\'état',
+        ];
+
+        return $labels[$this->action] ?? ucfirst($this->action);
+    }
 }

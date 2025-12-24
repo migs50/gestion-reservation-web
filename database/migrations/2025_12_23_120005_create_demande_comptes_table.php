@@ -19,9 +19,6 @@ return new class extends Migration
             $table->foreignId('decided_by')->nullable()->constrained('users')->nullOnDelete();
             $table->text('note_decision')->nullable();
             $table->timestamps();
-
-            $table->index('statut', 'idx_statut');
-            $table->index('decided_by', 'idx_decideur');
         });
     }
 

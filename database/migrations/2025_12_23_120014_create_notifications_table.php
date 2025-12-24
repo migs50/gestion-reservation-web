@@ -17,8 +17,8 @@ return new class extends Migration
             $table->boolean('lu');
             $table->timestamps();
 
-            $table->index(['user_id', 'lu'], 'idx_user_lu');
-            $table->index('type', 'idx_type');
+            $table->index('lu', 'notifications_lu');
+            $table->index('type', 'notifications_type');
         });
     }
 

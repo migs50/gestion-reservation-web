@@ -20,8 +20,6 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->timestamps();
 
-            $table->index('categorie_id', 'idx_cat');
-            $table->index('manager_id', 'idx_manager');
             $table->index(['etat', 'actif'], 'idx_etat');
         });
     }

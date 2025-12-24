@@ -15,9 +15,6 @@ return new class extends Migration
             $table->enum('action', ['hide', 'restore', 'warn']);
             $table->text('raison')->nullable();
             $table->timestamps();
-
-            $table->index('message_id', 'idx_msg');
-            $table->index('moderateur_id', 'idx_mod');
         });
     }
 

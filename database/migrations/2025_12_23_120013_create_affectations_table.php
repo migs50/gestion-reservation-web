@@ -18,8 +18,8 @@ return new class extends Migration
             $table->enum('statut', ['planned', 'active', 'finished']);
 
             $table->primary(['reservation_id', 'ressource_id']);
-            $table->index(['ressource_id', 'statut', 'debut_prevu', 'fin_prevue'], 'idx_res_planning');
-            $table->index(['ressource_id', 'statut', 'debut_reel', 'fin_reel'], 'idx_res_reel');
+            $table->index(['statut', 'debut_prevu', 'fin_prevue'], 'affectations_planning');
+            $table->index(['statut', 'debut_reel', 'fin_reel'], 'affectations_reel');
         });
     }
 

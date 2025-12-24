@@ -13,7 +13,6 @@ return new class extends Migration
             $table->foreignId('perm_id')->constrained('permissions');
 
             $table->primary(['role_id', 'perm_id']);
-            $table->index('perm_id', 'idx_perm');
         });
     }
 
