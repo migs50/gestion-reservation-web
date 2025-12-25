@@ -18,12 +18,32 @@ use App\Http\Controllers\ReservationController;
 |--------------------------------------------------------------------------
 */
 
+Route::get('/', function () {
+    return view('index');
+})->name('home');
+
+Route::get('/catalogue', function () {
+    return view('catalogue');
+})->name('catalogue');
+
+Route::get('/regles', function () {
+    return view('regles');
+})->name('regles');
+
+Route::get('/demande-compte', function () {
+    return view('demande-compte');
+})->name('demande-compte');
+
+
 // Home page
 Route::get('/', [GuestController::class, 'index'])->name('home');
 
 // Guest pages
 Route::get('/catalogue', [GuestController::class, 'catalogue'])->name('catalogue');
 Route::get('/regles', [GuestController::class, 'regles'])->name('regles');
+Route::get('/rules', [GuestController::class, 'rules'])->name('rules');
+Route::get('/contact', [GuestController::class, 'contact'])->name('contact');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +91,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/ressources/{ressource}', [RessourceController::class, 'show'])->name('ressources.show');
 
     // Reservations
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
     Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.list');
     Route::get('/ressources/{ressource}/reserver', [ReservationController::class, 'create'])->name('reservations.create');
     Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');

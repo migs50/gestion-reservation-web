@@ -62,13 +62,7 @@
         @yield('content')
     </main>
 
-    <footer>
-        <div class="footer-container">
-            <p>&copy; {{ date('Y') }} Data Center Manager. Tous droits réservés.</p>
-        </div>
-    </footer>
-
-    <script src="{{ asset('js/app.js') }}"></script>
-    @stack('scripts')
+       {{-- Footer --}}
+   
 </body>
 </html>
