@@ -9,12 +9,14 @@
 </head>
 <body>
     <header>
-        <nav class="navbar">
+        
+                        <nav class="navbar">
             <div class="nav-container">
                 <div class="nav-logo">
                     <a href="/">Data Center Manager</a>
                 </div>
                 <ul class="nav-menu">
+
                     @guest
                         <li><a href="/">Accueil</a></li>
                         <li><a href="{{ route('login') }}">Connexion</a></li>
@@ -22,7 +24,7 @@
                     @else
                         <li><a href="{{ route('dashboard') }}">Tableau de bord</a></li>
                         <li><a href="{{ route('profile') }}">Mon profil</a></li>
-                        @if(auth()->user()->hasAnyRole(['Admin', 'Responsable']))
+                 @if(auth()->user()->hasAnyRole(['Admin', 'Responsable']))
                             <li><a href="{{ route('ressources.index') }}">Ressources</a></li>
                         @endif
                         @if(auth()->user()->hasRole('Admin'))
@@ -63,6 +65,9 @@
     </main>
 
        {{-- Footer --}}
+      
+
+</html>
    
 </body>
 </html>

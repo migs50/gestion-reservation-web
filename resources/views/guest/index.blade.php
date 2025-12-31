@@ -231,12 +231,5 @@
                 </div>
             </div>
 
-            <!-- Copyright -->
-            <div class="footer-divider">
-                <p>&copy; 2025 Data Center. Tous droits réservés.</p>
-            </div>
-        </div>
-
-    </footer>
 @endsection
     

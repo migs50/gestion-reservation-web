@@ -34,6 +34,11 @@ Route::get('/demande-compte', function () {
     return view('demande-compte');
 })->name('demande-compte');
 
+Route::get('/login', function () {
+    return view('auth.login');
+});
+
+
 
 // Home page
 Route::get('/', [GuestController::class, 'index'])->name('home');
@@ -59,8 +64,15 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Registration (Account Request)
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
+Route::get('/register/success', [RegisterController::class, 'success'])->name('register.success');
 Route::get('/demande-compte', [RegisterController::class, 'showRegistrationForm'])->name('demande.compte');
 Route::post('/demande-compte', [RegisterController::class, 'register'])->name('demande.compte.store');
+Route::post('/demande-compte', [DemandeCompteController::class, 'store'])
+    ->name('demande.compte.store');
+Route::get('/demande-compte', function () {
+    return view('auth.register');
+})->name('demande.compte');
+
 
 // Password Reset
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
