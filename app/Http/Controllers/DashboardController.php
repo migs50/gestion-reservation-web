@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Reservation;
 use App\Models\Ressource;
-use App\Models\Notification;
 
 class DashboardController extends Controller
 {
@@ -17,14 +15,13 @@ class DashboardController extends Controller
 
     public function index()
     {
+        /** @var \App\Models\User $user */
+
         $user = Auth::user();
 
         // Common data for all roles
-        $notifications = $user->notifications()
-            ->where('lu', false)
-            ->latest()
-            ->limit(5)
-            ->get();
+    
+       $notifications = $this->getNotifications($user);
 
         // Role-specific dashboards
         if ($user->hasRole('Admin')) {
@@ -34,6 +31,24 @@ class DashboardController extends Controller
         } else {
             return $this->userDashboard($user, $notifications);
         }
+    }
+
+    private function getNotifications($user)
+    {
+
+        try {
+            if (method_exists($user, 'notifications')) {
+                return $user->notifications()
+                    ->where('lu', false)
+                    ->latest()
+                    ->limit(5)
+                    ->get();
+            }
+        } catch (\Exception $e) {
+            // Notification relationship not ready yet
+        }
+        
+        return collect([]); // Return empty collection
     }
 
     private function userDashboard($user, $notifications)

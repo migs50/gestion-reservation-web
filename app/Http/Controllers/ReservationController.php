@@ -1,16 +1,26 @@
 <?php
+namespace App\Http\Controllers;
+
 use App\Models\Ressource;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class ReservationController extends Controller
 {
+      public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+
+
     public function index()
     {
         $reservations = Reservation::with('ressource')
             ->where('demandeur_id', 1) // TODO: Auth::id() plus tard
-            .orderByDesc('debut')
+             ->orderByDesc('debut')
             ->get();
 
         return view('reservations.list', compact('reservations'));
@@ -20,6 +30,8 @@ class ReservationController extends Controller
     {
         return view('reservations.create', compact('ressource'));
     }
+
+
 
     public function store(Request $request)
     {
@@ -60,6 +72,84 @@ class ReservationController extends Controller
             'statut'        => 'pending',
             'note_decision' => null,
         ]);
+
+
+
+         // Create notification for the user
+        if (class_exists(\App\Models\Notification::class)) {
+            \App\Models\Notification::create([
+                'user_id' => Auth::id(),
+                'type' => 'reservation',
+                'titre' => 'Réservation créée',
+                'message' => "Votre demande de réservation pour {$ressource->nom} a été enregistrée.",
+                'lien' => route('reservations.index'),
+                'lu' => false
+            ]);
+
+            // Notify the resource manager if exists
+            if ($ressource->manager_id) {
+                \App\Models\Notification::create([
+                    'user_id' => $ressource->manager_id,
+                    'type' => 'reservation',
+                    'titre' => 'Nouvelle demande de réservation',
+                    'message' => "Une nouvelle demande de réservation pour {$ressource->nom} nécessite votre attention.",
+                    'lien' => route('reservations.index'),
+                    'lu' => false
+                ]);
+            }
+        }
+
+        return redirect()->route('reservations.index')
+            ->with('success', 'Demande de réservation enregistrée.');
+    }
+
+    /**
+     * Display the specified reservation
+     */
+    public function show(Reservation $reservation)
+    {
+        // Check if user is authorized to view this reservation
+        if ($reservation->demandeur_id !== Auth::id() && 
+            !Auth::user()->hasRole('Admin') && 
+            !Auth::user()->hasRole('Responsable')) {
+            abort(403, 'Non autorisé');
+        }
+
+        return view('reservations.show', compact('reservation'));
+    }
+
+    /**
+     * Cancel a reservation
+     */
+    public function cancel(Reservation $reservation)
+    {
+        // Check if user is authorized to cancel
+        if ($reservation->demandeur_id !== Auth::id()) {
+            abort(403, 'Non autorisé');
+        }
+
+        // Can only cancel pending or approved reservations
+        if (!in_array($reservation->statut, ['pending', 'approved'])) {
+            return back()->withErrors(['error' => 'Cette réservation ne peut pas être annulée.']);
+        }
+
+        $reservation->update([
+            'statut' => 'cancelled'
+        ]);
+
+        // Notify user
+        if (class_exists(\App\Models\Notification::class)) {
+            \App\Models\Notification::create([
+                'user_id' => $reservation->demandeur_id,
+                'type' => 'reservation',
+                'titre' => 'Réservation annulée',
+                'message' => "Votre réservation #{$reservation->id} a été annulée.",
+                'lien' => route('reservations.index'),
+                'lu' => false
+            ]);
+        }
+
+
 
         return redirect()->route('reservations.index')
             ->with('success', 'Demande de réservation enregistrée.');

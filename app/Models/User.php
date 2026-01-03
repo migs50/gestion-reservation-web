@@ -4,10 +4,15 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;  // Retiré
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use HasRoles; 
 
     protected $table = 'users';
 
@@ -31,75 +36,59 @@ class User extends Authenticatable
         'updated_at' => 'datetime'
     ];
 
-    /**
-     * Get the role of the user
-     */
-    public function role()
+    /* ===================== RELATIONS ===================== */
+
+    public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
     }
 
-    /**
-     * Check if user has a specific role
-     */
-    public function hasRole($roleName)
-    {
-        return $this->role && $this->role->nom === $roleName;
-    }
-
-    /**
-     * Check if user has any of the given roles
-     */
-    public function hasAnyRole($roles)
-    {
-        return $this->role && in_array($this->role->nom, (array) $roles);
-    }
-
-    /**
-     * Check if user has a specific permission
-     */
-    public function hasPermission($permissionName)
-    {
-        return $this->role && $this->role->permissions()->where('nom', $permissionName)->exists();
-    }
-
-    /**
-     * Check if user is active
-     */
-    public function isActive()
-    {
-        return $this->statut === 'active';
-    }
-
-    /**
-     * Get user's reservations
-     */
-    public function reservations()
+    public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class, 'demandeur_id');
     }
 
-    /**
-     * Get reservations decided by this user
-     */
-    public function decidedReservations()
+    public function decidedReservations(): HasMany
     {
         return $this->hasMany(Reservation::class, 'decideur_id');
     }
 
-    /**
-     * Get resources managed by this user
-     */
-    public function managedRessources()
+    public function managedRessources(): HasMany
     {
         return $this->hasMany(Ressource::class, 'manager_id');
     }
 
-    /**
-     * Get user's notifications
-     */
-    public function notifications()
+    public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class, 'user_id');
+    }
+   
+
+
+
+
+    /* ===================== LOGIC ===================== */
+
+    public function hasRole(string $roleName): bool
+    {
+        return $this->role && $this->role->nom === $roleName;
+    }
+
+    public function hasAnyRole(array|string $roles): bool
+    {
+        return $this->role && in_array($this->role->nom, (array) $roles, true);
+    }
+
+    public function hasPermission(string $permissionName): bool
+    {
+        return $this->role
+            && $this->role->permissions()
+                ->where('nom', $permissionName)
+                ->exists();
+    }
+
+    public function isActive(): bool
+    {
+        return $this->statut === 'active';
     }
 }

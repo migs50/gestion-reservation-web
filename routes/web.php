@@ -1,130 +1,118 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\GuestController;
-use App\Http\Controllers\DemandeCompteController;
-use App\Http\Controllers\RessourceController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PublicController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReservationController;
-
-/*
-|--------------------------------------------------------------------------
-| Public Routes (Guest)
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/', function () {
-    return view('index');
-})->name('home');
-
-Route::get('/catalogue', function () {
-    return view('catalogue');
-})->name('catalogue');
-
-Route::get('/regles', function () {
-    return view('regles');
-})->name('regles');
-
-Route::get('/demande-compte', function () {
-    return view('demande-compte');
-})->name('demande-compte');
-
-Route::get('/login', function () {
-    return view('auth.login');
-});
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\Admin\ResourceManagementController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\StatisticsController;
+use App\Http\Controllers\Admin\MaintenanceController;
+use App\Http\Controllers\Responsable\ResponsableDashboardController;
+use App\Http\Controllers\Responsable\ResponsableResourceController;
+use App\Http\Controllers\Responsable\ResponsableRequestController;
 
 
 
-// Home page
-Route::get('/', [GuestController::class, 'index'])->name('home');
 
-// Guest pages
-Route::get('/catalogue', [GuestController::class, 'catalogue'])->name('catalogue');
-Route::get('/regles', [GuestController::class, 'regles'])->name('regles');
-Route::get('/rules', [GuestController::class, 'rules'])->name('rules');
-Route::get('/contact', [GuestController::class, 'contact'])->name('contact');
+//Routes PUBLIQUES (Invité)//
+Route::get('/', [PublicController::class, 'home'])->name('public.home');
 
+Route::get('/ressources', [PublicController::class, 'resources'])->name('public.resources');
+Route::get('/ressources/{id}', [PublicController::class, 'resourceDetails'])->name('public.resource.details');
 
-/*
-|--------------------------------------------------------------------------
-| Authentication Routes
-|--------------------------------------------------------------------------
-*/
+Route::get('/rules', [PublicController::class, 'rules'])->name('public.rules');
 
-// Login
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
-// Registration (Account Request)
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register']);
-Route::get('/register/success', [RegisterController::class, 'success'])->name('register.success');
-Route::get('/demande-compte', [RegisterController::class, 'showRegistrationForm'])->name('demande.compte');
-Route::post('/demande-compte', [RegisterController::class, 'register'])->name('demande.compte.store');
-Route::post('/demande-compte', [DemandeCompteController::class, 'store'])
-    ->name('demande.compte.store');
-Route::get('/demande-compte', function () {
-    return view('auth.register');
-})->name('demande.compte');
+Route::get('/request-account', [PublicController::class, 'requestAccount'])->name('public.request.account');
+Route::post('/request-account', [PublicController::class, 'storeAccountRequest'])->name('public.request.account.store');
 
 
-// Password Reset
-Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
-Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 
-/*
-|--------------------------------------------------------------------------
-| Authenticated Routes
-|--------------------------------------------------------------------------
-*/
+//Routes AUTH (Authentification)//
 
-Route::middleware('auth')->group(function () {
 
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Profile
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
-    Route::get('/profile/reservations', [ProfileController::class, 'reservations'])->name('profile.reservations');
+Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
 
-    // Resources
-    Route::get('/ressources', [RessourceController::class, 'index'])->name('ressources.index');
-    Route::get('/ressources/{ressource}', [RessourceController::class, 'show'])->name('ressources.show');
+Route::get('/register', [AuthController::class, 'registerForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
 
-    // Reservations
-    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
-    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.list');
-    Route::get('/ressources/{ressource}/reserver', [ReservationController::class, 'create'])->name('reservations.create');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/forgot-password', [AuthController::class, 'forgotPasswordForm'])->name('password.request');
+Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+
+Route::get('/reset-password/{token}', [AuthController::class, 'resetPasswordForm'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
+//Routes UTILISATEURS (User)//
+
+
+Route::middleware(['auth', 'role:user'])->prefix('user')->name('user.')->group(function () {
+
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations');
+    Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
     Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
+    Route::get('/reservations/{id}', [ReservationController::class, 'show'])->name('reservations.show');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Admin & Manager Routes
-    |--------------------------------------------------------------------------
-    */
+    Route::get('/history', [UserController::class, 'history'])->name('history');
 
-    // Admin only routes
-    Route::middleware(['role:Admin'])->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/users', function () { return view('admin.users'); })->name('users');
-        Route::get('/roles', function () { return view('admin.roles'); })->name('roles');
-        Route::get('/demandes', function () { return view('admin.demandes'); })->name('demandes');
-        Route::get('/statistics', function () { return view('admin.statistics'); })->name('statistics');
-    });
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
 
-    // Responsable routes
-    Route::middleware(['role:Admin,Responsable'])->prefix('manager')->name('manager.')->group(function () {
-        Route::get('/ressources', function () { return view('manager.ressources'); })->name('ressources');
-        Route::get('/requests', function () { return view('manager.requests'); })->name('requests');
-    });
+    Route::get('/incident', [UserController::class, 'incidentForm'])->name('incident.form');
+    Route::post('/incident', [UserController::class, 'storeIncident'])->name('incident.store');
 });
+
+
+//Routes ADMIN (Administrateur)//
+
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    // Gestion utilisateurs
+    Route::get('/users', [UserManagementController::class, 'index'])->name('users');
+    Route::put('/users/{id}/toggle', [UserManagementController::class, 'toggleStatus'])->name('users.toggle');
+
+    // Gestion ressources
+    Route::get('/ressources', [ResourceManagementController::class, 'index'])->name('resources');
+    Route::post('/ressources', [ResourceManagementController::class, 'store'])->name('resources.store');
+    Route::put('/ressources/{id}', [ResourceManagementController::class, 'update'])->name('resources.update');
+
+    // Catégories
+    Route::resource('/categories', CategoryController::class);
+
+    // Statistiques
+    Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics');
+
+    // Maintenance
+    Route::get('/maintenance', [MaintenanceController::class, 'index'])->name('maintenance');
+    Route::post('/maintenance', [MaintenanceController::class, 'store'])->name('maintenance.store');
+});
+
+
+//Routes RESPONSABLE (Responsable de ressources)//
+
+
+Route::middleware(['auth', 'role:responsable'])->prefix('responsable')->name('responsable.')->group(function () {
+
+    Route::get('/dashboard', [ResponsableDashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/ressources', [ResponsableResourceController::class, 'index'])->name('resources');
+    Route::put('/ressources/{id}/status', [ResponsableResourceController::class, 'updateStatus'])->name('resources.status');
+
+    Route::get('/requests', [ResponsableRequestController::class, 'index'])->name('requests');
+    Route::get('/requests/{id}', [ResponsableRequestController::class, 'show'])->name('requests.show');
+    Route::post('/requests/{id}/approve', [ResponsableRequestController::class, 'approve'])->name('requests.approve');
+    Route::post('/requests/{id}/reject', [ResponsableRequestController::class, 'reject'])->name('requests.reject');
+});
+
+
+

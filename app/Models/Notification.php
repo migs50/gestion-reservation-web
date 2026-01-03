@@ -2,22 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Notification extends Model
+
 {
-    protected $table = 'notifications';
+    use HasFactory;
 
     protected $fillable = [
         'user_id',
         'type',
         'titre',
-        'contenu',
+        'message',
+        'lien',
         'lu'
     ];
 
     protected $casts = [
-        'user_id' => 'integer',
         'lu' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
@@ -29,5 +31,29 @@ class Notification extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Scope for unread notifications
+     */
+    public function scopeUnread($query)
+    {
+        return $query->where('lu', false);
+    }
+
+    /**
+     * Scope for read notifications
+     */
+    public function scopeRead($query)
+    {
+        return $query->where('lu', true);
+    }
+
+    /**
+     * Mark notification as read
+     */
+    public function markAsRead()
+    {
+        $this->update(['lu' => true]);
     }
 }
