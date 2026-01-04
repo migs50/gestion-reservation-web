@@ -19,11 +19,12 @@ class ReservationController extends Controller
     public function index()
     {
         $reservations = Reservation::with('ressource')
-            ->where('demandeur_id', 1) // TODO: Auth::id() plus tard
+            ->where('demandeur_id', Auth::id()) // TODO: Auth::id() plus tard
              ->orderByDesc('debut')
-            ->get();
+            ->paginate(15); //INSTEAD OF GET BECAUSE GET returns a Collection AND PAGINATE  returns a LengthAwarePaginator
 
-        return view('reservations.list', compact('reservations'));
+       return view('profile.reservations', compact('reservations'));
+
     }
 
     public function create(Ressource $ressource)
@@ -63,7 +64,7 @@ class ReservationController extends Controller
         }
 
         Reservation::create([
-            'demandeur_id'  => 1, // TODO: Auth::id() (WISSAL doit developpe la partie auth)
+            'demandeur_id'  => Auth::id(), // TODO: Auth::id() (WISSAL doit developpe la partie auth)
             'ressource_id'  => $ressource->id,
             'decideur_id'   => null,
             'debut'         => $data['debut'],
@@ -79,10 +80,9 @@ class ReservationController extends Controller
         if (class_exists(\App\Models\Notification::class)) {
             \App\Models\Notification::create([
                 'user_id' => Auth::id(),
-                'type' => 'reservation',
+                'type' => 'message',
                 'titre' => 'Réservation créée',
                 'message' => "Votre demande de réservation pour {$ressource->nom} a été enregistrée.",
-                'lien' => route('reservations.index'),
                 'lu' => false
             ]);
 
@@ -90,10 +90,9 @@ class ReservationController extends Controller
             if ($ressource->manager_id) {
                 \App\Models\Notification::create([
                     'user_id' => $ressource->manager_id,
-                    'type' => 'reservation',
+                    'type' => 'message',
                     'titre' => 'Nouvelle demande de réservation',
                     'message' => "Une nouvelle demande de réservation pour {$ressource->nom} nécessite votre attention.",
-                    'lien' => route('reservations.index'),
                     'lu' => false
                 ]);
             }
@@ -141,10 +140,9 @@ class ReservationController extends Controller
         if (class_exists(\App\Models\Notification::class)) {
             \App\Models\Notification::create([
                 'user_id' => $reservation->demandeur_id,
-                'type' => 'reservation',
+                'type' => 'message',
                 'titre' => 'Réservation annulée',
                 'message' => "Votre réservation #{$reservation->id} a été annulée.",
-                'lien' => route('reservations.index'),
                 'lu' => false
             ]);
         }

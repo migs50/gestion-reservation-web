@@ -116,62 +116,47 @@
         }
     }
 </style>
+@if ($errors->any())
+    <div style="color:red; margin-bottom:10px;">
+        @foreach ($errors->all() as $error)
+            <div>{{ $error }}</div>
+        @endforeach
+    </div>
+@endif
 
-<form id="registerForm" onsubmit="handleRegister(event)">
+
+<form method="POST" action="{{ route('register') }}">
     @csrf
-    <div class="form-row">
-        <div class="form-group">
-            <label for="nom">Nom</label>
-            <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
-        </div>
 
-        <div class="form-group">
-            <label for="prenom">Prénom</label>
-            <input type="text" id="prenom" name="prenom" placeholder="Votre prénom" required>
-        </div>
+    <div class="form-group">
+        <label for="nom_complet">Nom complet</label>
+        <input type="text" id="nom_complet" name="nom_complet" required>
     </div>
 
     <div class="form-group">
         <label for="email">Adresse email</label>
-        <input type="email" id="email" name="email" placeholder="votre.email@example.com" required>
-        <small>Utilisez votre email professionnel ou académique</small>
+        <input type="email" id="email" name="email" required>
     </div>
 
     <div class="form-group">
         <label for="telephone">Téléphone</label>
-        <input type="tel" id="telephone" name="telephone" placeholder="+212 6XX-XXXXXX" required>
+        <input type="tel" id="telephone" name="telephone" required>
     </div>
 
     <div class="form-group">
-        <label for="organisation">Organisation</label>
-        <input type="text" id="organisation" name="organisation" placeholder="Entreprise ou Université" required>
+        <label for="type_demande">Type de compte</label>
+        <select id="type_demande" name="type_demande" required>
+            <option value="Interne">Interne</option>
+            <option value="Responsable">Responsable</option>
+        </select>
     </div>
 
     <div class="form-group">
-        <label for="password">Mot de passe</label>
-        <input type="password" id="password" name="password" placeholder="••••••••" required oninput="checkPasswordStrength()">
-        <div class="password-strength">
-            <div id="strengthText">Force du mot de passe : <span id="strengthLabel">Faible</span></div>
-            <div class="strength-bar">
-                <div id="strengthBar" class="strength-bar-inner"></div>
-            </div>
-        </div>
-        <small>Min. 8 caractères, avec majuscules, minuscules et chiffres</small>
+        <label for="justification">Justification</label>
+        <textarea id="justification" name="justification" required></textarea>
     </div>
 
-    <div class="form-group">
-        <label for="password_confirmation">Confirmer le mot de passe</label>
-        <input type="password" id="password_confirmation" name="password_confirmation" placeholder="••••••••" required>
-    </div>
-
-    <div class="checkbox-group">
-        <input type="checkbox" id="accept_terms" name="accept_terms" required>
-        <label for="accept_terms">
-            J'accepte les <a href="{{ route('rules') }}" target="_blank" style="color: #667eea;">conditions d'utilisation</a>
-        </label>
-    </div>
-
-    <button type="submit" class="btn">Créer mon compte</button>
+    <button type="submit" class="btn">Envoyer la demande</button>
 </form>
 
 <script>
@@ -201,28 +186,29 @@
         }
     }
 
-    function handleRegister(event) {
-        event.preventDefault();
-        
-        const password = document.getElementById('password').value;
-        const passwordConfirm = document.getElementById('password_confirmation').value;
-        
-        if (password !== passwordConfirm) {
-            alert('Les mots de passe ne correspondent pas !');
-            return false;
-        }
-        
-        if (password.length < 8) {
-            alert('Le mot de passe doit contenir au moins 8 caractères.');
-            return false;
-        }
-        
-        // Simulation d'inscription réussie
-        alert('✅ Inscription réussie ! Votre compte a été créé.');
-        window.location.href = "{{ route('login') }}";
-        
-        return false;
-    }
+                                                            //HIS CODE IS COMMENT IT DOES NOT WORK IN LARAVEL ITS A BLADE COMMENT, COMMENTED INSTEAD OF DELETED (ADAM)
+                                                                {{-- function handleRegister(event) {
+                                                                    event.preventDefault();
+                                                                    
+                                                                    const password = document.getElementById('password').value;
+                                                                    const passwordConfirm = document.getElementById('password_confirmation').value;
+                                                                    
+                                                                    if (password !== passwordConfirm) {
+                                                                        alert('Les mots de passe ne correspondent pas !');
+                                                                        return false;
+                                                                    }
+                                                                    
+                                                                    if (password.length < 8) {
+                                                                        alert('Le mot de passe doit contenir au moins 8 caractères.');
+                                                                        return false;
+                                                                    }
+                                                                    
+                                                                    // Simulation d'inscription réussie
+                                                                    alert('✅ Inscription réussie ! Votre compte a été créé.');
+                                                                    window.location.href = "{{ route('login') }}";
+                                                                    
+                                                                    return false;
+                                                                } --}}
 </script>
 @endsection
 

@@ -66,10 +66,15 @@
         <h3 id="pendingReservations">{{ $stats['pending_reservations'] ?? 0 }}</h3>
         <p>📋 En attente</p>
     </div>
+ {{-- A HREF IS FOR THE ROUTING TO THE DEMAND PAGE WHEN U CLICK ON THE DEMANDES CARD AS AN ADMIN --}}
+    <a href="{{ route('admin.demandes.index') }}" style="text-decoration:none; color:inherit;">
     <div class="stat-card">
         <h3 id="pendingRequests">{{ $stats['pending_requests'] ?? 0 }}</h3>
         <p>⚠️ Demandes</p>
     </div>
+
+</a>
+
 </div>
 
 <!-- Actions Rapides -->
@@ -137,7 +142,7 @@
                     @endif
                 </td>
                 <td>
-                    <a href="{{ route('admin.reservations.show', $reservation->id) }}" class="btn btn-sm">Voir</a>
+                    <a href="{{ route('admin.reservations.index', $reservation->id) }}" class="btn btn-sm">Voir</a>
                 </td>
             </tr>
             @empty

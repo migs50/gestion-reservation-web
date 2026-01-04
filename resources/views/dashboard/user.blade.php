@@ -223,12 +223,12 @@
 <div class="quick-actions">
     <h2>⚡ Actions rapides</h2>
     <div class="actions-grid">
-        <a href="{{ route('user.reservation.create') }}" class="action-btn">
+        <a href="{{ route('catalogue') }}" class="action-btn">
             <span>➕</span>
             <div>Nouvelle réservation</div>
         </a>
 
-        <a href="{{ route('user.reservations') }}" class="action-btn">
+        <a href="{{ route('reservations.index') }}" class="action-btn">
             <span>📋</span>
             <div>Mes réservations</div>
         </a>
@@ -237,11 +237,11 @@
             <span>🔔</span>
             <div>Notifications</div>
         </a>
-
-        <a href="{{ route('user.incident.report') }}" class="action-btn">
+{{-- TEMPRORY COMMENT FOR WHEN ITS ADDED!!!! --}}
+        {{-- <a href="{{ route('user.incident.report') }}" class="action-btn">
             <span>⚠️</span>
             <div>Signaler un incident</div>
-        </a>
+        </a> --}}
     </div>
 </div>
 
@@ -255,8 +255,8 @@
             <div class="reservation-info">
                 <h4>{{ $reservation->ressource->nom }}</h4>
                 <p>
-                    Du {{ $reservation->date_debut->format('d/m/Y H:i') }} 
-                    au {{ $reservation->date_fin->format('d/m/Y H:i') }}
+                    Du {{ $reservation->debut->format('d/m/Y H:i') }} 
+                    au {{ $reservation->fin->format('d/m/Y H:i') }}
                 </p>
             </div>
             <div>
@@ -274,7 +274,7 @@
         @endforeach
         
         <div style="text-align: center; margin-top: 20px;">
-            <a href="{{ route('user.reservations') }}" style="color: #667eea; text-decoration: none; font-weight: 600;">
+            <a href="{{ route('reservations.index') }}" style="color: #667eea; text-decoration: none; font-weight: 600;">
                 Voir toutes les réservations →
             </a>
         </div>
@@ -282,7 +282,7 @@
         <div class="empty-state">
             <span>📭</span>
             <p>Aucune réservation récente</p>
-            <a href="{{ route('user.reservation.create') }}" style="color: #667eea; text-decoration: none; font-weight: 600;">
+            <a href="{{ route('catalogue') }}" style="color: #667eea; text-decoration: none; font-weight: 600;">
                 Créer votre première réservation
             </a>
         </div>

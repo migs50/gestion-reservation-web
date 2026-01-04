@@ -144,91 +144,130 @@
     }
 </style>
 
-<a href="{{ route('ressources') }}" class="back-link">← Retour aux ressources</a>
+<a href="{{ route('catalogue') }}" class="back-link">← Retour aux ressources</a>
 
 <div class="ressource-details">
     <div class="details-header">
         <div class="details-icon">🖥️</div>
-        <h1>Serveur Dell PowerEdge R740</h1>
-        <p class="details-category">Serveur Physique - Haute Performance</p>
+
+        {{-- NOM + CATEGORIE --}}
+        <h1>{{ $ressource->nom }}</h1>
+        <p class="details-category">
+            {{ $ressource->categorie ?? 'Ressource' }}
+        </p>
     </div>
 
     <div class="details-body">
+        {{-- DESCRIPTION --}}
         <div class="description">
             <h3 style="color: #2c3e50; margin-bottom: 15px;">📝 Description</h3>
-            <p>
-                Le Dell PowerEdge R740 est un serveur rack 2U polyvalent et évolutif, conçu pour accélérer les charges 
-                de travail applicatives. Il offre des performances exceptionnelles pour les environnements de 
-                virtualisation, de calcul intensif et de bases de données exigeantes.
-            </p>
+            <p>{{ $ressource->description }}</p>
         </div>
 
         <div class="details-grid">
-            <!-- Caractéristiques techniques -->
+            {{-- Caractéristiques techniques --}}
             <div class="details-section">
                 <h3>⚙️ Caractéristiques techniques</h3>
                 <div class="spec-item">
                     <span class="spec-label">Bande passante</span>
-                    <span class="spec-value">10 Gbps</span>
+                    <span class="spec-value">
+                        {{ $ressource->bande_passante ?? 'Non renseigné' }}
+                    </span>
                 </div>
+                {{-- ajoute d’autres specs ici si tu as des colonnes CPU / RAM / etc. --}}
             </div>
 
-            <!-- Disponibilité -->
+            {{-- Disponibilité --}}
             <div class="details-section">
                 <h3>📊 Disponibilité et statut</h3>
+
                 <div class="spec-item">
                     <span class="spec-label">Statut actuel</span>
-                    <span class="status-badge status-available">Disponible</span>
+                    <span class="status-badge status-available">
+                        {{ $ressource->statut ?? 'Inconnu' }}
+                    </span>
                 </div>
+
                 <div class="spec-item">
                     <span class="spec-label">Emplacement</span>
-                    <span class="spec-value">Rack A12 - Baie 5</span>
+                    <span class="spec-value">
+                        {{ $ressource->emplacement ?? 'Non renseigné' }}
+                    </span>
                 </div>
+
                 <div class="spec-item">
                     <span class="spec-label">Dernière maintenance</span>
-                    <span class="spec-value">15/12/2025</span>
+                    <span class="spec-value">
+                        {{ optional($ressource->derniere_maintenance)->format('d/m/Y') ?? 'Non renseigné' }}
+                    </span>
                 </div>
+
                 <div class="spec-item">
                     <span class="spec-label">Prochaine maintenance</span>
-                    <span class="spec-value">15/03/2026</span>
+                    <span class="spec-value">
+                        {{ optional($ressource->prochaine_maintenance)->format('d/m/Y') ?? 'Non renseigné' }}
+                    </span>
                 </div>
+
                 <div class="spec-item">
                     <span class="spec-label">Uptime</span>
-                    <span class="spec-value">99.98%</span>
+                    <span class="spec-value">
+                        {{ $ressource->uptime ?? 'Non renseigné' }}
+                    </span>
                 </div>
             </div>
 
-            <!-- Logiciels installés -->
+            {{-- Système et logiciels --}}
             <div class="details-section">
                 <h3>💿 Système et logiciels</h3>
+
                 <div class="spec-item">
                     <span class="spec-label">OS</span>
-                    <span class="spec-value">Ubuntu Server 22.04 LTS</span>
+                    <span class="spec-value">
+                        {{ $ressource->os ?? 'Non renseigné' }}
+                    </span>
                 </div>
+
                 <div class="spec-item">
                     <span class="spec-label">Hyperviseur</span>
-                    <span class="spec-value">VMware ESXi 7.0</span>
+                    <span class="spec-value">
+                        {{ $ressource->hyperviseur ?? 'Non renseigné' }}
+                    </span>
                 </div>
+
                 <div class="spec-item">
                     <span class="spec-label">Monitoring</span>
-                    <span class="spec-value">Nagios, Prometheus</span>
+                    <span class="spec-value">
+                        {{ $ressource->monitoring ?? 'Non renseigné' }}
+                    </span>
                 </div>
+
                 <div class="spec-item">
                     <span class="spec-label">Backup</span>
-                    <span class="spec-value">Veeam Backup & Replication</span>
+                    <span class="spec-value">
+                        {{ $ressource->backup ?? 'Non renseigné' }}
+                    </span>
                 </div>
             </div>
         </div>
 
         <div class="alert-info">
             <strong>ℹ️ Information importante</strong>
-            Pour réserver cette ressource, vous devez être connecté avec un compte utilisateur validé. 
-            La durée maximale de réservation est de 30 jours. Les réservations sont soumises à l'approbation 
+            Pour réserver cette ressource, vous devez être connecté avec un compte utilisateur validé.
+            La durée maximale de réservation est de 30 jours. Les réservations sont soumises à l'approbation
             du responsable des ressources.
         </div>
 
         <div style="text-align: center; margin-top: 30px;">
-            <a href="{{ route('login') }}" class="btn-reserve">🔒 Se connecter pour réserver</a>
+            @auth
+                <a href="{{ route('reservations.create', $ressource) }}" class="btn-primary">
+                    Réserver cette ressource
+                </a>
+            @else
+                <a href="{{ route('login') }}" class="btn-primary">
+                    Se connecter pour réserver
+                </a>
+            @endauth
         </div>
     </div>
 </div>

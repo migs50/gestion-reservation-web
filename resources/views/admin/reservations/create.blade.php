@@ -5,7 +5,7 @@
 @section('content')
     <h1>Nouvelle réservation</h1>
 
-<form action="{{ route('admin.reservations.store') }}" method="POST">
+<form action="{{ route('reservations.store') }}" method="POST">
     @csrf
 
     <label for="ressource_id">Ressource</label>

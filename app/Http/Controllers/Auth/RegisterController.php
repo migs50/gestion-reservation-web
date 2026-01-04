@@ -17,6 +17,8 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
+        
+
         $validated = $request->validate([
             'nom_complet' => 'required|string|max:150',
             'email' => 'required|email|max:191|unique:demande_comptes,email',
@@ -34,6 +36,12 @@ class RegisterController extends Controller
             'statut' => 'pending',
         ]);
 
-        return redirect()->route('login')->with('success', 'Votre demande de compte a été soumise avec succès. Vous serez notifié par email une fois approuvée.');
+      return redirect()->route('register.success');
+
     }
+    public function success()
+        {
+            return view('auth.register_success');
+        }
+
 }

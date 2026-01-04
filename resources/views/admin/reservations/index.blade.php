@@ -18,6 +18,7 @@
                 <th>Début</th>
                 <th>Fin</th>
                 <th>Statut</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -29,10 +30,27 @@
                     <td>{{ $reservation->debut?->format('d/m/Y H:i') }}</td>
                     <td>{{ $reservation->fin?->format('d/m/Y H:i') }}</td>
                     <td>{{ $reservation->statut }}</td>
+                    <td>
+                        @if($reservation->statut === 'pending')
+                            <form action="{{ route('admin.reservations.approve', $reservation) }}" method="POST" style="display:inline">
+                                @csrf
+                                <button class="btn btn-success btn-sm">Accepter</button>
+                            </form>
+
+                            <form action="{{ route('admin.reservations.refuse', $reservation) }}" method="POST" style="display:inline">
+                                @csrf
+                                <button class="btn btn-danger btn-sm">Refuser</button>
+                            </form>
+                        @else
+                            {{ ucfirst($reservation->statut) }}
+                        @endif
+                    </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" style="text-align:center;">Aucune réservation trouvée.</td>
+                    <td colspan="7" style="text-align:center;">
+                        Aucune réservation trouvée.
+                    </td>
                 </tr>
             @endforelse
         </tbody>

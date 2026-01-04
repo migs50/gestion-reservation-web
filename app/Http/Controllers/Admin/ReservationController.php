@@ -6,6 +6,7 @@ use App\Models\Reservation;
 use App\Models\Ressource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; 
 
 class ReservationController extends Controller
 {
@@ -50,5 +51,25 @@ class ReservationController extends Controller
     return redirect()->route('admin.reservations.index')
         ->with('success', 'Réservation créée avec succès.');
 }
+
+    public function approve(Reservation $reservation)
+    {
+        $reservation->update([
+            'statut'      => 'approved',
+            'decideur_id' => Auth::id(),
+        ]);
+
+        return back()->with('success', 'Réservation approuvée.');
+    }
+
+    public function refuse(Reservation $reservation)
+    {
+        $reservation->update([
+            'statut'      => 'refused',
+            'decideur_id' => Auth::id(),
+        ]);
+
+        return back()->with('success', 'Réservation refusée.');
+    }
 
 }

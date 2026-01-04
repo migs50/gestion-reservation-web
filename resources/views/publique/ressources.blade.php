@@ -215,191 +215,55 @@
 </div>
 
 <!-- Ressources Grid -->
-
-{{-- @foreach ($ressources as $ressource) ADD THIS AFTER THE RESSOURCE CREATION FUNCTIONALITIES ARE SET AND CHANGE THE STATIC IDS(1,2,3) TO $ressource->id --}}
-<div class="ressources-grid" id="ressourcesGrid">
- {{-- @foreach ($ressources as $ressource) HERE AND END IT AT THE END OF RESSOURCES --}}
-    <!-- Serveur 1 -->
-    <div class="ressource-card" data-category="serveur" data-status="disponible">
-        <div class="ressource-header">
-            <div class="ressource-icon">🖥️</div>
-            <h3>Serveur Dell PowerEdge R740</h3>
-            <p class="ressource-category">Serveur Physique</p>
-        </div>
-        <div class="ressource-body">
-            <div class="ressource-info">
-                <div class="info-item">
-                    <span class="info-label">CPU</span>
-                    <span class="info-value">Intel Xeon Gold 6248R</span>
+ <div class="ressources-grid" id="ressourcesGrid">
+    @foreach ($ressources as $ressource)
+        <div class="ressource-card"
+             data-category="{{ $ressource->categorie ?? 'autre' }}"
+             data-status="{{ $ressource->statut ?? 'disponible' }}">
+            <div class="ressource-header">
+                <div class="ressource-icon">
+                    {{-- You can customize icon based on category if you want --}}
+                    🖥️
                 </div>
-                <div class="info-item">
-                    <span class="info-label">RAM</span>
-                    <span class="info-value">256 GB DDR4</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Stockage</span>
-                    <span class="info-value">2 TB NVMe SSD</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Statut</span>
-                    <span class="status-badge status-available">Disponible</span>
-                </div>
+                <h3>{{ $ressource->nom }}</h3>
+                <p class="ressource-category">
+                    {{ $ressource->type ?? ($ressource->categorie ?? 'Ressource') }}
+                </p>
             </div>
-            <a href="{{ route('ressources.show', 1) }}" class="btn-details">Voir détails</a>
 
-        </div>
-    </div>
+            <div class="ressource-body">
+                <div class="ressource-info">
+                    <div class="info-item">
+                        <span class="info-label">CPU</span>
+                        <span class="info-value">{{ $ressource->cpu ?? '-' }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">RAM</span>
+                        <span class="info-value">{{ $ressource->ram ?? '-' }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Stockage</span>
+                        <span class="info-value">{{ $ressource->stockage ?? '-' }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Statut</span>
+                        <span class="status-badge
+                            @if(($ressource->statut ?? '') === 'disponible') status-available
+                            @elseif(($ressource->statut ?? '') === 'maintenance') status-maintenance
+                            @else status-busy @endif">
+                            {{ ucfirst($ressource->statut ?? 'disponible') }}
+                        </span>
+                    </div>
+                </div>
 
-    <!-- VM 1 -->
-    <div class="ressource-card" data-category="vm" data-status="disponible">
-        <div class="ressource-header">
-            <div class="ressource-icon">💻</div>
-            <h3>VM Ubuntu 22.04 LTS</h3>
-            <p class="ressource-category">Machine Virtuelle</p>
-        </div>
-        <div class="ressource-body">
-            <div class="ressource-info">
-                <div class="info-item">
-                    <span class="info-label">vCPU</span>
-                    <span class="info-value">8 Cores</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">RAM</span>
-                    <span class="info-value">32 GB</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Stockage</span>
-                    <span class="info-value">500 GB SSD</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Statut</span>
-                    <span class="status-badge status-available">Disponible</span>
-                </div>
+                <a href="{{ route('ressources.show', $ressource) }}" class="btn-details">
+                    Voir détails
+                </a>
             </div>
-            <a href="{{ route('ressources.show', 2) }}" class="btn-details">Voir détails</a>
         </div>
-    </div>
-
-    <!-- Stockage 1 -->
-    <div class="ressource-card" data-category="stockage" data-status="occupe">
-        <div class="ressource-header">
-            <div class="ressource-icon">💾</div>
-            <h3>Baie de stockage NetApp</h3>
-            <p class="ressource-category">Stockage</p>
-        </div>
-        <div class="ressource-body">
-            <div class="ressource-info">
-                <div class="info-item">
-                    <span class="info-label">Capacité totale</span>
-                    <span class="info-value">50 TB</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Disponible</span>
-                    <span class="info-value">15 TB</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Type</span>
-                    <span class="info-value">SAN / NAS</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Statut</span>
-                    <span class="status-badge status-busy">Occupé</span>
-                </div>
-            </div>
-            <a href="{{ route('ressources.show', 3) }}" class="btn-details">Voir détails</a>
-        </div>
-    </div>
-
-    <!-- Réseau 1 -->
-    <div class="ressource-card" data-category="reseau" data-status="disponible">
-        <div class="ressource-header">
-            <div class="ressource-icon">🌐</div>
-            <h3>Switch Cisco Catalyst 9300</h3>
-            <p class="ressource-category">Équipement Réseau</p>
-        </div>
-        <div class="ressource-body">
-            <div class="ressource-info">
-                <div class="info-item">
-                    <span class="info-label">Ports</span>
-                    <span class="info-value">48 x 1G/10G</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Uplinks</span>
-                    <span class="info-value">4 x 40G QSFP+</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Débit</span>
-                    <span class="info-value">440 Gbps</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Statut</span>
-                    <span class="status-badge status-available">Disponible</span>
-                </div>
-            </div>
-            <a href="{{ route('ressources.show', 4) }}" class="btn-details">Voir détails</a>
-        </div>
-    </div>
-
-    <!-- Serveur 2 -->
-    <div class="ressource-card" data-category="serveur" data-status="maintenance">
-        <div class="ressource-header">
-            <div class="ressource-icon">🖥️</div>
-            <h3>Serveur HPE ProLiant DL380</h3>
-            <p class="ressource-category">Serveur Physique</p>
-        </div>
-        <div class="ressource-body">
-            <div class="ressource-info">
-                <div class="info-item">
-                    <span class="info-label">CPU</span>
-                    <span class="info-value">Intel Xeon Silver 4214</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">RAM</span>
-                    <span class="info-value">128 GB DDR4</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Stockage</span>
-                    <span class="info-value">4 TB HDD RAID5</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Statut</span>
-                    <span class="status-badge status-maintenance">Maintenance</span>
-                </div>
-            </div>
-            <a href="{{ route('ressources.show', 5) }}" class="btn-details">Voir détails</a>
-        </div>
-    </div>
-
-    <!-- VM 2 -->
-    <div class="ressource-card" data-category="vm" data-status="disponible">
-        <div class="ressource-header">
-            <div class="ressource-icon">💻</div>
-            <h3>VM Windows Server 2022</h3>
-            <p class="ressource-category">Machine Virtuelle</p>
-        </div>
-        <div class="ressource-body">
-            <div class="ressource-info">
-                <div class="info-item">
-                    <span class="info-label">vCPU</span>
-                    <span class="info-value">4 Cores</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">RAM</span>
-                    <span class="info-value">16 GB</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Stockage</span>
-                    <span class="info-value">250 GB SSD</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Statut</span>
-                    <span class="status-badge status-available">Disponible</span>
-                </div>
-            </div>
-            <a href="{{ route('ressources.show', 6) }}" class="btn-details">Voir détails</a>
-        </div>
-    </div>
+    @endforeach
 </div>
+
 
 <script>
     // Filter resources
