@@ -103,7 +103,25 @@ class DashboardController extends Controller
             ->latest()
             ->limit(10)
             ->get();
+        $recent_reservations = Reservation::with(['demandeur', 'ressource'])
+            ->orderBy('debut', 'desc')
+            ->limit(5)
+            ->get();
+            
+        $activity_data = [
+            'days'   => ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+            'values' => [12, 19, 15, 25, 22, 18, 20],
+        ];
 
-        return view('dashboard.admin', compact('stats', 'recent_activity', 'notifications'));
+        return view('dashboard.admin', compact(
+            'stats',
+            'recent_activity',
+            'notifications',
+            'activity_data',
+            'recent_reservations'
+        ));
+
+
+        
     }
 }

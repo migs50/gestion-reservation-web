@@ -328,7 +328,7 @@ function filterNotifications(type) {
 }
 
 function markAsRead(id) {
-    fetch(`/user/notifications/${id}/mark-read`, {
+    fetch(`/notifications/${id}/mark-read`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

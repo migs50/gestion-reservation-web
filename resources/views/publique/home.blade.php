@@ -134,14 +134,16 @@
 </style>
 
 <!-- Hero Section -->
-<section class="hero">
-    <h1>🖥️ DataCenter Manager</h1>
-    <p>Plateforme moderne de gestion et réservation des ressources informatiques</p>
-    <div class="hero-buttons">
-        <a href="{{ route('ressources') }}" class="hero-btn hero-btn-primary">Explorer les ressources</a>
-        <a href="{{ route('request') }}" class="hero-btn hero-btn-secondary">Demander un accès</a>
-    </div>
-</section>
+<div class="hero-buttons">
+    <a href="{{ route('ressources.index') }}" class="hero-btn hero-btn-primary">
+        Explorer les ressources
+    </a>
+
+    <a href="{{ route('demande.compte') }}" class="hero-btn hero-btn-secondary">
+        Demander un accès
+    </a>
+</div>
+
 
 <!-- Features -->
 <section class="features">

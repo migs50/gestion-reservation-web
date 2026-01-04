@@ -88,8 +88,9 @@
     Email ou mot de passe incorrect.
 </div>
 
-<form id="loginForm" onsubmit="handleLogin(event)">
-        @csrf
+<form method="POST" action="{{ route('login') }}">
+    @csrf
+
     <div class="form-group">
         <label for="email">Adresse email</label>
         <input type="email" id="email" name="email" placeholder="votre.email@example.com" required>
@@ -106,25 +107,8 @@
     <button type="submit" class="btn">Se connecter</button>
 </form>
 
-<script>
-    function handleLogin(event) {
-        event.preventDefault();
-        
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
 
-        // Simulation de connexion
-        if (email && password) {
-            // Redirection simulée vers le dashboard utilisateur
-            window.location.href = "{{ route('user.dashboard') }}";
-        } else {
-            // Afficher l'erreur
-            document.getElementById('loginAlert').style.display = 'block';
-        }
-        
-        return false;
-    }
-</script>
+
 @endsection
 @section('footer')
     Vous avez déjà un compte ? 

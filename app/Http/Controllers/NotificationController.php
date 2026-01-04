@@ -34,7 +34,7 @@ class NotificationController extends Controller
             $notifications = collect([]);
         }
 
-        return view('notifications.index', compact('notifications'));
+        return view('user.notifications', compact('notifications'));
     }
 
     /**

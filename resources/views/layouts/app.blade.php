@@ -208,8 +208,9 @@
 
             <ul class="navbar-menu" id="navbarMenu">
                 <li><a href="{{ route('home') }}">Accueil</a></li>
-                <li><a href="{{ route('ressources') }}">Ressources</a></li>
+                <li><a href="{{ route('ressources.index') }}">Ressources</a></li>
                 <li><a href="{{ route('rules') }}">Règles</a></li>
+
                 @guest
                     <li><a href="{{ route('login') }}" class="btn-primary">Connexion</a></li>
                     <li><a href="{{ route('register') }}">Inscription</a></li>
@@ -220,8 +221,15 @@
                             <span class="notification-badge">3</span>
                         </a>
                     </li>
-                    <li><a href="{{ route('user.dashboard') }}">Tableau de bord</a></li>
-                    <li><a href="{{ route('logout') }}">Déconnexion</a></li>
+                    <li><a href="{{ route('dashboard') }}">Tableau de bord</a></li>
+                    <li>
+                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" style="background:none;border:none;padding:0;color:inherit;cursor:pointer;">
+                                Déconnexion
+                            </button>
+                        </form>
+                    </li>
                 @endguest
             </ul>
         </div>
@@ -243,9 +251,9 @@
                 <h4>Liens rapides</h4>
                 <ul>
                     <li><a href="{{ route('home') }}">Accueil</a></li>
-                    <li><a href="{{ route('ressources') }}">Ressources</a></li>
+                    <li><a href="{{ route('ressources.index') }}">Ressources</a></li>
                     <li><a href="{{ route('rules') }}">Règles d'utilisation</a></li>
-                    <li><a href="{{ route('request') }}">Demander un compte</a></li>
+                    <li><a href="{{ route('demande.compte') }}">Demander un compte</a></li>
                 </ul>
             </div>
             <div>

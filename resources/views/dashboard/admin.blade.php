@@ -75,22 +75,28 @@
 <!-- Actions Rapides -->
 <h3 style="margin-bottom: 15px;">⚡ Actions rapides</h3>
 <div class="quick-actions">
-    <a href="{{ route('admin.users.create') }}" class="action-card">
-        <div style="font-size: 36px; margin-bottom: 10px;">➕</div>
-        <div>Créer utilisateur</div>
+
+{{-- CREATE USER DFEATURE FOR LATER IF WE WANT IT ADDED --}}
+                                                                               {{-- <a href="{{ route('admin.users.create') }}" class="action-card"> --}}
+     
+     
+                                                                                  
+                                                                                      {{-- <div style="font-size: 36px; margin-bottom: 10px;">➕</div>
+                                                                                      <div>Créer utilisateur</div> --}}
     </a>
     <a href="{{ route('admin.ressources.create') }}" class="action-card">
         <div style="font-size: 36px; margin-bottom: 10px;">🖥️</div>
         <div>Ajouter ressource</div>
     </a>
-    <a href="{{ route('admin.reservations') }}" class="action-card">
+    <a href="{{ route('admin.reservations.index') }}" class="action-card">
         <div style="font-size: 36px; margin-bottom: 10px;">📋</div>
         <div>Voir réservations</div>
     </a>
-    <a href="{{ route('admin.statistics') }}" class="action-card">
-        <div style="font-size: 36px; margin-bottom: 10px;">📊</div>
-        <div>Statistiques</div>
-    </a>
+    {{-- TO ADD LATER ADMIN STATISTICS --}}
+                                {{-- <a href="{{ route('admin.statistics') }}" class="action-card">
+                                    <div style="font-size: 36px; margin-bottom: 10px;">📊</div>
+                                    <div>Statistiques</div>
+                                </a> --}}
 </div>
 
 <!-- Graphique Activité -->
@@ -117,9 +123,10 @@
             @forelse($recent_reservations as $reservation)
             <tr>
                 <td>#{{ $reservation->id }}</td>
-                <td>{{ $reservation->user->nom }} {{ $reservation->user->prenom }}</td>
+                <td>{{ $reservation->demandeur->nom }} {{ $reservation->demandeur->prenom }}</td>
                 <td>{{ $reservation->ressource->nom }}</td>
-                <td>{{ $reservation->date_debut->format('d/m/Y H:i') }}</td>
+                <td>{{ $reservation->debut->format('d/m/Y H:i') }}</td>
+
                 <td>
                     @if($reservation->statut == 'en_attente')
                         <span class="badge badge-warning">En attente</span>
@@ -189,10 +196,10 @@ function drawActivityChart() {
     canvas.width = canvas.offsetWidth;
     canvas.height = 300;
 
-    // Données des 7 derniers jours (depuis backend)
-    const days = @json($activity_data['days'] ?? ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']);
-    const data = @json($activity_data['values'] ?? [12, 19, 15, 25, 22, 18, 20]);
-    
+              // Données des 7 derniers jours (depuis backend)
+              const days = @json($activity_data['days']);
+              const data = @json($activity_data['values']);
+                  
     const maxValue = Math.max(...data) * 1.2;
     const barWidth = canvas.width / days.length;
     const chartHeight = canvas.height - 50;

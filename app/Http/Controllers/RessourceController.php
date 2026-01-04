@@ -12,14 +12,13 @@ class RessourceController extends Controller
     {
         $ressources = Ressource::with('reservations')->get();
 
-        // resources/views/ressources/index.blade.php
-        return view('ressources.index', compact('ressources'));
+        return view('publique.ressources', compact('ressources'));
     }
+        // GET /ressources/{ressource} -> ressources.show
 
-    // GET /ressources/{ressource} -> ressources.show
-    public function show(Ressource $ressource)
-    {
-        // resources/views/ressources/show.blade.php
-        return view('ressources.show', compact('ressource'));
-    }
+        public function show(Ressource $ressource)
+        {
+            return view('publique.ressources-details', compact('ressource'));
+        }
+
 }

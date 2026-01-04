@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Ressource;
 
+use App\Models\Ressource;
 use Illuminate\Http\Request;
 
 class GuestController extends Controller
@@ -12,7 +12,7 @@ class GuestController extends Controller
      */
     public function index()
     {
-        return view('guest.index');
+        return view('publique.home');
     }
 
     /**
@@ -20,21 +20,16 @@ class GuestController extends Controller
      */
     public function catalogue()
     {
-    
         $ressources = Ressource::with('reservations')->get();
 
-        return view('guest.catalogue', compact('ressources'));
+        return view('publique.ressources', compact('ressources'));
     }
 
-   /**
+    /**
      * Afficher les règles d'utilisation
      */
-    public function regles()
+    public function rules()
     {
-        return view('guest.regles');
+        return view('publique.rules');
     }
-
 }
-
-
-

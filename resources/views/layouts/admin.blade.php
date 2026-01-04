@@ -352,9 +352,9 @@
             <h2>Admin Panel</h2>
         </div>
 
-        <ul class="sidebar-menu">
+        {{-- <ul class="sidebar-menu">
             <li>
-                <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
                     <span>📊</span> Tableau de bord
                 </a>
             </li>
@@ -393,7 +393,42 @@
                     <span>🚪</span> Déconnexion
                 </a>
             </li>
-        </ul>
+        </ul> --}}
+
+                    <ul class="sidebar-menu">
+                <li>
+                    <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                        <span>📊</span> Tableau de bord
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin.ressources.create') }}" class="{{ request()->routeIs('admin.ressources.create') ? 'active' : '' }}">
+                        <span>💾</span> Ajouter ressource
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin.reservations.index') }}" class="{{ request()->routeIs('admin.reservations.*') ? 'active' : '' }}">
+                        <span>📋</span> Réservations
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('home') }}">
+                        <span>🏠</span> Retour au site
+                    </a>
+                </li>
+
+                <li>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" style="background:none;border:none;padding:0;color:inherit;cursor:pointer;">
+                            <span>🚪</span> Déconnexion
+                        </button>
+                    </form>
+                </li>
+            </ul>
     </aside>
 
     <!-- Main Content -->

@@ -25,20 +25,22 @@ class LoginController extends Controller
      * Gérer la tentative de connexion
      */
     public function login(Request $request)
-    {
-        // Validation des données
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-        ], [
-            'email.required' => 'L\'adresse email est requise.',
-            'email.email' => 'L\'adresse email n\'est pas valide.',
-            'password.required' => 'Le mot de passe est requis.',
-            'password.min' => 'Le mot de passe doit contenir au moins 6 caractères.',
-        ]);
+    { 
+        
 
-        // Vérifier si "Se souvenir de moi" est coché
-        $remember = $request->has('remember');
+            // Validation des données
+            $credentials = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required|min:6',
+            ], [
+                'email.required' => 'L\'adresse email est requise.',
+                'email.email' => 'L\'adresse email n\'est pas valide.',
+                'password.required' => 'Le mot de passe est requis.',
+                'password.min' => 'Le mot de passe doit contenir au moins 6 caractères.',
+            ]);
+
+            // Vérifier si "Se souvenir de moi" est coché
+            $remember = $request->has('remember');
 
         // Tentative de connexion
         if (Auth::attempt($credentials, $remember)) {
@@ -48,21 +50,22 @@ class LoginController extends Controller
             // Rediriger selon le rôle de l'utilisateur
         /** @var User $user */
          $user=Auth::user();
-           if ($user->hasRole('Admin')) {              
-      return redirect()->intended(route('admin.dashboard'))
-                    ->with('success', 'Bienvenue ' . Auth::user()->nom . ' !');
-            }
+             
+            //HA LI BDELT A WISSAL LOGIQUE D ADMIN.DASHBOARD USER.DASHBOARD DEJA KAYNA F DASHBOAARDCONTROLLER (ADAM)     
 
-            return redirect()->intended(route('user.dashboard'))
-                ->with('success', 'Bienvenue ' . Auth::user()->nom . ' !');
+        return redirect()->intended(route('dashboard'))
+        ->with('success', 'Bienvenue ' . $user->nom . ' !');
+
+
         }
 
         // Si la connexion échoue
-        return back()
-            ->withInput($request->only('email'))
-            ->withErrors([
-                'email' => 'Les identifiants fournis ne correspondent pas à nos enregistrements.',
-            ]);
+        // return back()
+        //     ->withInput($request->only('email'))
+        //     ->withErrors([
+        //         'email' => 'Les identifiants fournis ne correspondent pas à nos enregistrements.',
+        //     ]);
+        dd('AUTH FAILED', $credentials, \App\Models\User::where('email', $request->email)->first());
     }
 
     /**

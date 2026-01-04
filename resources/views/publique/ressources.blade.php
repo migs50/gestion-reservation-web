@@ -215,7 +215,10 @@
 </div>
 
 <!-- Ressources Grid -->
+
+{{-- @foreach ($ressources as $ressource) ADD THIS AFTER THE RESSOURCE CREATION FUNCTIONALITIES ARE SET AND CHANGE THE STATIC IDS(1,2,3) TO $ressource->id --}}
 <div class="ressources-grid" id="ressourcesGrid">
+ {{-- @foreach ($ressources as $ressource) HERE AND END IT AT THE END OF RESSOURCES --}}
     <!-- Serveur 1 -->
     <div class="ressource-card" data-category="serveur" data-status="disponible">
         <div class="ressource-header">
@@ -242,7 +245,8 @@
                     <span class="status-badge status-available">Disponible</span>
                 </div>
             </div>
-            <a href="{{ route('ressources.details', 1) }}" class="btn-details">Voir détails</a>
+            <a href="{{ route('ressources.show', 1) }}" class="btn-details">Voir détails</a>
+
         </div>
     </div>
 
@@ -272,7 +276,7 @@
                     <span class="status-badge status-available">Disponible</span>
                 </div>
             </div>
-            <a href="{{ route('ressources.details', 2) }}" class="btn-details">Voir détails</a>
+            <a href="{{ route('ressources.show', 2) }}" class="btn-details">Voir détails</a>
         </div>
     </div>
 
@@ -302,7 +306,7 @@
                     <span class="status-badge status-busy">Occupé</span>
                 </div>
             </div>
-            <a href="{{ route('ressources.details', 3) }}" class="btn-details">Voir détails</a>
+            <a href="{{ route('ressources.show', 3) }}" class="btn-details">Voir détails</a>
         </div>
     </div>
 
@@ -332,7 +336,7 @@
                     <span class="status-badge status-available">Disponible</span>
                 </div>
             </div>
-            <a href="{{ route('ressources.details', 4) }}" class="btn-details">Voir détails</a>
+            <a href="{{ route('ressources.show', 4) }}" class="btn-details">Voir détails</a>
         </div>
     </div>
 
@@ -362,7 +366,7 @@
                     <span class="status-badge status-maintenance">Maintenance</span>
                 </div>
             </div>
-            <a href="{{ route('ressources.details', 5) }}" class="btn-details">Voir détails</a>
+            <a href="{{ route('ressources.show', 5) }}" class="btn-details">Voir détails</a>
         </div>
     </div>
 
@@ -392,7 +396,7 @@
                     <span class="status-badge status-available">Disponible</span>
                 </div>
             </div>
-            <a href="{{ route('ressources.details', 6) }}" class="btn-details">Voir détails</a>
+            <a href="{{ route('ressources.show', 6) }}" class="btn-details">Voir détails</a>
         </div>
     </div>
 </div>

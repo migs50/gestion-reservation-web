@@ -266,7 +266,8 @@
             En créant un compte et en utilisant les ressources du Data Center, vous acceptez de respecter 
             l'intégralité de ces règles d'utilisation.
         </p>
-        <a href="{{ route('request') }}" class="btn-reserve">Demander un compte</a>
+       <a href="{{ route('demande.compte') }}" class="btn-reserve">Demander un compte</a>
+
     </div>
 </div>
 @endsection
