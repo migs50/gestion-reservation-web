@@ -124,4 +124,10 @@ class DashboardController extends Controller
 
         
     }
+    public function user()
+{
+    // logique spécifique user
+    return view('dashboard.user');
+}
+
 }

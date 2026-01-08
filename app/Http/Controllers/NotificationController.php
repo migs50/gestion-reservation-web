@@ -20,6 +20,10 @@ class NotificationController extends Controller
         /** @var User $user */
         $user = Auth::user();
         
+         $notifications = $user->notifications()
+        ->latest()
+        ->paginate(15);
+        
         // Try to get real notifications if model exists
         try {
             if (class_exists(Notification::class)) {

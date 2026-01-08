@@ -1,9 +1,4 @@
-{{-- 
-    📄 Fichier : statistics.blade.php
-    📁 Chemin : resources/views/admin/statistics.blade.php
-    🎯 Rôle : Admin (statistiques avancées)
-    📝 Description : Tableau de bord statistiques avec graphiques dynamiques
---}}
+
 
 @extends('layouts.admin')
 
@@ -141,10 +136,10 @@
 <!-- Filtres de période -->
 <form method="GET" action="{{ route('admin.statistics') }}" class="filters">
     <select name="periode" id="periodeFilter" onchange="this.form.submit()">
-        <option value="7" {{ request('periode', 7) == 7 ? 'selected' : '' }}>7 derniers jours</option>
-        <option value="30" {{ request('periode') == 30 ? 'selected' : '' }}>30 derniers jours</option>
-        <option value="90" {{ request('periode') == 90 ? 'selected' : '' }}>90 derniers jours</option>
-        <option value="365" {{ request('periode') == 365 ? 'selected' : '' }}>Année complète</option>
+        <option value="1" {{ request('periode', 1) == 1 ? 'selected' : '' }}>1 derniers jours</option>
+        <option value="3" {{ request('periode') == 3 ? 'selected' : '' }}>3 derniers jours</option>
+        <option value="9" {{ request('periode') == 9 ? 'selected' : '' }}>9 derniers jours</option>
+        <option value="30" {{ request('periode') == 30 ? 'selected' : '' }}>mois complet</option>
     </select>
     
     <input type="date" name="date_debut" value="{{ request('date_debut') }}" class="form-control">

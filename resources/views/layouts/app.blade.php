@@ -208,19 +208,24 @@
 
             <ul class="navbar-menu" id="navbarMenu">
                 <li><a href="{{ route('home') }}">Accueil</a></li>
-                <li><a href="{{ route('ressources.index') }}">Ressources</a></li>
+                <li><a href="{{ route('publique.ressources') }}">Ressources</a></li>
                 <li><a href="{{ route('rules') }}">Règles</a></li>
 
                 @guest
                     <li><a href="{{ route('login') }}" class="btn-primary">Connexion</a></li>
                     <li><a href="{{ route('register') }}">Inscription</a></li>
                 @else
+                    @auth
                     <li>
-                        <a href="{{ route('user.notifications') }}">
-                            🔔 Notifications
-                            <span class="notification-badge">3</span>
+                       
+                     <a href="{{ route('user.notifications') }}">
+                            Notifications
+                            @if(auth()->user()->unreadNotifications->count() > 0)
+                                <span class="notification-badge">{{ auth()->user()->unreadNotifications->count() }}</span>
+                            @endif
                         </a>
                     </li>
+                    @endauth
                     <li><a href="{{ route('dashboard') }}">Tableau de bord</a></li>
                     <li>
                         <form action="{{ route('logout') }}" method="POST" style="display:inline;">
@@ -251,7 +256,7 @@
                 <h4>Liens rapides</h4>
                 <ul>
                     <li><a href="{{ route('home') }}">Accueil</a></li>
-                    <li><a href="{{ route('ressources.index') }}">Ressources</a></li>
+                    <li><a href="{{ route('publique.ressources') }}">Ressources</a></li>
                     <li><a href="{{ route('rules') }}">Règles d'utilisation</a></li>
                     <li><a href="{{ route('demande.compte') }}">Demander un compte</a></li>
                 </ul>

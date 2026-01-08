@@ -249,7 +249,7 @@
 <div class="recent-section">
     <h2>📌 Réservations récentes</h2>
     
-    @if($recent_reservations && $recent_reservations->count() > 0)
+    @if(!empty($recent_reservations) && $recent_reservations->count() > 0)
         @foreach($recent_reservations as $reservation)
         <div class="reservation-item">
             <div class="reservation-info">

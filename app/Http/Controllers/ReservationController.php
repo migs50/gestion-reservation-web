@@ -77,14 +77,14 @@ class ReservationController extends Controller
 
 
          // Create notification for the user
-        if (class_exists(\App\Models\Notification::class)) {
-            \App\Models\Notification::create([
-                'user_id' => Auth::id(),
-                'type' => 'message',
-                'titre' => 'Réservation créée',
-                'message' => "Votre demande de réservation pour {$ressource->nom} a été enregistrée.",
-                'lu' => false
-            ]);
+           if (class_exists(\App\Models\Notification::create([
+    'user_id' => Auth::id(),
+    'type'    => 'message',
+    'titre'   => 'Réservation créée',
+    'contenu' => "Votre demande de réservation pour Pare-feu Principal a été enregistrée.",
+    'lu'      => false,
+    ]) ));
+
 
             // Notify the resource manager if exists
             if ($ressource->manager_id) {
@@ -96,7 +96,7 @@ class ReservationController extends Controller
                     'lu' => false
                 ]);
             }
-        }
+        
 
         return redirect()->route('reservations.index')
             ->with('success', 'Demande de réservation enregistrée.');

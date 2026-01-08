@@ -20,10 +20,21 @@
     .stat-card:hover {
         transform: translateY(-5px);
     }
-    .stat-card h3 {
+    //*.stat-card h3 {
         font-size: 32px;
         color: #2c3e50;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
+        align-self: auto;
+    }*//
+      .stats-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+    }
+    @media (max-width: 992px) {
+        .stats-row {
+            grid-template-columns: 1fr;
+        }
     }
     .quick-actions {
         display: grid;
@@ -53,19 +64,18 @@
 </style>
 
 <!-- Statistiques -->
-<div class="stats-grid">
+<div class="stats-row">
     <div class="stat-card">
+        <a href="{{ route('dashboard.user') }}" style="text-decoration:none; color:inherit;">
         <h3 id="totalUsers">{{ $stats['total_users'] ?? 0 }}</h3>
         <p>👥 Utilisateurs</p>
     </div>
+    <a href="{{ route('publique.ressources') }}"style="text-decoration:none; color:inherit;">
     <div class="stat-card">
         <h3 id="totalRessources">{{ $stats['total_ressources'] ?? 0 }}</h3>
         <p>💾 Ressources</p>
     </div>
-    <div class="stat-card">
-        <h3 id="pendingReservations">{{ $stats['pending_reservations'] ?? 0 }}</h3>
-        <p>📋 En attente</p>
-    </div>
+</a>
  {{-- A HREF IS FOR THE ROUTING TO THE DEMAND PAGE WHEN U CLICK ON THE DEMANDES CARD AS AN ADMIN --}}
     <a href="{{ route('admin.demandes.index') }}" style="text-decoration:none; color:inherit;">
     <div class="stat-card">
@@ -82,12 +92,9 @@
 <div class="quick-actions">
 
 {{-- CREATE USER DFEATURE FOR LATER IF WE WANT IT ADDED --}}
-                                                                               {{-- <a href="{{ route('admin.users.create') }}" class="action-card"> --}}
-     
-     
-                                                                                  
-                                                                                      {{-- <div style="font-size: 36px; margin-bottom: 10px;">➕</div>
-                                                                                      <div>Créer utilisateur</div> --}}
+ <a href="{{ route('admin.users.create') }}" class="action-card"> 
+     <div style="font-size: 36px; margin-bottom: 10px;">➕</div>
+    <div>Créer utilisateur</div>
     </a>
     <a href="{{ route('admin.ressources.create') }}" class="action-card">
         <div style="font-size: 36px; margin-bottom: 10px;">🖥️</div>
@@ -97,18 +104,13 @@
         <div style="font-size: 36px; margin-bottom: 10px;">📋</div>
         <div>Voir réservations</div>
     </a>
-    {{-- TO ADD LATER ADMIN STATISTICS --}}
-                                {{-- <a href="{{ route('admin.statistics') }}" class="action-card">
-                                    <div style="font-size: 36px; margin-bottom: 10px;">📊</div>
-                                    <div>Statistiques</div>
-                                </a> --}}
+   {{--TO ADD LATER ADMIN STATISTICS --}}
+    <a href="{{ route('admin.statistics') }}" class="action-card">
+    <div style="font-size: 36px; margin-bottom: 10px;">📊</div>
+        <div>Statistiques</div>
+    </a>
 </div>
 
-<!-- Graphique Activité -->
-<div class="chart-container">
-    <h3 style="margin-bottom: 20px;">📈 Activité des 7 derniers jours</h3>
-    <canvas id="activityChart" style="max-height: 300px;"></canvas>
-</div>
 
 <!-- Réservations Récentes -->
 <div class="chart-container">

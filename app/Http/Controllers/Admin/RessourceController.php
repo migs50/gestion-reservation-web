@@ -14,7 +14,7 @@ class RessourceController extends Controller
 {
     $ressources = Ressource::with(['categorie', 'manager'])
         ->orderBy('nom')
-        ->paginate(10);
+        ->paginate(15);
 
     return view('admin.ressources.index', compact('ressources'));
 }
@@ -54,7 +54,11 @@ class RessourceController extends Controller
     Ressource::create($data);
 
     return redirect()
-        ->route('ressources.index')
+        ->route('publique.ressources')
         ->with('success', 'Ressource créée avec succès.');
-}
+        }
+    public function show(Ressource $ressource)
+    {
+    return view('publique.ressource-show', compact('ressource'));
+    }
 }

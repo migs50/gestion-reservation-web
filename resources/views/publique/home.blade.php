@@ -46,8 +46,8 @@
     }
 
     .hero-btn-secondary {
-        background: rgba(255, 255, 255, 0.2);
-        color: white;
+        background:  white;
+        color:#667eea;
         border: 2px solid white;
     }
 
@@ -135,7 +135,7 @@
 
 <!-- Hero Section -->
 <div class="hero-buttons">
-    <a href="{{ route('ressources.index') }}" class="hero-btn hero-btn-primary">
+    <a href="{{ route('publique.ressources') }}" class="hero-btn hero-btn-primary">
         Explorer les ressources
     </a>
 

@@ -39,10 +39,10 @@ class UserController extends Controller
             });
 
         // Récupérer les réservations de l'utilisateur
-        $reservations = Reservation::with('resource')
-            ->where('user_id', $user->id)
+        $reservations = Reservation::with('ressource')
+            ->where('demandeur_id', $user->id)
             ->whereIn('status', ['pending', 'approved', 'active'])
-            ->orderBy('start_date', 'desc')
+            ->orderBy('debut', 'desc')
             ->get()
             ->map(function ($reservation) {
                 $reservation->status_label = $this->getStatusLabel($reservation->status);
@@ -52,7 +52,7 @@ class UserController extends Controller
 
         // Récupérer l'historique
         $history = Reservation::with('resource')
-            ->where('user_id', $user->id)
+            ->where('demandeur_id', $user->id)
             ->whereIn('status', ['completed', 'cancelled', 'rejected'])
             ->orderBy('end_date', 'desc')
             ->paginate(10);
@@ -77,27 +77,32 @@ class UserController extends Controller
                     'time' => $notification->created_at->diffForHumans(),
                 ];
             });
+        // Réservations les plus récentes (par exemple 5 dernières)
+           $recent_reservations = Reservation::with('ressource')
+             ->where('demandeur_id', $user->id)              // ou 'demandeur_id' selon ta colonne
+              ->orderBy('debut', 'desc')           // ou 'debut' si c’est le nom dans ta BDD
+              ->take(5)
+              ->get();
 
         // Ressources disponibles pour le formulaire de réservation
         $availableResources = Ressource::where('status', 'available')->get();
 
-        return view('user.dashboard', compact(
-            'resources',
-            'reservations',
-            'history',
-            'notifications',
-            'availableResources'
-        ));
-    }
+   return view('user.dashboard', compact(
+    'resources',
+    'reservations',
+    'history',
+    'notifications',
+    'availableResources',
+    'recent_reservations'
+));
 
-    /**
-     * Créer une nouvelle réservation
-     */
+    }
+    // * Créer une nouvelle réservation*//
     public function storeReservation(Request $request)
     {
         $validated = $request->validate([
             'resource_id' => 'required|exists:resources,id',
-            'start_date' => 'required|date|after_or_equal:today',
+            'debut' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after:start_date',
             'justification' => 'required|string|min:20|max:1000',
         ], [
@@ -140,10 +145,10 @@ class UserController extends Controller
 
         // Créer la réservation
         $reservation = Reservation::create([
-            'user_id' => Auth::id(),
+            'demandeur_id' => Auth::id(),
             'resource_id' => $validated['resource_id'],
-            'start_date' => $validated['start_date'],
-            'end_date' => $validated['end_date'],
+            'debut' => $validated['debut'],
+            'fin' => $validated['fin'],
             'justification' => $validated['justification'],
             'status' => 'pending',
         ]);
@@ -170,7 +175,7 @@ class UserController extends Controller
     public function cancelReservation($id)
     {
         $reservation = Reservation::where('id', $id)
-            ->where('user_id', Auth::id())
+            ->where('demandeur_id', Auth::id())
             ->whereIn('status', ['pending', 'approved'])
             ->firstOrFail();
 
@@ -195,14 +200,14 @@ $user->notify(new ReservationCancelled($reservation));
     public function reportIssue($id)
     {
         $reservation = Reservation::where('id', $id)
-            ->where('user_id', Auth::id())
+            ->where('demandeur_id', Auth::id())
             ->where('status', 'active')
             ->firstOrFail();
 
         // Créer un ticket de support
            SupportTicket::create([
             'reservation_id' => $reservation->id,
-            'user_id' => Auth::id(),
+            'demandeur_id' => Auth::id(),
             'subject' => 'Problème avec la réservation #' . $reservation->id,
             'description' => 'L\'utilisateur a signalé un problème technique.',
             'status' => 'open',
@@ -227,12 +232,12 @@ $user->notify(new ReservationCancelled($reservation));
     public function history(Request $request)
     {
         $query = Reservation::with('resource')
-            ->where('user_id', Auth::id())
+            ->where('demandeur_id', Auth::id())
             ->whereIn('status', ['completed', 'cancelled', 'rejected']);
 
         // Filtres
         if ($request->filled('date_start')) {
-            $query->where('start_date', '>=', $request->date_start);
+            $query->where('debut', '>=', $request->date_start);
         }
 
         if ($request->filled('date_end')) {

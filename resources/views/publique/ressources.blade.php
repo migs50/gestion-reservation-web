@@ -193,13 +193,14 @@
 <div class="filters">
     <h3>🔍 Filtrer les ressources</h3>
     <div class="filter-group">
-        <select id="categoryFilter">
-            <option value="">Toutes les catégories</option>
-            <option value="serveur">Serveurs</option>
-            <option value="vm">Machines Virtuelles</option>
-            <option value="stockage">Stockage</option>
-            <option value="reseau">Réseau</option>
-        </select>
+    <select id="categoryFilter">
+    <option value="">Toutes les catégories</option>
+    <option value="serveur">Serveurs</option>
+    <option value="stockage">Stockage</option>
+    <option value="réseau">Réseau</option>
+    <option value="vm">Machines Virtuelles</option>
+</select>
+
 
         <select id="statusFilter">
             <option value="">Tous les statuts</option>
@@ -218,7 +219,7 @@
  <div class="ressources-grid" id="ressourcesGrid">
     @foreach ($ressources as $ressource)
         <div class="ressource-card"
-             data-category="{{ $ressource->categorie ?? 'autre' }}"
+             data-category="{{Str::lower( $ressource->categorie->nom ?? 'autre' )}}"
              data-status="{{ $ressource->statut ?? 'disponible' }}">
             <div class="ressource-header">
                 <div class="ressource-icon">
@@ -227,7 +228,7 @@
                 </div>
                 <h3>{{ $ressource->nom }}</h3>
                 <p class="ressource-category">
-                    {{ $ressource->type ?? ($ressource->categorie ?? 'Ressource') }}
+                    {{ $ressource->type ?? ($ressource->categorie->nom ?? 'Ressource') }}
                 </p>
             </div>
 
@@ -266,31 +267,34 @@
 
 
 <script>
-    // Filter resources
-    function filterRessources() {
-        const category = document.getElementById('categoryFilter').value;
-        const status = document.getElementById('statusFilter').value;
-        const search = document.getElementById('searchInput').value.toLowerCase();
-        const cards = document.querySelectorAll('.ressource-card');
+function filterRessources() {
+    const category = document.getElementById('categoryFilter').value.toLowerCase();
+    const status   = document.getElementById('statusFilter').value.toLowerCase();
+    const search   = document.getElementById('searchInput').value.toLowerCase();
+    const cards    = document.querySelectorAll('.ressource-card');
 
-        cards.forEach(card => {
-            const cardCategory = card.getAttribute('data-category');
-            const cardStatus = card.getAttribute('data-status');
-            const cardText = card.textContent.toLowerCase();
+    cards.forEach(card => {
+        const cardCategory = (card.getAttribute('data-category') || '').toLowerCase();
+        const cardStatus   = (card.getAttribute('data-status') || '').toLowerCase();
+        const title        = card.querySelector('.ressource-header h3').textContent.toLowerCase();
+        const categoryText = card.querySelector('.ressource-category').textContent.toLowerCase();
+        const cardText     = title + ' ' + categoryText;
 
-            const matchCategory = !category || cardCategory === category;
-            const matchStatus = !status || cardStatus === status;
-            const matchSearch = !search || cardText.includes(search);
+        const matchCategory = !category || cardCategory === category;
+        const matchStatus   = !status || cardStatus === status;
+        const matchSearch   = !search || cardText.includes(search);
 
-            if (matchCategory && matchStatus && matchSearch) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    }
+        card.style.display = (matchCategory && matchStatus && matchSearch)
+            ? 'block'
+            : 'none';
+    });
+}
 
-    // Filter on input change
-    document.getElementById('searchInput').addEventListener('input', filterRessources);
+// Filtres sur changement de select
+document.getElementById('categoryFilter').addEventListener('change', filterRessources);
+document.getElementById('statusFilter').addEventListener('change', filterRessources);
+// Recherche instantanée
+document.getElementById('searchInput').addEventListener('input', filterRessources);
 </script>
+
 @endsection

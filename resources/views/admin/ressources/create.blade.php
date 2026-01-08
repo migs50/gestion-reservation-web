@@ -2,11 +2,127 @@
 
 @section('title', 'Ajouter une ressource')
 
+
+@push('style')
+<style>
+/* Fond global de la page admin */
+main .content,
+.admin-main,
+body {
+    background: #f5f7fb;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Titre */
+h1 {
+    font-size: 2rem;
+    margin: 0 0 1.5rem;
+    color: #111827;
+}
+
+/* Carte formulaire */
+form.form {
+    max-width: 640px;
+    margin: 1.5rem auto;
+    padding: 2rem 2.4rem;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+}
+
+/* Groupes de champs */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+/* Label */
+.form-group label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+/* Inputs, selects, textarea */
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.55rem 0.8rem;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 0.95rem;
+    color: #111827;
+    background: #f9fafb;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, transform 0.1s ease;
+}
+
+/* Textarea */
+.form-group textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+/* Focus */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #6366f1;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.20);
+    transform: translateY(-1px);
+}
+
+/* Bouton */
+form.form .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1.8rem;
+    border-radius: 999px;
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    background: linear-gradient(135deg, #111827, #4b5563);
+    color: #ffffff !important;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease;
+    margin-top: 0.5rem;
+}
+
+/* Hover bouton */
+form.form .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 25px rgba(15, 23, 42, 0.25);
+    background: linear-gradient(135deg, #0f172a, #374151);
+}
+
+/* Active bouton */
+form.form .btn:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 12px rgba(15, 23, 42, 0.2);
+}
+
+/* Responsive petit écran */
+@media (max-width: 768px) {
+    form.form {
+        margin: 1rem;
+        padding: 1.4rem 1.2rem;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+}
+</style>
+@endpush
 @section('content')
-    <h1>Ajouter une ressource</h1>
+   <h1>Ajouter une ressource</h1>
 
 
-<form method="POST" action="{{ route('admin.ressources.store') }}">
+<form class="form" method="POST" action="{{ route('admin.ressources.store') }}">
     @csrf
 
     <div class="form-group">
@@ -52,7 +168,7 @@
     </div>
 
     <div class="form-group">
-        <label for="actif">Actif ?</label>
+        <label for="actif">Actif</label>
         <select id="actif" name="actif" required>
             <option value="1" {{ old('actif', 1) == 1 ? 'selected' : '' }}>Oui</option>
             <option value="0" {{ old('actif', 1) == 0 ? 'selected' : '' }}>Non</option>
@@ -70,6 +186,6 @@
         <textarea id="description" name="description">{{ old('description') }}</textarea>
     </div>
 
-    <button type="submit" class="btn">Enregistrer</button>
+    <button type="submit" class="btn" style="background-color: black; color: white;">Enregistrer</button>
 </form>
 @endsection

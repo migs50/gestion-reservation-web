@@ -341,7 +341,333 @@
             .stats-grid {
                 grid-template-columns: 1fr;
             }
+                 /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: #2c3e50;
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
         }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            text-align: center;
+        }
+
+        .sidebar-header h2 {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 20px 0;
+        }
+
+        .sidebar-menu li {
+            margin: 5px 0;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left: 4px solid #667eea;
+        }
+
+        .sidebar-menu a span {
+            margin-right: 12px;
+            font-size: 20px;
+        }
+        }
+
+</style>
+
+<style>
+/* Fond global */
+main .content,
+.admin-main,
+body {
+    background: #f5f7fb;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Titre */
+h1 {
+    font-size: 2rem;
+    margin: 0 0 1.5rem;
+    color: #111827;
+}
+
+/* Carte du formulaire Réservation */
+form {
+    max-width: 640px;
+    margin: 1.5rem auto;
+    padding: 2rem 2.4rem;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+}
+
+/* Labels */
+form label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+/* Champs */
+form select,
+form input[type="datetime-local"],
+form textarea {
+    width: 100%;
+    padding: 0.55rem 0.8rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 0.95rem;
+    color: #111827;
+    background: #f9fafb;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, transform 0.1s ease;
+}
+
+/* Textarea */
+form textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+/* Focus */
+form select:focus,
+form input[type="datetime-local"]:focus,
+form textarea:focus {
+    outline: none;
+    border-color: #6366f1;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.20);
+    transform: translateY(-1px);
+}
+
+/* Bouton */
+form button[type="submit"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1.8rem;
+    border-radius: 999px;
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    background: linear-gradient(135deg, #111827, #4b5563);
+    color: #ffffff;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease;
+}
+
+/* Hover / Active bouton */
+form button[type="submit"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 25px rgba(15, 23, 42, 0.25);
+    background: linear-gradient(135deg, #0f172a, #374151);
+}
+
+form button[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 12px rgba(15, 23, 42, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    form {
+        margin: 1rem;
+        padding: 1.4rem 1.2rem;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+}
+</style>
+
+
+
+
+<style>
+
+/* Fond global de la page admin */
+main .content,
+.admin-main,
+body {
+    background: #f5f7fb;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Titre */
+h1 {
+    font-size: 2rem;
+    margin: 0 0 1.5rem;
+    color: #111827;
+}
+
+/* Carte formulaire */
+form.form {
+    max-width: 640px;
+    margin: 1.5rem auto;
+    padding: 2rem 2.4rem;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+}
+
+/* Groupes de champs */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+/* Label */
+.form-group label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+/* Inputs, selects, textarea */
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.55rem 0.8rem;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 0.95rem;
+    color: #111827;
+    background: #f9fafb;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, transform 0.1s ease;
+}
+
+/* Textarea */
+.form-group textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+/* Focus */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #6366f1;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.20);
+    transform: translateY(-1px);
+}
+
+/* Bouton */
+form.form .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1.8rem;
+    border-radius: 999px;
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    background: linear-gradient(135deg, #111827, #4b5563);
+    color: #ffffff !important;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease;
+    margin-top: 0.5rem;
+}
+
+/* Hover bouton */
+form.form .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 25px rgba(15, 23, 42, 0.25);
+    background: linear-gradient(135deg, #0f172a, #374151);
+}
+
+/* Active bouton */
+form.form .btn:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 12px rgba(15, 23, 42, 0.2);
+}
+
+/* Responsive petit écran */
+@media (max-width: 768px) {
+    form.form {
+        margin: 1rem;
+        padding: 1.4rem 1.2rem;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+}
+
+/* Style commun liens + bouton déconnexion */
+.sidebar-menu a,
+. .sidebar-logout-link {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    color: #bdc3c7;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+/* Enlever style par défaut du bouton */
+.sidebar-logout-link .sidebar-logout-link {
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+}
+
+/* Icône */
+.sidebar-logout-link a span,
+.sidebar-logout-link .sidebar-logout-link span {
+    margin-right: 12px;
+    font-size: 20px;
+}
+
+/* Hover / actif identiques */
+.sidebar-logout-link a:hover,
+.sidebar-logout-link a.active,
+.sidebar-logout-link .sidebar-logout-link:hover {
+
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-left: 4px solid #667eea;
+}
+
+ 
+</style>
+
+
+
+
+
+
+
     </style>
 </head>
 <body>
@@ -352,7 +678,7 @@
             <h2>Admin Panel</h2>
         </div>
 
-        {{-- <ul class="sidebar-menu">
+        {{-- <ul class="sidebar-logout-link">
             <li>
                 <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
                     <span>📊</span> Tableau de bord
@@ -423,7 +749,7 @@
                 <li>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" style="background:none;border:none;padding:0;color:inherit;cursor:pointer;">
+                        <button type="submit" class="sidebar-logout-link">
                             <span>🚪</span> Déconnexion
                         </button>
                     </form>
@@ -441,10 +767,6 @@
             </div>
 
             <div class="topbar-right">
-                <div class="notification-icon">
-                    🔔
-                    <span class="notification-badge">5</span>
-                </div>
 
                 <div class="user-info">
                     <div class="user-avatar">A</div>
