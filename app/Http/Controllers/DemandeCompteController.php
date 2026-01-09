@@ -19,22 +19,30 @@ class DemandeCompteController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nom'          => 'required',
-            'prenom'       => 'required',
-            'email'        => 'required|email',
-            'telephone'    => 'required',
-            'affiliation'  => 'required',
-            'accountType'  => 'required',
-            'fonction'     => 'required',
-            'projet'       => 'required',
-            'justification'=> 'required|min:50',
-            'acceptRules'  => 'accepted',
-        ]);
+         $data = $request->validate([
+        'nom_complet'   => 'required|string|max:150',
+        'email'         => 'required|email|unique:users,email|unique:demande_comptes,email',
+        'telephone'     => 'required|string|max:30',
+        'type_demande'  => 'required|in:Interne,Responsable',
+        'justification' => 'required|string',
+        'password'      => 'required|string|min:8|confirmed',
+    ]);
 
-        // plus tard: enregistrer en base ou rediriger
+    $passwordHash = Hash::make($data['password']);
+
+    DemandeCompte::create([
+        'nom_complet'   => $data['nom_complet'],
+        'email'         => $data['email'],
+        'telephone'     => $data['telephone'],
+        'type_demande'  => $data['type_demande'],   
+        'justification' => $data['justification'],
+        'password'      => $passwordHash,
+        'statut'        => 'pending',
+    ]);
+        
+        
         return redirect()
-            ->route('register')
+            ->route('register.success')
             ->with('success', 'Votre demande a été envoyée avec succès.');
     }
 
@@ -51,7 +59,7 @@ class DemandeCompteController extends Controller
     // Accept a demande: create User + mark accepted
     public function accept(DemandeCompte $demande)
     {
-           $password = 'secret123';
+           
            // it only creates a user if one does not exist yet:(Avoid double creation for the same demande)
            $existing = User::where('email', $demande->email)->first();
 
@@ -60,8 +68,8 @@ class DemandeCompteController extends Controller
                     'nom'      => $demande->nom_complet, // if your users table has nom/prenom
                     'prenom'   => '',                    // or split the name if needed
                     'email'    => $demande->email,
-                    'password' => Hash::make($password),
-                    'role_id'  => 2, // normal user role id
+                    'password' => $demande->password,
+                    'role_id'  => 3, // normal user role id
                     'statut'   => 'active',
                 ]);
            }

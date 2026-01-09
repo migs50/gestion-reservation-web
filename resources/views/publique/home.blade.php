@@ -134,6 +134,7 @@
 </style>
 
 <!-- Hero Section -->
+@guest
 <div class="hero-buttons">
     <a href="{{ route('publique.ressources') }}" class="hero-btn hero-btn-primary">
         Explorer les ressources
@@ -143,6 +144,7 @@
         Demander un accès
     </a>
 </div>
+@endguest
 
 
 <!-- Features -->
@@ -184,7 +186,7 @@
     </div>
 </section>
 
-<!-- Statistics -->
+{{-- <!-- Statistics -->
 <section class="stats-section">
     <h2 style="text-align: center; margin-bottom: 40px; color: #2c3e50; font-size: 32px;">
         Nos statistiques
@@ -207,5 +209,5 @@
             <p>Support disponible</p>
         </div>
     </div>
-</section>
+</section> --}}
 @endsection

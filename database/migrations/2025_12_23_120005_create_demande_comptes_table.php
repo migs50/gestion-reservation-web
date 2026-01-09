@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('telephone', 30);
             $table->enum('type_demande', ['Interne', 'Responsable']);
             $table->text('justification');
+            $table->string('password')->nullable();
             $table->enum('statut', ['pending', 'approved', 'refused']);
             $table->foreignId('decided_by')->nullable()->constrained('users')->nullOnDelete();
             $table->text('note_decision')->nullable();

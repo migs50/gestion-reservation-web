@@ -96,7 +96,7 @@
      <div style="font-size: 36px; margin-bottom: 10px;">➕</div>
     <div>Créer utilisateur</div>
     </a>
-    <a href="{{ route('admin.ressources.create') }}" class="action-card">
+    <a href="{{ route('admin.ressources.index') }}" class="action-card">
         <div style="font-size: 36px; margin-bottom: 10px;">🖥️</div>
         <div>Ajouter ressource</div>
     </a>
