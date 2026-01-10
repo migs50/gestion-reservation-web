@@ -125,7 +125,7 @@
 @endif
 
 
-<form method="POST" action="{{ route('register') }}">
+<form method="POST" action="{{ route('demande.compte.store') }}">
     @csrf
 
     <div class="form-group">
@@ -155,6 +155,25 @@
         <label for="justification">Justification</label>
         <textarea id="justification" name="justification" required></textarea>
     </div>
+    <div class="form-group">
+
+    <label for="password">Mot de passe</label>
+    <input type="password" id="password" name="password"
+           oninput="checkPasswordStrength()" required>
+    <div class="password-strength">
+        Force du mot de passe : <span id="strengthLabel">-</span>
+        <div class="strength-bar">
+            <div id="strengthBar" class="strength-bar-inner"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password_confirmation">Confirmer le mot de passe</label>
+        <input type="password" id="password_confirmation"
+            name="password_confirmation" required>
+    </div>
+
 
     <button type="submit" class="btn">Envoyer la demande</button>
 </form>

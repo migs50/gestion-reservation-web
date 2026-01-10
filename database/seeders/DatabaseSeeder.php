@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
 use App\Models\Permission;
 use App\Models\User;
+use App\Models\Categorie;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,7 +20,7 @@ class DatabaseSeeder extends Seeder
         $roles = [
             'Admin' => 'Administrateur du système',
             'Responsable' => 'Responsable technique de ressources',
-            'Interne' => 'Utilisateur interne (Ingénieur/Enseignant/Doctorant)',
+            'Utilisateur' => 'Utilisateur interne (Ingénieur/Enseignant/Doctorant)',
             'Invite' => 'Visiteur invité'
         ];
 
@@ -85,8 +86,8 @@ class DatabaseSeeder extends Seeder
         }
 
         // Interne: Basic user permissions
-        if ($createdRoles['Interne']->permissions()->count() === 0) {
-            $createdRoles['Interne']->permissions()->attach([
+        if ($createdRoles['Utilisateur']->permissions()->count() === 0) {
+            $createdRoles['Utilisateur']->permissions()->attach([
                 $createdPermissions['view_resources']->id,
                 $createdPermissions['create_reservation']->id,
                 $createdPermissions['view_own_reservations']->id,
@@ -117,7 +118,7 @@ class DatabaseSeeder extends Seeder
         User::firstOrCreate(
             ['email' => 'user@datacenter.ma'],
             [
-                'role_id' => $createdRoles['Interne']->id,
+                'role_id' => $createdRoles['Utilisateur']->id,
                 'nom' => 'Utilisateur',
                 'prenom' => 'Test',
                 'password' => Hash::make('password123'),
@@ -136,6 +137,18 @@ class DatabaseSeeder extends Seeder
                 'statut' => 'active'
             ]
         );
+        // Create default categories for ressources
+        $categories = [
+            'Serveur',
+            'Réseau',
+            'Stockage',
+            'Énergie',
+        ];
+
+        foreach ($categories as $catNom) {
+            Categorie::firstOrCreate(['nom' => $catNom]);
+        }
+
 
         $this->command->info('Database seeded successfully!');
         $this->command->info('Test users created:');

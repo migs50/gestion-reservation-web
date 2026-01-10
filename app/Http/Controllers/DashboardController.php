@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Reservation;
 use App\Models\Ressource;
+use App\Models\DemandeCompte;
 
 class DashboardController extends Controller
 {
@@ -96,7 +97,7 @@ class DashboardController extends Controller
             'total_users' => \App\Models\User::count(),
             'total_ressources' => Ressource::count(),
             'active_reservations' => Reservation::where('statut', 'active')->count(),
-            'pending_requests' => Reservation::where('statut', 'pending')->count(),
+            'pending_requests' => DemandeCompte::where('statut', 'pending')->count(),
         ];
 
         $recent_activity = \App\Models\Journal::with('acteur')

@@ -14,6 +14,7 @@ class DemandeCompte extends Model
         'telephone',
         'type_demande',
         'justification',
+        'password',
         'statut',
         'decided_by',
         'note_decision'

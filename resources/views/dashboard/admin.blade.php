@@ -92,6 +92,13 @@
 <div class="quick-actions">
 
 {{-- CREATE USER DFEATURE FOR LATER IF WE WANT IT ADDED --}}
+<<<<<<< HEAD
+=======
+ <a href="{{ route('admin.users.create') }}" class="action-card"> 
+     <div style="font-size: 36px; margin-bottom: 10px;">➕</div>
+    <div>Créer utilisateur</div>
+    </a>
+>>>>>>> ea0f3349d9cbd0c70f4ac080488e2b36551227b7
     <a href="{{ route('admin.ressources.index') }}" class="action-card">
         <div style="font-size: 36px; margin-bottom: 10px;">🖥️</div>
         <div>ressource</div>
