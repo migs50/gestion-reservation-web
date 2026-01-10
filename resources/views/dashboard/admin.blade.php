@@ -92,13 +92,9 @@
 <div class="quick-actions">
 
 {{-- CREATE USER DFEATURE FOR LATER IF WE WANT IT ADDED --}}
- <a href="{{ route('admin.users.create') }}" class="action-card"> 
-     <div style="font-size: 36px; margin-bottom: 10px;">➕</div>
-    <div>Créer utilisateur</div>
-    </a>
-    <a href="{{ route('admin.ressources.create') }}" class="action-card">
+    <a href="{{ route('admin.ressources.index') }}" class="action-card">
         <div style="font-size: 36px; margin-bottom: 10px;">🖥️</div>
-        <div>Ajouter ressource</div>
+        <div>ressource</div>
     </a>
     <a href="{{ route('admin.reservations.index') }}" class="action-card">
         <div style="font-size: 36px; margin-bottom: 10px;">📋</div>
@@ -149,7 +145,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="6" style="text-align: center; padding: 30px; color: #7f8c8d;">
+                <td colspan="10" style="text-align: center; padding: 30px; color: #7f8c8d;">
                     Aucune réservation récente
                 </td>
             </tr>

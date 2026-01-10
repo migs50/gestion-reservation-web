@@ -119,11 +119,7 @@ Route::middleware('auth')->group(function () {
         ->name('admin.')
         ->group(function () {
 
-            // Admin ressources
-            Route::get('/ressources', [AdminRessourceController::class, 'index'])->name('ressources.index');
-            Route::get('/ressources/create', [AdminRessourceController::class, 'create'])->name('ressources.create');
-            Route::post('/ressources', [AdminRessourceController::class, 'store'])->name('ressources.store');
-
+        
             // Admin reservations
             Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
             Route::get('/reservations/create', [AdminReservationController::class, 'create'])->name('reservations.create');
@@ -141,10 +137,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/demandes/{demande}/reject', [DemandeCompteController::class, 'reject'])->name('demandes.reject');
         });
 });
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/ressources', [RessourceController::class, 'index'])
-        ->name('admin.ressources');
-});
+
 use App\Http\Controllers\Admin\StatisticsController;
 
 Route::middleware(['auth', 'role:Admin'])->group(function () {
@@ -170,11 +163,19 @@ Route::get('/ressources/{ressource}', [RessourceController::class, 'show'])
 
 
 
-    Route::middleware(['auth', 'role:Admin'])
+
+
+    
+
+use App\Http\Controllers\Admin\RessourceController as AdminRessourceController;
+
+Route::middleware(['auth', 'role:Admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        Route::get('/ressources', [AdminRessourceController::class, 'index'])
-            ->name('ressources.index'); // => admin.ressources.index
+        Route::resource('ressources', AdminRessourceController::class);
+        Route::patch('ressources/{ressource}/toggle-actif', [AdminRessourceController::class, 'toggleActif'])
+            ->name('ressources.toggleActif');
     });
+
 

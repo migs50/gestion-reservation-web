@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Ajouter une ressource')
-
+@section('title', 'Nouvelle ressource')
 
 @push('style')
 <style>
@@ -92,14 +91,12 @@ form.form .btn {
     margin-top: 0.5rem;
 }
 
-/* Hover bouton */
 form.form .btn:hover {
     transform: translateY(-1px);
     box-shadow: 0 12px 25px rgba(15, 23, 42, 0.25);
     background: linear-gradient(135deg, #0f172a, #374151);
 }
 
-/* Active bouton */
 form.form .btn:active {
     transform: translateY(0);
     box-shadow: 0 6px 12px rgba(15, 23, 42, 0.2);
@@ -118,74 +115,74 @@ form.form .btn:active {
 }
 </style>
 @endpush
+
 @section('content')
-   <h1>Ajouter une ressource</h1>
+    <h1>Nouvelle ressource</h1>
 
+    <form class="form" method="POST" action="{{ route('admin.ressources.store') }}">
+        @csrf
 
-<form class="form" method="POST" action="{{ route('admin.ressources.store') }}">
-    @csrf
+        <div class="form-group">
+            <label for="categorie_id">Catégorie</label>
+            <select id="categorie_id" name="categorie_id" required>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}" {{ old('categorie_id') == $category->id ? 'selected' : '' }}>
+                        {{ $category->nom }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
 
-    <div class="form-group">
-        <label for="categorie_id">Catégorie</label>
-        <select id="categorie_id" name="categorie_id" required>
-            @foreach($categories as $category)
-                <option value="{{ $category->id }}" {{ old('categorie_id') == $category->id ? 'selected' : '' }}>
-                    {{ $category->nom }}
-                </option>
-            @endforeach
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="manager_id">Manager (optionnel)</label>
+            <select id="manager_id" name="manager_id">
+                <option value="">Aucun</option>
+                @foreach($managers as $manager)
+                    <option value="{{ $manager->id }}" {{ old('manager_id') == $manager->id ? 'selected' : '' }}>
+                        {{ $manager->nom }} {{ $manager->prenom }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
 
-    <div class="form-group">
-        <label for="manager_id">Manager (optionnel)</label>
-        <select id="manager_id" name="manager_id">
-            <option value="">Aucun</option>
-              @foreach($managers as $manager)
-                <option value="{{ $manager->id }}" {{ old('manager_id') == $manager->id ? 'selected' : '' }}>
-                              {{ $manager->nom }} {{ $manager->prenom }}
-            </option>
-          @endforeach
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="nom">Nom</label>
+            <input type="text" id="nom" name="nom" value="{{ old('nom') }}" required maxlength="120">
+        </div>
 
-    <div class="form-group">
-        <label for="nom">Nom</label>
-        <input type="text" id="nom" name="nom" value="{{ old('nom') }}" required maxlength="120">
-    </div>
+        <div class="form-group">
+            <label for="code_inv">Code inventaire</label>
+            <input type="text" id="code_inv" name="code_inv" value="{{ old('code_inv') }}" maxlength="60">
+        </div>
 
-    <div class="form-group">
-        <label for="code_inv">Code inventaire</label>
-        <input type="text" id="code_inv" name="code_inv" value="{{ old('code_inv') }}" maxlength="60">
-    </div>
+        <div class="form-group">
+            <label for="etat">État</label>
+            <select id="etat" name="etat" required>
+                <option value="available"   {{ old('etat') == 'available' ? 'selected' : '' }}>Disponible</option>
+                <option value="maintenance" {{ old('etat') == 'maintenance' ? 'selected' : '' }}>Maintenance</option>
+                <option value="disabled"    {{ old('etat') == 'disabled' ? 'selected' : '' }}>Désactivée</option>
+            </select>
+        </div>
 
-    <div class="form-group">
-        <label for="etat">État</label>
-        <select id="etat" name="etat" required>
-            <option value="available"   {{ old('etat') == 'available' ? 'selected' : '' }}>Disponible</option>
-            <option value="maintenance" {{ old('etat') == 'maintenance' ? 'selected' : '' }}>Maintenance</option>
-            <option value="disabled"    {{ old('etat') == 'disabled' ? 'selected' : '' }}>Désactivée</option>
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="actif">Actif</label>
+            <select id="actif" name="actif" required>
+                <option value="1" {{ old('actif', 1) == 1 ? 'selected' : '' }}>Oui</option>
+                <option value="0" {{ old('actif', 1) == 0 ? 'selected' : '' }}>Non</option>
+            </select>
+        </div>
 
-    <div class="form-group">
-        <label for="actif">Actif</label>
-        <select id="actif" name="actif" required>
-            <option value="1" {{ old('actif', 1) == 1 ? 'selected' : '' }}>Oui</option>
-            <option value="0" {{ old('actif', 1) == 0 ? 'selected' : '' }}>Non</option>
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="emplacement">Emplacement</label>
+            <input type="text" id="emplacement" name="emplacement"
+                   value="{{ old('emplacement') }}" maxlength="120">
+        </div>
 
-    <div class="form-group">
-        <label for="emplacement">Emplacement</label>
-        <input type="text" id="emplacement" name="emplacement"
-               value="{{ old('emplacement') }}" maxlength="120">
-    </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description">{{ old('description') }}</textarea>
+        </div>
 
-    <div class="form-group">
-        <label for="description">Description</label>
-        <textarea id="description" name="description">{{ old('description') }}</textarea>
-    </div>
-
-    <button type="submit" class="btn" style="background-color: black; color: white;">Enregistrer</button>
-</form>
+        <button type="submit" class="btn">Enregistrer</button>
+    </form>
 @endsection

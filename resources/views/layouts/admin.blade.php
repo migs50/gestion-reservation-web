@@ -730,7 +730,7 @@ form.form .btn:active {
 
                 <li>
                     <a href="{{ route('admin.ressources.create') }}" class="{{ request()->routeIs('admin.ressources.create') ? 'active' : '' }}">
-                        <span>💾</span> Ajouter ressource
+                        <span>💾</span> Ressources
                     </a>
                 </li>
 
@@ -739,13 +739,12 @@ form.form .btn:active {
                         <span>📋</span> Réservations
                     </a>
                 </li>
-
-                <li>
+    
+                <!--<li>
                     <a href="{{ route('home') }}">
                         <span>🏠</span> Retour au site
                     </a>
-                </li>
-
+        </li> -->
                 <li>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf

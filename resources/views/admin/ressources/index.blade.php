@@ -8,35 +8,61 @@
     <a href="{{ route('admin.ressources.create') }}" class="btn btn-primary">
         Nouvelle ressource
     </a>
-
     <table class="table">
-        <thead>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Catégorie</th>
+            <th>Manager</th>
+            <th>État</th>
+            <th>Actif</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse($ressources as $ressource)
             <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Catégorie</th>
-                <th>Manager</th>
-                <th>État</th>
-                <th>Actif</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($ressources as $ressource)
-                <tr>
-                    <td>#{{ $ressource->id }}</td>
-                    <td>{{ $ressource->nom }}</td>
-                    <td>{{ $ressource->categorie->nom ?? 'N/A' }}</td>
-                    <td>{{ $ressource->manager->nom ?? '-' }} {{ $ressource->manager->prenom ?? '' }}</td>
-                    <td>{{ $ressource->etat }}</td>
-                    <td>{{ $ressource->actif ? 'Oui' : 'Non' }}</td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="6" style="text-align:center;">Aucune ressource trouvée.</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+                <td>#{{ $ressource->id }}</td>
+                <td>{{ $ressource->nom }}</td>
+                <td>{{ $ressource->categorie->nom ?? 'N/A' }}</td>
+                <td>{{ $ressource->manager->nom ?? '-' }} {{ $ressource->manager->prenom ?? '' }}</td>
+                <td>{{ $ressource->etat }}</td>
+                <td>
+                    <span class="badge {{ $ressource->actif ? 'badge-success' : 'badge-danger' }}">
+                        {{ $ressource->actif ? 'Oui' : 'Non' }}
+                    </span>
+                </td>
+                <td>
+                    {{-- Bouton modifier --}}
+                    <a href="{{ route('admin.ressources.edit', $ressource) }}"
+                       class="btn btn-warning btn-sm">
+                        Modifier
+                    </a>
 
-    {{ $ressources->links() }}
+                    {{-- Bouton Activer / Désactiver --}}
+                    <form action="{{ route('admin.ressources.toggleActif', $ressource) }}"
+                          method="POST"
+                          style="display:inline-block;">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit"
+                                class="btn btn-sm {{ $ressource->actif ? 'btn-danger' : 'btn-success' }}">
+                            {{ $ressource->actif ? 'Désactiver' : 'Activer' }}
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="7" style="text-align:center;">Aucune ressource trouvée.</td>
+            </tr>
+        @endforelse
+    </tbody>
+</table>
+
+{{ $ressources->links() }}
+
+
+    
 @endsection
