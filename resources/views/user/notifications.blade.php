@@ -253,9 +253,9 @@
                 onclick="filterNotifications('')">
             📋 Toutes
         </button>
-        <button class="filter-btn {{ request('type') == 'reservation' ? 'active' : '' }}" 
-                onclick="filterNotifications('reservation')">
-            📅 Réservations
+        <button class="filter-btn {{ request('type') == 'decision' ? 'active' : '' }}" 
+                onclick="filterNotifications('decision')">
+            📅 Décisions
         </button>
         <button class="filter-btn {{ request('type') == 'maintenance' ? 'active' : '' }}" 
                 onclick="filterNotifications('maintenance')">
@@ -278,8 +278,8 @@
     <div class="notification-item {{ !$notification->lu ? 'unread' : '' }}" 
          onclick="markAsRead({{ $notification->id }})">
         
-        <div class="notification-icon {{ $notification->type_classe }}">
-            {{ $notification->type_icon }}
+        <div class="notification-icon {{ $notification->getTypeClass() }}">
+            {{ $notification->getTypeIcon() }}
         </div>
 
         <div class="notification-content">
@@ -289,13 +289,13 @@
             </div>
 
             <div class="notification-message">
-                {{ $notification->message }}
+                {{ $notification->contenu }}
             </div>
 
-            @if($notification->lien_action)
+            @if($notification->lien)
             <div class="notification-actions">
-                <a href="{{ $notification->lien_action }}" class="btn btn-primary btn-sm">
-                    {{ $notification->texte_action ?? 'Voir détails' }} →
+                <a href="{{ $notification->lien }}" class="btn btn-primary btn-sm">
+                    Voir détails →
                 </a>
             </div>
             @endif

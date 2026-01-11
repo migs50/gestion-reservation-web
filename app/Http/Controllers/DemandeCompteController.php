@@ -14,24 +14,25 @@ class DemandeCompteController extends Controller
 
     public function create()
     {
-        return view('guest.demande-compte');
+        return view('publique.request-account');
     }
 
     public function store(Request $request)
     {
          $data = $request->validate([
-        'nom_complet'   => 'required|string|max:150',
+        'nom'           => 'required|string|max:75',
+        'prenom'        => 'required|string|max:75',
         'email'         => 'required|email|unique:users,email|unique:demande_comptes,email',
         'telephone'     => 'required|string|max:30',
         'type_demande'  => 'required|in:Interne,Responsable',
-        'justification' => 'required|string',
+        'justification' => 'required|string|min:50',
         'password'      => 'required|string|min:8|confirmed',
     ]);
 
     $passwordHash = Hash::make($data['password']);
 
     DemandeCompte::create([
-        'nom_complet'   => $data['nom_complet'],
+        'nom_complet'   => $data['nom'] . ' ' . $data['prenom'],
         'email'         => $data['email'],
         'telephone'     => $data['telephone'],
         'type_demande'  => $data['type_demande'],   
@@ -69,7 +70,7 @@ class DemandeCompteController extends Controller
                     'prenom'   => '',                    // or split the name if needed
                     'email'    => $demande->email,
                     'password' => $demande->password,
-                    'role_id'  => 3, // normal user role id
+                    'role_id'  => 2, // normal user role id
                     'statut'   => 'active',
                 ]);
            }

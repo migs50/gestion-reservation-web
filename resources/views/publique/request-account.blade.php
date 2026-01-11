@@ -183,33 +183,59 @@
             </ul>
         </div>
 
-        <form id="requestForm" onsubmit="handleSubmit(event)">
+        <form id="requestForm" action="{{ route('demande.compte.store') }}" method="POST">
             @csrf
+            
+            @if($errors->any())
+                <div class="alert alert-danger" style="background: #fee2e2; border: 1px solid #ef4444; color: #b91c1c; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <ul style="margin: 0; padding-left: 20px;">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <!-- Informations personnelles -->
             <h3 style="color: #2c3e50; margin-bottom: 20px;">👤 Informations personnelles</h3>
             
             <div class="form-row">
                 <div class="form-group">
                     <label>Nom <span class="required">*</span></label>
-                    <input type="text" name="nom" required placeholder="Votre nom">
+                    <input type="text" name="nom" value="{{ old('nom') }}" required placeholder="Votre nom">
                 </div>
 
                 <div class="form-group">
                     <label>Prénom <span class="required">*</span></label>
-                    <input type="text" name="prenom" required placeholder="Votre prénom">
+                    <input type="text" name="prenom" value="{{ old('prenom') }}" required placeholder="Votre prénom">
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label>Email <span class="required">*</span></label>
-                    <input type="email" name="email" required placeholder="votre.email@example.com">
+                    <input type="email" name="email" value="{{ old('email') }}" required placeholder="votre.email@example.com">
                     <small>Utilisez votre email professionnel ou académique</small>
                 </div>
 
                 <div class="form-group">
                     <label>Téléphone <span class="required">*</span></label>
-                    <input type="tel" name="telephone" required placeholder="+212 6XX-XXXXXX">
+                    <input type="tel" name="telephone" value="{{ old('telephone') }}" required placeholder="+212 6XX-XXXXXX">
+                </div>
+            </div>
+
+            <!-- Sécurité -->
+            <h3 style="color: #2c3e50; margin: 30px 0 20px;">🔒 Sécurité</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Mot de passe <span class="required">*</span></label>
+                    <input type="password" name="password" required placeholder="8 caractères minimum">
+                </div>
+
+                <div class="form-group">
+                    <label>Confirmer le mot de passe <span class="required">*</span></label>
+                    <input type="password" name="password_confirmation" required placeholder="Confirmez votre mot de passe">
                 </div>
             </div>
 
@@ -219,18 +245,18 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Organisation <span class="required">*</span></label>
-                    <input type="text" name="organisation" required placeholder="Nom de votre entreprise/université">
+                    <input type="text" name="organisation" value="{{ old('organisation') }}" required placeholder="Nom de votre entreprise/université">
                 </div>
 
                 <div class="form-group">
                     <label>Département/Service <span class="required">*</span></label>
-                    <input type="text" name="departement" required placeholder="Ex: Informatique, R&D">
+                    <input type="text" name="departement" value="{{ old('departement') }}" required placeholder="Ex: Informatique, R&D">
                 </div>
             </div>
 
             <div class="form-group">
                 <label>Fonction/Poste <span class="required">*</span></label>
-                <input type="text" name="poste" required placeholder="Ex: Développeur, Chercheur, Étudiant">
+                <input type="text" name="poste" value="{{ old('poste') }}" required placeholder="Ex: Développeur, Chercheur, Étudiant">
             </div>
 
             <!-- Détails de la demande -->
@@ -238,42 +264,17 @@
 
             <div class="form-group">
                 <label>Type de compte souhaité <span class="required">*</span></label>
-                <select name="type_compte" required>
+                <select name="type_demande" required>
                     <option value="">-- Sélectionnez un type --</option>
-                    <option value="utilisateur">Utilisateur Standard</option>
-                    <option value="chercheur">Chercheur/Académique</option>
-                    <option value="developpeur">Développeur</option>
-                    <option value="entreprise">Entreprise/Organisation</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Ressources souhaitées <span class="required">*</span></label>
-                <select name="ressources" required>
-                    <option value="">-- Sélectionnez un type --</option>
-                    <option value="serveurs">Serveurs physiques</option>
-                    <option value="vm">Machines virtuelles</option>
-                    <option value="stockage">Espaces de stockage</option>
-                    <option value="reseau">Équipements réseau</option>
-                    <option value="tout">Toutes les ressources</option>
+                    <option value="Interne" {{ old('type_demande') == 'Interne' ? 'selected' : '' }}>Utilisateur Interne</option>
+                    <option value="Responsable" {{ old('type_demande') == 'Responsable' ? 'selected' : '' }}>Responsable de Ressource</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label>Justification de la demande <span class="required">*</span></label>
-                <textarea name="justification" required placeholder="Expliquez en détail pourquoi vous avez besoin d'accéder aux ressources du Data Center..."></textarea>
+                <textarea name="justification" required placeholder="Expliquez en détail pourquoi vous avez besoin d'accéder aux ressources du Data Center...">{{ old('justification') }}</textarea>
                 <small>Minimum 50 caractères</small>
-            </div>
-
-            <div class="form-group">
-                <label>Durée estimée d'utilisation <span class="required">*</span></label>
-                <select name="duree" required>
-                    <option value="">-- Sélectionnez une durée --</option>
-                    <option value="ponctuel">Ponctuel (moins d'1 mois)</option>
-                    <option value="court">Court terme (1-3 mois)</option>
-                    <option value="moyen">Moyen terme (3-6 mois)</option>
-                    <option value="long">Long terme (plus de 6 mois)</option>
-                </select>
             </div>
 
             <!-- Acceptation des conditions -->
@@ -297,35 +298,5 @@
 </div>
 
 <script>
-    function handleSubmit(event) {
-        event.preventDefault();
-        
-        // Validation de la justification
-        const justification = document.querySelector('textarea[name="justification"]').value;
-        if (justification.length < 50) {
-            alert('La justification doit contenir au moins 50 caractères.');
-            return false;
-        }
-
-        // Simulation d'envoi
-        const form = document.getElementById('requestForm');
-        const successMessage = document.getElementById('successMessage');
-        
-        // Afficher le message de succès
-        successMessage.classList.add('show');
-        
-        // Réinitialiser le formulaire
-        form.reset();
-        
-        // Scroll vers le haut
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        
-        // Masquer le message après 10 secondes
-        setTimeout(() => {
-            successMessage.classList.remove('show');
-        }, 10000);
-        
-        return false;
-    }
 </script>
 @endsectionlabel">

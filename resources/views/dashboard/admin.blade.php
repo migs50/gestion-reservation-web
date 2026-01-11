@@ -65,17 +65,19 @@
 
 <!-- Statistiques -->
 <div class="stats-row">
-    <div class="stat-card">
-        <a href="{{ route('dashboard.user') }}" style="text-decoration:none; color:inherit;">
-        <h3 id="totalUsers">{{ $stats['total_users'] ?? 0 }}</h3>
-        <p>👥 Utilisateurs</p>
-    </div>
-    <a href="{{ route('publique.ressources') }}"style="text-decoration:none; color:inherit;">
-    <div class="stat-card">
-        <h3 id="totalRessources">{{ $stats['total_ressources'] ?? 0 }}</h3>
-        <p>💾 Ressources</p>
-    </div>
-</a>
+    <a href="{{ route('admin.users') }}" style="text-decoration:none; color:inherit;">
+        <div class="stat-card">
+            <h3 id="totalUsers">{{ $stats['total_users'] ?? 0 }}</h3>
+            <p>👥 Utilisateurs</p>
+        </div>
+    </a>
+
+    <a href="{{ route('admin.ressources.index') }}" style="text-decoration:none; color:inherit;">
+        <div class="stat-card">
+            <h3 id="totalRessources">{{ $stats['total_ressources'] ?? 0 }}</h3>
+            <p>� Ressources</p>
+        </div>
+    </a>
  {{-- A HREF IS FOR THE ROUTING TO THE DEMAND PAGE WHEN U CLICK ON THE DEMANDES CARD AS AN ADMIN --}}
     <a href="{{ route('admin.demandes.index') }}" style="text-decoration:none; color:inherit;">
     <div class="stat-card">
@@ -92,13 +94,6 @@
 <div class="quick-actions">
 
 {{-- CREATE USER DFEATURE FOR LATER IF WE WANT IT ADDED --}}
-<<<<<<< HEAD
-=======
- <a href="{{ route('admin.users.create') }}" class="action-card"> 
-     <div style="font-size: 36px; margin-bottom: 10px;">➕</div>
-    <div>Créer utilisateur</div>
-    </a>
->>>>>>> ea0f3349d9cbd0c70f4ac080488e2b36551227b7
     <a href="{{ route('admin.ressources.index') }}" class="action-card">
         <div style="font-size: 36px; margin-bottom: 10px;">🖥️</div>
         <div>ressource</div>

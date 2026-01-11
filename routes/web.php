@@ -46,6 +46,7 @@ Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])
 Route::get('/', [GuestController::class, 'index'])->name('home');
 
 Route::get('/catalogue', [GuestController::class, 'catalogue'])->name('catalogue');
+Route::get('/ressources', [RessourceController::class, 'index'])->name('publique.ressources');
 Route::get('/ressources/{ressource}', [RessourceController::class, 'show'])->name('ressources.show');
 Route::get('/regles', [GuestController::class, 'regles'])->name('regles');
 Route::get('/rules', [GuestController::class, 'rules'])->name('rules');
@@ -102,6 +103,7 @@ Route::middleware('auth')->group(function () {
 
     // User reservations (normal users)
     Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
+    Route::get('/reservations/{reservation}', [ReservationController::class, 'show'])->name('reservations.show');
     Route::get('/ressources/{ressource}/reserver', [ReservationController::class, 'create'])->name('reservations.create');
     Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
     Route::get('/reservations/create', [ReservationController::class, 'create']) ->name('reservations.create');
@@ -113,13 +115,13 @@ Route::middleware('auth')->group(function () {
     | ADMIN routes (only Admin role, under /admin)
     |--------------------------------------------------------------------------
     */
-
     Route::middleware('role:Admin')
         ->prefix('admin')
         ->name('admin.')
         ->group(function () {
+            // Admin dashboard statistics
+            Route::get('/statistics', [AdminStatisticsController::class, 'index'])->name('statistics');
 
-        
             // Admin reservations
             Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
             Route::get('/reservations/create', [AdminReservationController::class, 'create'])->name('reservations.create');
@@ -135,47 +137,20 @@ Route::middleware('auth')->group(function () {
             Route::get('/demandes', [DemandeCompteController::class, 'index'])->name('demandes.index');
             Route::post('/demandes/{demande}/accept', [DemandeCompteController::class, 'accept'])->name('demandes.accept');
             Route::post('/demandes/{demande}/reject', [DemandeCompteController::class, 'reject'])->name('demandes.reject');
+
+            // Admin users management
+            Route::get('/users', [AdminUserController::class, 'index'])->name('users');
+            Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
+            Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
+            Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+            Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+
+            // Admin ressources management
+            Route::resource('ressources', AdminRessourceController::class);
+            Route::patch('ressources/{ressource}/toggle-actif', [AdminRessourceController::class, 'toggleActif'])
+                ->name('ressources.toggleActif');
         });
 });
 
-use App\Http\Controllers\Admin\StatisticsController;
-
-Route::middleware(['auth', 'role:Admin'])->group(function () {
-    Route::get('/admin/statistics', [StatisticsController::class, 'index'])
-        ->name('admin.statistics');
-});
-
-Route::middleware(['auth', 'role:Admin'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-        // ...
-        Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
-        Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
-    });
-
-// catalogue public
-Route::get('/ressources', [RessourceController::class, 'index'])
-    ->name('publique.ressources');
-
-Route::get('/ressources/{ressource}', [RessourceController::class, 'show'])
-    ->name('ressources.show');
-
-
-
-
-
-    
-
-use App\Http\Controllers\Admin\RessourceController as AdminRessourceController;
-
-Route::middleware(['auth', 'role:Admin'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-        Route::resource('ressources', AdminRessourceController::class);
-        Route::patch('ressources/{ressource}/toggle-actif', [AdminRessourceController::class, 'toggleActif'])
-            ->name('ressources.toggleActif');
-    });
 
 

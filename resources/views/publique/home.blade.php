@@ -134,16 +134,22 @@
 </style>
 
 <!-- Hero Section -->
-<div class="hero-buttons">
-    <a href="{{ route('publique.ressources') }}" class="hero-btn hero-btn-primary">
-        Explorer les ressources
-    </a>
+<div class="hero">
+    <h1>Gérez vos ressources en toute simplicité</h1>
+    <p>Une plateforme moderne pour réserver, suivre et gérer vos ressources partagées.</p>
+    
+    <div class="hero-buttons">
+        <a href="{{ route('publique.ressources') }}" class="hero-btn hero-btn-primary">
+            Explorer les ressources
+        </a>
 
-    <a href="{{ route('demande.compte') }}" class="hero-btn hero-btn-secondary">
-        Demander un accès
-    </a>
+        @guest
+            <a href="{{ route('demande.compte') }}" class="hero-btn hero-btn-secondary">
+                Demander un accès
+            </a>
+        @endguest
+    </div>
 </div>
-@endguest
 
 
 <!-- Features -->

@@ -7,6 +7,7 @@ use App\Models\Ressource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
+use App\Notifications\ReservationDecision;
 
 class ReservationController extends Controller
 {
@@ -59,6 +60,9 @@ class ReservationController extends Controller
             'decideur_id' => Auth::id(),
         ]);
 
+        // Notify the requester
+        $reservation->demandeur->notify(new ReservationDecision($reservation));
+
         return back()->with('success', 'Réservation approuvée.');
     }
 
@@ -68,6 +72,9 @@ class ReservationController extends Controller
             'statut'      => 'refused',
             'decideur_id' => Auth::id(),
         ]);
+
+        // Notify the requester
+        $reservation->demandeur->notify(new ReservationDecision($reservation));
 
         return back()->with('success', 'Réservation refusée.');
     }

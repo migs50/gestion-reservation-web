@@ -55,11 +55,11 @@ class DashboardController extends Controller
     private function userDashboard($user, $notifications)
     {
         $stats = [
-            'total_reservations' => $user->reservations()->count(),
-            'pending' => $user->reservations()->where('statut', 'pending')->count(),
-            'approved' => $user->reservations()->where('statut', 'approved')->count(),
-            'active' => $user->reservations()->where('statut', 'active')->count(),
+            'total'      => $user->reservations()->count(),
+            'en_attente' => $user->reservations()->where('statut', 'pending')->count(),
+            'actives'    => $user->reservations()->whereIn('statut', ['approved', 'active'])->count(),
         ];
+        // Removed separate 'approuvees' key as per user preference
 
         $recent_reservations = $user->reservations()
             ->latest()

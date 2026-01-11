@@ -209,14 +209,6 @@
             <p>En attente</p>
         </div>
     </div>
-
-    <div class="stat-card">
-        <div class="stat-icon purple">🔔</div>
-        <div class="stat-details">
-            <h3>{{ $notifications_count ?? 0 }}</h3>
-            <p>Notifications</p>
-        </div>
-    </div>
 </div>
 
 <!-- Quick Actions -->
@@ -231,11 +223,6 @@
         <a href="{{ route('reservations.index') }}" class="action-btn">
             <span>📋</span>
             <div>Mes réservations</div>
-        </a>
-
-        <a href="{{ route('user.notifications') }}" class="action-btn">
-            <span>🔔</span>
-            <div>Notifications</div>
         </a>
 {{-- TEMPRORY COMMENT FOR WHEN ITS ADDED!!!! --}}
         {{-- <a href="{{ route('user.incident.report') }}" class="action-btn">
@@ -260,11 +247,11 @@
                 </p>
             </div>
             <div>
-                @if($reservation->statut == 'en_attente')
+                @if($reservation->statut == 'pending')
                     <span class="badge badge-warning">En attente</span>
-                @elseif($reservation->statut == 'approuvee')
+                @elseif($reservation->statut == 'approved')
                     <span class="badge badge-success">Approuvée</span>
-                @elseif($reservation->statut == 'refusee')
+                @elseif($reservation->statut == 'refused')
                     <span class="badge badge-danger">Refusée</span>
                 @elseif($reservation->statut == 'active')
                     <span class="badge badge-info">Active</span>

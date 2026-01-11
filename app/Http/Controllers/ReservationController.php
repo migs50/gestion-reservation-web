@@ -5,6 +5,8 @@ use App\Models\Ressource;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\ReservationRequested;
+use App\Models\Notification as NotificationModel;
 
 
 class ReservationController extends Controller
@@ -63,8 +65,8 @@ class ReservationController extends Controller
             ]);
         }
 
-        Reservation::create([
-            'demandeur_id'  => Auth::id(), // TODO: Auth::id() (WISSAL doit developpe la partie auth)
+        $reservation = Reservation::create([
+            'demandeur_id'  => Auth::id(),
             'ressource_id'  => $ressource->id,
             'decideur_id'   => null,
             'debut'         => $data['debut'],
@@ -74,28 +76,15 @@ class ReservationController extends Controller
             'note_decision' => null,
         ]);
 
+        // Trigger notifications
+        Auth::user()->notify(new \App\Notifications\ReservationDecision($reservation)); // Information de création
+
+        if ($ressource->manager_id && $manager = \App\Models\User::find($ressource->manager_id)) {
+            $manager->notify(new ReservationRequested($reservation));
+        }
 
 
-         // Create notification for the user
-           if (class_exists(\App\Models\Notification::create([
-    'user_id' => Auth::id(),
-    'type'    => 'message',
-    'titre'   => 'Réservation créée',
-    'contenu' => "Votre demande de réservation pour Pare-feu Principal a été enregistrée.",
-    'lu'      => false,
-    ]) ));
 
-
-            // Notify the resource manager if exists
-            if ($ressource->manager_id) {
-                \App\Models\Notification::create([
-                    'user_id' => $ressource->manager_id,
-                    'type' => 'message',
-                    'titre' => 'Nouvelle demande de réservation',
-                    'message' => "Une nouvelle demande de réservation pour {$ressource->nom} nécessite votre attention.",
-                    'lu' => false
-                ]);
-            }
         
 
         return redirect()->route('reservations.index')
