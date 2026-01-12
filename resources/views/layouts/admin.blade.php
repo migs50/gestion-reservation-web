@@ -745,7 +745,7 @@ form.form .btn:active {
                 </li>
 
                 <li>
-                    <a href="{{ route('admin.users') }}" class="{{ request()->routeIs('admin.users*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users*') ? 'active' : '' }}">
                         <span>👥</span> Utilisateurs
                     </a>
                 </li>
@@ -763,7 +763,7 @@ form.form .btn:active {
                 </li>
 
                 <li>
-                    <a href="{{ route('admin.maintenance.index') }}" class="{{ request()->routeIs('admin.maintenance.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.maintenances.index') }}" class="{{ request()->routeIs('admin.maintenance.*') ? 'active' : '' }}">
                         <span>🔧</span> Maintenance
                     </a>
                 </li>

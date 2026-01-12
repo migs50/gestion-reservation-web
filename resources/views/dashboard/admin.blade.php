@@ -65,7 +65,7 @@
 
 <!-- Statistiques -->
 <div class="stats-row">
-    <a href="{{ route('admin.users') }}" style="text-decoration:none; color:inherit;">
+    <a href="{{ route('admin.users.index') }}" style="text-decoration:none; color:inherit;">
         <div class="stat-card">
             <h3 id="totalUsers">{{ $stats['total_users'] ?? 0 }}</h3>
             <p>👥 Utilisateurs</p>
@@ -160,7 +160,7 @@
 <div class="chart-container">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h3>👥 Utilisateurs enregistrés</h3>
-        <a href="{{ route('admin.users') }}" class="btn btn-sm">Voir tous</a>
+        <a href="{{ route('admin.users.index') }}" class="btn btn-sm">Voir tous</a>
     </div>
     <table class="table">
         <thead>

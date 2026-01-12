@@ -6,7 +6,7 @@
 <div class="card">
     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
         <h3>Périodes d'Indisponibilité</h3>
-        <a href="{{ route('admin.maintenance.create') }}" class="btn btn-primary">🔧 Planifier une Maintenance</a>
+        <a href="{{ route('admin.maintenances.create') }}" class="btn btn-primary">🔧 Planifier une Maintenance</a>
     </div>
 
     @if(session('success'))

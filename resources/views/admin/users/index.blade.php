@@ -38,7 +38,7 @@
 </div>
 
 <!-- Filtres -->
-<form method="GET" action="{{ route('admin.users') }}" class="filters" id="filterForm">
+<form method="GET" action="{{ route('admin.users.index') }}" class="filters" id="filterForm">
     <select name="role" id="roleFilter" onchange="applyFilters()">
         <option value="">Tous les rôles</option>
         <option value="utilisateur" {{ request('role') == 'utilisateur' ? 'selected' : '' }}>Utilisateur</option>
@@ -180,7 +180,7 @@ function applyFilters() {
 function resetFilters() {
     document.getElementById('roleFilter').value = '';
     document.getElementById('searchInput').value = '';
-    window.location.href = '{{ route("admin.users") }}';
+    window.location.href = '{{ route("admin.users.index") }}';
 }
 
 function confirmDelete(userId, userName) {

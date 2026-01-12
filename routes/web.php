@@ -17,6 +17,7 @@ use App\Http\Controllers\DemandeCompteController;
 use App\Http\Controllers\RessourceController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\IncidentController;
 
 // Admin Controllers
 use App\Http\Controllers\Admin\StatisticsController;
@@ -104,6 +105,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
     Route::post('/reservations/{reservation}/approve', [ReservationController::class, 'approve'])->name('reservations.approve');
     Route::post('/reservations/{reservation}/refuse', [ReservationController::class, 'refuse'])->name('reservations.refuse');
+
+    // Incidents (User)
+    Route::get('/incidents', [IncidentController::class, 'index'])->name('user.incidents.index');
+    Route::get('/incidents/create', [IncidentController::class, 'create'])->name('user.incidents.create');
+    Route::post('/incidents', [IncidentController::class, 'store'])->name('user.incidents.store');
+    Route::get('/incidents/{incident}', [IncidentController::class, 'show'])->name('user.incidents.show');
 });
 
 /*
@@ -124,17 +131,56 @@ Route::middleware(['auth', 'role:Admin'])
         Route::get('/ressources', [AdminRessourceController::class, 'index'])->name('ressources.index');
         Route::get('/ressources/create', [AdminRessourceController::class, 'create'])->name('ressources.create');
         Route::post('/ressources', [AdminRessourceController::class, 'store'])->name('ressources.store');
+        Route::get('/ressources/{ressource}', [AdminRessourceController::class, 'show'])->name('ressources.show');
+        Route::get('/ressources/{ressource}/edit', [AdminRessourceController::class, 'edit'])->name('ressources.edit');
+        Route::put('/ressources/{ressource}', [AdminRessourceController::class, 'update'])->name('ressources.update');
+        Route::patch('/ressources/{ressource}/toggle-actif', [AdminRessourceController::class, 'toggleActif'])->name('ressources.toggleActif');
+        Route::delete('/ressources/{ressource}', [AdminRessourceController::class, 'destroy'])->name('ressources.destroy');
 
         // Admin Reservations
         Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
         Route::get('/reservations/create', [AdminReservationController::class, 'create'])->name('reservations.create');
         Route::post('/reservations', [AdminReservationController::class, 'store'])->name('reservations.store');
+        Route::get('/reservations/{reservation}', [AdminReservationController::class, 'show'])->name('reservations.show');
         Route::post('/reservations/{reservation}/approve', [AdminReservationController::class, 'approve'])->name('reservations.approve');
         Route::post('/reservations/{reservation}/refuse', [AdminReservationController::class, 'refuse'])->name('reservations.refuse');
 
         // Admin Users
+        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
         Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
         Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
+        Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
+        Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+        Route::patch('/users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggleStatus');
+        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+
+        // Admin Categories
+        Route::get('/categories', [AdminCategorieController::class, 'index'])->name('categories.index');
+        Route::get('/categories/create', [AdminCategorieController::class, 'create'])->name('categories.create');
+        Route::post('/categories', [AdminCategorieController::class, 'store'])->name('categories.store');
+        Route::get('/categories/{categorie}', [AdminCategorieController::class, 'show'])->name('categories.show');
+        Route::get('/categories/{categorie}/edit', [AdminCategorieController::class, 'edit'])->name('categories.edit');
+        Route::put('/categories/{categorie}', [AdminCategorieController::class, 'update'])->name('categories.update');
+        Route::delete('/categories/{categorie}', [AdminCategorieController::class, 'destroy'])->name('categories.destroy');
+
+        // Admin Maintenance
+        Route::get('/maintenances', [AdminMaintenanceController::class, 'index'])->name('maintenances.index');
+        Route::get('/maintenances/create', [AdminMaintenanceController::class, 'create'])->name('maintenances.create');
+        Route::post('/maintenances', [AdminMaintenanceController::class, 'store'])->name('maintenances.store');
+        Route::get('/maintenances/{maintenance}', [AdminMaintenanceController::class, 'show'])->name('maintenances.show');
+        Route::get('/maintenances/{maintenance}/edit', [AdminMaintenanceController::class, 'edit'])->name('maintenances.edit');
+        Route::put('/maintenances/{maintenance}', [AdminMaintenanceController::class, 'update'])->name('maintenances.update');
+        Route::delete('/maintenances/{maintenance}', [AdminMaintenanceController::class, 'destroy'])->name('maintenances.destroy');
+
+        // Admin Roles
+        Route::get('/roles', [AdminRoleController::class, 'index'])->name('roles.index');
+        Route::get('/roles/create', [AdminRoleController::class, 'create'])->name('roles.create');
+        Route::post('/roles', [AdminRoleController::class, 'store'])->name('roles.store');
+        Route::get('/roles/{role}', [AdminRoleController::class, 'show'])->name('roles.show');
+        Route::get('/roles/{role}/edit', [AdminRoleController::class, 'edit'])->name('roles.edit');
+        Route::put('/roles/{role}', [AdminRoleController::class, 'update'])->name('roles.update');
+        Route::delete('/roles/{role}', [AdminRoleController::class, 'destroy'])->name('roles.destroy');
 
         // Demandes compte
         Route::get('/demandes', [DemandeCompteController::class, 'index'])->name('demandes.index');
