@@ -721,7 +721,7 @@ form.form .btn:active {
 
             <ul class="sidebar-menu">
                 <li>
-                    <a href="{{ route('admin.statistics') }}" class="{{ request()->is('admin/statistics') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
                         <span>🏠</span> Tableau de Bord
                     </a>
                 </li>
