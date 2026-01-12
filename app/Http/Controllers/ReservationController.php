@@ -95,12 +95,17 @@ class ReservationController extends Controller
         ]);
 
         // Logging
-        Journal::create([
-            'acteur_id' => Auth::id(),
-            'action'    => 'creation_reservation',
-            'details'   => "Demande de réservation #{$reservation->id} pour la ressource {$ressource->nom}",
-            'ip'        => request()->ip()
-        ]);
+             Journal::create([
+                'acteur_id'  => Auth::id(),
+                'objet'      => 'reservation',              // required
+                'objet_id'   => $reservation->id ?? null,   // if relevant
+                'action'     => 'approbation_reservation',
+                'details'    => "Réservation #{$reservation->id} APPROUVÉE pour l'utilisateur {$reservation->demandeur->nom}",
+                'donnees'    => null,                       // or some array
+                'ip'         => request()->ip(),
+                'user_agent' => request()->userAgent(),
+            ]);
+
 
         // Trigger notifications
 
@@ -151,12 +156,17 @@ class ReservationController extends Controller
         ]);
 
         // Logging
-        Journal::create([
-            'acteur_id' => Auth::id(),
-            'action'    => 'annulation_reservation',
-            'details'   => "Réservation #{$reservation->id} annulée par l'utilisateur",
-            'ip'        => request()->ip()
-        ]);
+            Journal::create([
+                'acteur_id'  => Auth::id(),
+                'objet'      => 'reservation',              // required
+                'objet_id'   => $reservation->id ?? null,   // if relevant
+                'action'     => 'approbation_reservation',
+                'details'    => "Réservation #{$reservation->id} APPROUVÉE pour l'utilisateur {$reservation->demandeur->nom}",
+                'donnees'    => null,                       // or some array
+                'ip'         => request()->ip(),
+                'user_agent' => request()->userAgent(),
+            ]);
+
 
         // Notify user
         if (class_exists(\App\Models\Notification::class)) {

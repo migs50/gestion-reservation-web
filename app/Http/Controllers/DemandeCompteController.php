@@ -7,6 +7,7 @@ use App\Models\DemandeCompte;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Models\Role;
 
 class DemandeCompteController extends Controller
 {

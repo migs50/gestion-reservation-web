@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('acteur_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('action', 120);
-            $table->string('objet', 80);
+            $table->string('objet', 80)->nullable()->change();
             $table->unsignedBigInteger('objet_id')->nullable();
             $table->text('details')->nullable();
             $table->json('donnees')->nullable();
