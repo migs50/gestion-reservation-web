@@ -209,14 +209,6 @@
             <p>En attente</p>
         </div>
     </div>
-
-    <div class="stat-card">
-        <div class="stat-icon purple">🔔</div>
-        <div class="stat-details">
-            <h3>{{ $notifications_count ?? 0 }}</h3>
-            <p>Notifications</p>
-        </div>
-    </div>
 </div>
 
 <!-- Quick Actions -->
@@ -231,11 +223,6 @@
         <a href="{{ route('reservations.index') }}" class="action-btn">
             <span>📋</span>
             <div>Mes réservations</div>
-        </a>
-
-        <a href="{{ route('user.notifications') }}" class="action-btn">
-            <span>🔔</span>
-            <div>Notifications</div>
         </a>
 {{-- TEMPRORY COMMENT FOR WHEN ITS ADDED!!!! --}}
         {{-- <a href="{{ route('user.incident.report') }}" class="action-btn">
@@ -260,11 +247,11 @@
                 </p>
             </div>
             <div>
-                @if($reservation->statut == 'en_attente')
+                @if($reservation->statut == 'pending')
                     <span class="badge badge-warning">En attente</span>
-                @elseif($reservation->statut == 'approuvee')
+                @elseif($reservation->statut == 'approved')
                     <span class="badge badge-success">Approuvée</span>
-                @elseif($reservation->statut == 'refusee')
+                @elseif($reservation->statut == 'refused')
                     <span class="badge badge-danger">Refusée</span>
                 @elseif($reservation->statut == 'active')
                     <span class="badge badge-info">Active</span>
@@ -288,6 +275,57 @@
         </div>
     @endif
 </div>
+
+<div class="recent-section" style="margin-top: 30px;">
+    <h2>📈 Activité des 7 derniers jours</h2>
+    <div style="height: 300px; position: relative;">
+        <canvas id="userActivityChart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('userActivityChart').getContext('2d');
+    const activityData = @json($activity_data);
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: activityData.labels,
+            datasets: [{
+                label: 'Réservations',
+                data: activityData.values,
+                borderColor: '#667eea',
+                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: '#764ba2',
+                pointBorderColor: '#fff',
+                pointRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1, color: '#94a3b8' },
+                    grid: { color: '#f1f5f9' }
+                },
+                x: {
+                    ticks: { color: '#94a3b8' },
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+});
+</script>
 
 @if(session('success'))
 <script>

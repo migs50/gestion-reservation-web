@@ -27,7 +27,7 @@ class DashboardController extends Controller
         // Role-specific dashboards
         if ($user->hasRole('Admin')) {
             return $this->adminDashboard($user, $notifications);
-        } elseif ($user->hasRole('Responsable')) {
+        } elseif ($user->hasRole('Responsable Technique')) {
             return $this->responsableDashboard($user, $notifications);
         } else {
             return $this->userDashboard($user, $notifications);
@@ -55,11 +55,11 @@ class DashboardController extends Controller
     private function userDashboard($user, $notifications)
     {
         $stats = [
-            'total_reservations' => $user->reservations()->count(),
-            'pending' => $user->reservations()->where('statut', 'pending')->count(),
-            'approved' => $user->reservations()->where('statut', 'approved')->count(),
-            'active' => $user->reservations()->where('statut', 'active')->count(),
+            'total'      => $user->reservations()->count(),
+            'en_attente' => $user->reservations()->where('statut', 'pending')->count(),
+            'actives'    => $user->reservations()->whereIn('statut', ['approved', 'active'])->count(),
         ];
+        // Removed separate 'approuvees' key as per user preference
 
         $recent_reservations = $user->reservations()
             ->latest()
@@ -70,34 +70,92 @@ class DashboardController extends Controller
             ->where('etat', 'available')
             ->count();
 
-        return view('dashboard.user', compact('stats', 'recent_reservations', 'notifications', 'available_ressources'));
+        // Activity data for chart (last 7 days)
+        $activity = $user->reservations()
+            ->selectRaw('DATE(debut) as date, COUNT(*) as total')
+            ->where('debut', '>=', now()->subDays(7))
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        $activity_data = [
+            'labels' => [],
+            'values' => []
+        ];
+
+        for ($i = 6; $i >= 0; $i--) {
+            $date = now()->subDays($i)->format('Y-m-d');
+            $label = now()->subDays($i)->format('d/m');
+            $activity_data['labels'][] = $label;
+            
+            $match = $activity->firstWhere('date', $date);
+            $activity_data['values'][] = $match ? $match->total : 0;
+        }
+
+        return view('dashboard.user', compact('stats', 'recent_reservations', 'notifications', 'available_ressources', 'activity_data'));
     }
 
     private function responsableDashboard($user, $notifications)
     {
-        $managed_ressources = $user->managedRessources()->count();
-        $pending_requests = Reservation::whereHas('affectations', function($query) use ($user) {
-            $query->whereHas('ressource', function($q) use ($user) {
-                $q->where('manager_id', $user->id);
-            });
-        })->where('statut', 'pending')->count();
+        $managedRessources = $user->managedRessources();
+        $totalResources = $managedRessources->count();
+        
+        $pendingRequestsQuery = Reservation::whereIn('ressource_id', $managedRessources->pluck('id'))
+            ->where('statut', 'pending');
+            
+        $pendingRequests = $pendingRequestsQuery->count();
+        $requests = $pendingRequestsQuery->with(['demandeur', 'ressource'])->latest()->limit(5)->get();
+        
+        $approvedReservations = Reservation::whereIn('ressource_id', $managedRessources->pluck('id'))
+            ->whereIn('statut', ['approved', 'active'])
+            ->count();
 
-        $recent_requests = Reservation::whereHas('affectations', function($query) use ($user) {
-            $query->whereHas('ressource', function($q) use ($user) {
-                $q->where('manager_id', $user->id);
+        // Grouping for overview
+        $resourcesByType = $managedRessources->with('categorie')
+            ->get()
+            ->groupBy(function($r) {
+                return $r->categorie->nom ?? 'Autre';
+            })->map(function($group) {
+                $total = $group->count();
+                $occupied = $group->where('etat', 'occupied')->count();
+                return [
+                    'total' => $total,
+                    'occupied' => $occupied,
+                    'percentage' => $total > 0 ? round(($occupied / $total) * 100) : 0
+                ];
             });
-        })->latest()->limit(5)->get();
 
-        return view('dashboard.responsable', compact('managed_ressources', 'pending_requests', 'recent_requests', 'notifications'));
+        // Dummy trends to avoid errors (would need historical data for real logic)
+        $resourceTrend = 0;
+        $requestTrend = 0;
+        $approvedTrend = 0;
+        $activeAlerts = 0;
+        $alertTrend = 0;
+
+        return view('dashboard.responsable', compact(
+            'totalResources', 
+            'pendingRequests', 
+            'approvedReservations', 
+            'requests', 
+            'resourcesByType', 
+            'notifications',
+            'resourceTrend',
+            'requestTrend',
+            'approvedTrend',
+            'activeAlerts',
+            'alertTrend'
+        ));
     }
 
     private function adminDashboard($user, $notifications)
     {
+        $users = \App\Models\User::all();
         $stats = [
-            'total_users' => \App\Models\User::count(),
+            'total_users' => $users->count(),
             'total_ressources' => Ressource::count(),
             'active_reservations' => Reservation::where('statut', 'active')->count(),
             'pending_requests' => DemandeCompte::where('statut', 'pending')->count(),
+            'users' => $users,
         ];
 
         $recent_activity = \App\Models\Journal::with('acteur')

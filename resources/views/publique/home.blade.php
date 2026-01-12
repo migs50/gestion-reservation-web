@@ -134,17 +134,22 @@
 </style>
 
 <!-- Hero Section -->
-@guest
-<div class="hero-buttons">
-    <a href="{{ route('publique.ressources') }}" class="hero-btn hero-btn-primary">
-        Explorer les ressources
-    </a>
+<div class="hero">
+    <h1>Gérez vos ressources en toute simplicité</h1>
+    <p>Une plateforme moderne pour réserver, suivre et gérer vos ressources partagées.</p>
+    
+    <div class="hero-buttons">
+        <a href="{{ route('publique.ressources') }}" class="hero-btn hero-btn-primary">
+            Explorer les ressources
+        </a>
 
-    <a href="{{ route('demande.compte') }}" class="hero-btn hero-btn-secondary">
-        Demander un accès
-    </a>
+        @guest
+            <a href="{{ route('demande.compte') }}" class="hero-btn hero-btn-secondary">
+                Demander un accès
+            </a>
+        @endguest
+    </div>
 </div>
-@endguest
 
 
 <!-- Features -->
@@ -186,7 +191,7 @@
     </div>
 </section>
 
-{{-- <!-- Statistics -->
+<!-- Statistics 
 <section class="stats-section">
     <h2 style="text-align: center; margin-bottom: 40px; color: #2c3e50; font-size: 32px;">
         Nos statistiques
@@ -207,7 +212,7 @@
         <div class="stat-item">
             <h4>24/7</h4>
             <p>Support disponible</p>
-        </div>
-    </div>
-</section> --}}
+        </div> 
+    </div>-->
+</section>
 @endsection

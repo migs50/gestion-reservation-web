@@ -7,6 +7,8 @@ use App\Models\Ressource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
+use App\Notifications\ReservationDecision;
+use App\Models\Journal;
 
 class ReservationController extends Controller
 {
@@ -59,6 +61,16 @@ class ReservationController extends Controller
             'decideur_id' => Auth::id(),
         ]);
 
+        Journal::create([
+            'acteur_id' => Auth::id(),
+            'action'    => 'approbation_reservation',
+            'details'   => "Réservation #{$reservation->id} APPROUVÉE pour l'utilisateur {$reservation->demandeur->nom}",
+            'ip'        => request()->ip()
+        ]);
+
+        // Notify the requester
+        $reservation->demandeur->notify(new ReservationDecision($reservation));
+
         return back()->with('success', 'Réservation approuvée.');
     }
 
@@ -68,6 +80,16 @@ class ReservationController extends Controller
             'statut'      => 'refused',
             'decideur_id' => Auth::id(),
         ]);
+
+        Journal::create([
+            'acteur_id' => Auth::id(),
+            'action'    => 'refus_reservation',
+            'details'   => "Réservation #{$reservation->id} REFUSÉE pour l'utilisateur {$reservation->demandeur->nom}",
+            'ip'        => request()->ip()
+        ]);
+
+        // Notify the requester
+        $reservation->demandeur->notify(new ReservationDecision($reservation));
 
         return back()->with('success', 'Réservation refusée.');
     }

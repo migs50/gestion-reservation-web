@@ -18,7 +18,13 @@ class Ressource extends Model
         'etat',
         'actif',
         'emplacement',
-        'description'
+        'description',
+        'cpu',
+        'ram',
+        'os',
+        'bande_passante',
+        'capacite',
+        'type_stockage'
     ];
 
     protected $casts = [

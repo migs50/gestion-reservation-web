@@ -252,7 +252,7 @@
         Mes Ressources
     </h1>
     <div class="page-actions">
-        <a href="{{ route('resources.create') }}" class="btn btn-primary">
+        <a href="{{ route('responsable.ressources.create') }}" class="btn btn-primary">
             <span>➕</span>
             Nouvelle ressource
         </a>

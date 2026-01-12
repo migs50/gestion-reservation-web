@@ -381,7 +381,7 @@
 {{-- Welcome Banner --}}
 <div class="welcome-banner">
     <div class="welcome-content">
-        <h1 class="welcome-title">👋 Bonjour, {{ Auth::user()->name }}</h1>
+        <h1 class="welcome-title">👋 Bonjour, {{ Auth::user()->nom }}</h1>
         <p class="welcome-subtitle">
             Vous gérez actuellement <strong>{{ $totalResources }}</strong> ressource(s) avec <strong>{{ $pendingRequests }}</strong> demande(s) en attente
         </p>
@@ -450,16 +450,16 @@
                 <div class="request-item">
                     <div class="request-header">
                         <div class="request-info">
-                            <h4>{{ $request->resource->name }}</h4>
+                            <h4>{{ $request->ressource->nom }}</h4>
                             <p>
                                 <span>👤</span>
-                                <span>{{ $request->user->name }}</span>
+                                <span>{{ $request->demandeur->nom }} {{ $request->demandeur->prenom }}</span>
                                 <span>•</span>
-                                <span>Du {{ $request->start_date->format('d/m/Y') }} au {{ $request->end_date->format('d/m/Y') }}</span>
+                                <span>Du {{ $request->debut->format('d/m/Y') }} au {{ $request->fin->format('d/m/Y') }}</span>
                             </p>
                         </div>
-                        <span class="request-status {{ $request->is_urgent ? 'status-urgent' : 'status-pending' }}">
-                            {{ $request->is_urgent ? '🔥 Urgent' : '⏳ En attente' }}
+                        <span class="request-status {{ ($request->is_urgent ?? false) ? 'status-urgent' : 'status-pending' }}">
+                            {{ ($request->is_urgent ?? false) ? '🔥 Urgent' : '⏳ En attente' }}
                         </span>
                     </div>
                     <div class="request-actions">

@@ -65,17 +65,19 @@
 
 <!-- Statistiques -->
 <div class="stats-row">
-    <div class="stat-card">
-        <a href="{{ route('dashboard.user') }}" style="text-decoration:none; color:inherit;">
-        <h3 id="totalUsers">{{ $stats['total_users'] ?? 0 }}</h3>
-        <p>👥 Utilisateurs</p>
-    </div>
-    <a href="{{ route('publique.ressources') }}"style="text-decoration:none; color:inherit;">
-    <div class="stat-card">
-        <h3 id="totalRessources">{{ $stats['total_ressources'] ?? 0 }}</h3>
-        <p>💾 Ressources</p>
-    </div>
-</a>
+    <a href="{{ route('admin.users') }}" style="text-decoration:none; color:inherit;">
+        <div class="stat-card">
+            <h3 id="totalUsers">{{ $stats['total_users'] ?? 0 }}</h3>
+            <p>👥 Utilisateurs</p>
+        </div>
+    </a>
+
+    <a href="{{ route('admin.ressources.index') }}" style="text-decoration:none; color:inherit;">
+        <div class="stat-card">
+            <h3 id="totalRessources">{{ $stats['total_ressources'] ?? 0 }}</h3>
+            <p>� Ressources</p>
+        </div>
+    </a>
  {{-- A HREF IS FOR THE ROUTING TO THE DEMAND PAGE WHEN U CLICK ON THE DEMANDES CARD AS AN ADMIN --}}
     <a href="{{ route('admin.demandes.index') }}" style="text-decoration:none; color:inherit;">
     <div class="stat-card">
@@ -92,13 +94,9 @@
 <div class="quick-actions">
 
 {{-- CREATE USER DFEATURE FOR LATER IF WE WANT IT ADDED --}}
- <a href="{{ route('admin.users.create') }}" class="action-card"> 
-     <div style="font-size: 36px; margin-bottom: 10px;">➕</div>
-    <div>Créer utilisateur</div>
-    </a>
     <a href="{{ route('admin.ressources.index') }}" class="action-card">
         <div style="font-size: 36px; margin-bottom: 10px;">🖥️</div>
-        <div>Ajouter ressource</div>
+        <div>ressource</div>
     </a>
     <a href="{{ route('admin.reservations.index') }}" class="action-card">
         <div style="font-size: 36px; margin-bottom: 10px;">📋</div>
@@ -149,8 +147,56 @@
             </tr>
             @empty
             <tr>
-                <td colspan="6" style="text-align: center; padding: 30px; color: #7f8c8d;">
+                <td colspan="10" style="text-align: center; padding: 30px; color: #7f8c8d;">
                     Aucune réservation récente
+                </td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
+
+<!-- Liste des Utilisateurs -->
+<div class="chart-container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3>👥 Utilisateurs enregistrés</h3>
+        <a href="{{ route('admin.users') }}" class="btn btn-sm">Voir tous</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Rôle</th>
+                <th>Date d'inscription</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($stats['users']->take(5) as $user)
+            <tr>
+                <td>#{{ $user->id }}</td>
+                <td>{{ $user->nom }} {{ $user->prenom }}</td>
+                <td>{{ $user->email }}</td>
+                <td>
+                    @if($user->role)
+                        <span class="badge badge-{{ $user->role->nom == 'Admin' ? 'danger' : (str_contains($user->role->nom, 'Responsable') ? 'warning' : 'info') }}">
+                            {{ $user->role->nom }}
+                        </span>
+                    @else
+                        <span class="badge badge-secondary">-</span>
+                    @endif
+                </td>
+                <td>{{ $user->created_at ? $user->created_at->format('d/m/Y') : '-' }}</td>
+                <td>
+                    <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm">Gérer</a>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 30px; color: #7f8c8d;">
+                    Aucun utilisateur enregistré
                 </td>
             </tr>
             @endforelse

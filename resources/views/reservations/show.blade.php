@@ -51,11 +51,11 @@
         font-weight: 600;
     }
 
-    .badge-warning { background: #fff3cd; color: #856404; }
-    .badge-success { background: #d4edda; color: #155724; }
-    .badge-danger { background: #f8d7da; color: #721c24; }
-    .badge-info { background: #d1ecf1; color: #0c5460; }
-    .badge-secondary { background: #e2e3e5; color: #383d41; }
+    .badge-pending { background: #fff9e6; color: #f1c40f; }
+    .badge-approved { background: #e3fcef; color: #00b894; }
+    .badge-refused { background: #ffebeb; color: #d63031; }
+    .badge-active { background: #eef2ff; color: #4f46e5; }
+    .badge-terminated { background: #f1f2f6; color: #636e72; }
 
     .header-actions {
         display: flex;
@@ -219,41 +219,10 @@
         color: #555;
     }
 
-    .ressource-specs {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-        margin-top: 20px;
-    }
-
-    .spec-item {
-        padding: 12px;
-        background: #f8f9fa;
-        border-radius: 8px;
-    }
-
-    .spec-label {
-        font-size: 12px;
-        color: #6c757d;
-        margin-bottom: 5px;
-    }
-
-    .spec-value {
-        font-size: 14px;
-        font-weight: 600;
-        color: #2c3e50;
-    }
-
     .alert {
         padding: 15px 20px;
         border-radius: 8px;
         margin-bottom: 20px;
-    }
-
-    .alert-info {
-        background: #d1ecf1;
-        color: #0c5460;
-        border: 1px solid #bee5eb;
     }
 
     .alert-warning {
@@ -275,7 +244,7 @@
 </style>
 
 <!-- Back Link -->
-<a href="{{ route('user.reservations') }}" class="back-link">
+<a href="{{ route('reservations.index') }}" class="back-link">
     ← Retour aux réservations
 </a>
 
@@ -287,35 +256,30 @@
             <p>Réservation #{{ $reservation->id }} • Créée le {{ $reservation->created_at->format('d/m/Y à H:i') }}</p>
         </div>
         <div>
-            @switch($reservation->statut)
-                @case('en_attente')
-                    <span class="badge badge-warning">⏳ En attente</span>
-                    @break
-                @case('approuvee')
-                    <span class="badge badge-success">✅ Approuvée</span>
-                    @break
-                @case('refusee')
-                    <span class="badge badge-danger">❌ Refusée</span>
-                    @break
-                @case('active')
-                    <span class="badge badge-info">🔄 Active</span>
-                    @break
-                @case('terminee')
-                    <span class="badge badge-secondary">✓ Terminée</span>
-                    @break
-            @endswitch
+            <span class="badge badge-{{ $reservation->statut }}">
+                @switch($reservation->statut)
+                    @case('pending')
+                        ⏳ En attente
+                        @break
+                    @case('approved')
+                        ✅ Approuvée
+                        @break
+                    @case('refused')
+                        ❌ Refusée
+                        @break
+                    @case('active')
+                        🔄 Active
+                        @break
+                    @default
+                        {{ ucfirst($reservation->statut) }}
+                @endswitch
+            </span>
         </div>
     </div>
 
     <div class="header-actions">
-        @if($reservation->statut == 'active')
-            <a href="{{ route('user.ressource.access', $reservation->ressource_id) }}" class="btn btn-primary">
-                🔑 Accéder à la ressource
-            </a>
-        @endif
-
-        @if(in_array($reservation->statut, ['en_attente', 'approuvee']))
-            <form action="{{ route('user.reservation.cancel', $reservation->id) }}" method="POST" 
+        @if(in_array($reservation->statut, ['pending', 'approved']))
+            <form action="{{ route('reservations.cancel', $reservation->id) }}" method="POST" 
                   onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette réservation ?')">
                 @csrf
                 @method('DELETE')
@@ -325,29 +289,17 @@
             </form>
         @endif
 
-        @if($reservation->statut == 'active')
-            <a href="{{ route('user.reservation.extend', $reservation->id) }}" class="btn btn-warning">
-                ⏰ Prolonger
-            </a>
-        @endif
-
-        <a href="{{ route('user.incident.report', ['reservation_id' => $reservation->id]) }}" class="btn btn-primary">
+        <a href="{{ route('user.incidents.create', ['reservation_id' => $reservation->id]) }}" class="btn btn-primary">
             ⚠️ Signaler un problème
         </a>
     </div>
 </div>
 
 <!-- Alerts -->
-@if($reservation->statut == 'refusee' && $reservation->motif_refus)
+@if($reservation->statut == 'refused' && $reservation->note_decision)
 <div class="alert alert-warning">
     <strong>⚠️ Motif du refus :</strong><br>
-    {{ $reservation->motif_refus }}
-</div>
-@endif
-
-@if($reservation->statut == 'active' && $reservation->date_fin->diffInDays(now()) <= 2)
-<div class="alert alert-warning">
-    <strong>⏰ Attention :</strong> Votre réservation expire dans {{ $reservation->date_fin->diffForHumans() }}
+    {{ $reservation->note_decision }}
 </div>
 @endif
 
@@ -364,43 +316,34 @@
                     <span class="info-label">
                         <span>📅</span> Date de début
                     </span>
-                    <span class="info-value">{{ $reservation->date_debut->format('d/m/Y à H:i') }}</span>
+                    <span class="info-value">{{ $reservation->debut?->format('d/m/Y à H:i') }}</span>
                 </div>
 
                 <div class="info-item">
                     <span class="info-label">
                         <span>📅</span> Date de fin
                     </span>
-                    <span class="info-value">{{ $reservation->date_fin->format('d/m/Y à H:i') }}</span>
+                    <span class="info-value">{{ $reservation->fin?->format('d/m/Y à H:i') }}</span>
                 </div>
 
                 <div class="info-item">
                     <span class="info-label">
                         <span>⏱️</span> Durée totale
                     </span>
-                    <span class="info-value">{{ $reservation->date_debut->diffInDays($reservation->date_fin) }} jours</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="info-label">
-                        <span>👤</span> Responsable
+                    <span class="info-value">
+                        @php
+                            $diff = $reservation->debut?->diffInDays($reservation->fin);
+                        @endphp
+                        {{ $diff }} jour(s)
                     </span>
-                    <span class="info-value">{{ $reservation->ressource->responsable->nom ?? 'Non assigné' }}</span>
                 </div>
 
-                @if($reservation->statut == 'approuvee' || $reservation->statut == 'active' || $reservation->statut == 'terminee')
+                @if($reservation->statut == 'approved' || $reservation->statut == 'active')
                 <div class="info-item">
                     <span class="info-label">
                         <span>✅</span> Approuvée par
                     </span>
-                    <span class="info-value">{{ $reservation->approuve_par->nom ?? 'Système' }}</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="info-label">
-                        <span>📅</span> Date d'approbation
-                    </span>
-                    <span class="info-value">{{ $reservation->date_approbation ? $reservation->date_approbation->format('d/m/Y à H:i') : '-' }}</span>
+                    <span class="info-value">{{ $reservation->decideur->nom ?? 'Gestionnaire' }}</span>
                 </div>
                 @endif
             </div>
@@ -425,44 +368,24 @@
                     </div>
                 </div>
 
-                @if($reservation->statut == 'approuvee' || $reservation->statut == 'active' || $reservation->statut == 'terminee')
+                @if($reservation->statut == 'approved' || $reservation->statut == 'active')
                 <div class="timeline-item success">
                     <div class="timeline-content">
                         <div class="timeline-title">Réservation approuvée</div>
-                        <div class="timeline-date">{{ $reservation->date_approbation ? $reservation->date_approbation->format('d/m/Y à H:i') : '-' }}</div>
+                        <div class="timeline-date">{{ $reservation->updated_at->format('d/m/Y à H:i') }}</div>
                         <div class="timeline-desc">
-                            Approuvée par {{ $reservation->approuve_par->nom ?? 'Système' }}
+                            Approuvée par {{ $reservation->decideur->nom ?? 'Gestionnaire' }}
                         </div>
                     </div>
                 </div>
                 @endif
 
-                @if($reservation->statut == 'refusee')
+                @if($reservation->statut == 'refused')
                 <div class="timeline-item danger">
                     <div class="timeline-content">
                         <div class="timeline-title">Réservation refusée</div>
                         <div class="timeline-date">{{ $reservation->updated_at->format('d/m/Y à H:i') }}</div>
-                        <div class="timeline-desc">{{ $reservation->motif_refus }}</div>
-                    </div>
-                </div>
-                @endif
-
-                @if($reservation->statut == 'active')
-                <div class="timeline-item success">
-                    <div class="timeline-content">
-                        <div class="timeline-title">Réservation active</div>
-                        <div class="timeline-date">{{ $reservation->date_debut->format('d/m/Y à H:i') }}</div>
-                        <div class="timeline-desc">La ressource est maintenant disponible</div>
-                    </div>
-                </div>
-                @endif
-
-                @if($reservation->statut == 'terminee')
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-title">Réservation terminée</div>
-                        <div class="timeline-date">{{ $reservation->date_fin->format('d/m/Y à H:i') }}</div>
-                        <div class="timeline-desc">La ressource a été libérée</div>
+                        <div class="timeline-desc">{{ $reservation->note_decision }}</div>
                     </div>
                 </div>
                 @endif
@@ -478,52 +401,12 @@
             
             <div style="text-align: center; margin: 20px 0;">
                 <div style="font-size: 64px; margin-bottom: 15px;">
-                    {{ $reservation->ressource->categorie->icon ?? '🖥️' }}
+                    🔧
                 </div>
                 <h3 style="color: #2c3e50; margin-bottom: 5px;">{{ $reservation->ressource->nom }}</h3>
-                <p style="color: #7f8c8d;">{{ $reservation->ressource->categorie->nom ?? 'Non catégorisé' }}</p>
-            </div>
-
-            @if($reservation->ressource->specifications)
-            <div class="ressource-specs">
-                @foreach(json_decode($reservation->ressource->specifications, true) as $key => $value)
-                <div class="spec-item">
-                    <div class="spec-label">{{ ucfirst($key) }}</div>
-                    <div class="spec-value">{{ $value }}</div>
-                </div>
-                @endforeach
-            </div>
-            @endif
-
-            <div style="margin-top: 20px;">
-                <a href="{{ route('ressources.details', $reservation->ressource_id) }}" 
-                   style="display: block; text-align: center; color: #667eea; text-decoration: none; font-weight: 600;">
-                    Voir détails complets →
-                </a>
+                <p style="color: #7f8c8d;">{{ $reservation->ressource->categorie->nom ?? 'Informatique' }}</p>
             </div>
         </div>
-
-        <!-- Access Info (only for active reservations) -->
-        @if($reservation->statut == 'active' && $reservation->ressource->acces_info)
-        <div class="details-card">
-            <h2>🔑 Informations d'accès</h2>
-            
-            <div class="alert alert-info" style="margin-bottom: 15px;">
-                <strong>ℹ️ Informations confidentielles</strong><br>
-                Ne partagez jamais ces informations
-            </div>
-
-            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; font-family: monospace; word-break: break-all;">
-                {!! nl2br(e($reservation->ressource->acces_info)) !!}
-            </div>
-
-            <div style="margin-top: 15px; text-align: center;">
-                <button onclick="copyAccessInfo()" class="btn btn-primary">
-                    📋 Copier les informations
-                </button>
-            </div>
-        </div>
-        @endif
 
         <!-- Contact Support -->
         <div class="details-card">
@@ -531,32 +414,11 @@
             <p style="color: #555; margin-bottom: 15px;">
                 Si vous rencontrez un problème avec votre réservation, n'hésitez pas à nous contacter.
             </p>
-            <a href="{{ route('user.incident.report', ['reservation_id' => $reservation->id]) }}" 
+            <a href="{{ route('user.incidents.create', ['reservation_id' => $reservation->id]) }}" 
                class="btn btn-primary" style="width: 100%; justify-content: center;">
                 ⚠️ Signaler un incident
             </a>
         </div>
     </div>
 </div>
-
-<script>
-function copyAccessInfo() {
-    const accessInfo = document.querySelector('.details-card:last-of-type div[style*="monospace"]').innerText;
-    navigator.clipboard.writeText(accessInfo).then(() => {
-        alert('✅ Informations copiées dans le presse-papiers');
-    });
-}
-</script>
-
-@if(session('success'))
-<script>
-    alert('✅ {{ session('success') }}');
-</script>
-@endif
-
-@if(session('error'))
-<script>
-    alert('❌ {{ session('error') }}');
-</script>
-@endif
 @endsection

@@ -5,6 +5,9 @@ use App\Models\Ressource;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\ReservationRequested;
+use App\Models\Notification as NotificationModel;
+use App\Models\Journal;
 
 
 class ReservationController extends Controller
@@ -16,23 +19,40 @@ class ReservationController extends Controller
 
 
 
-    public function index()
+    public function index(Request $request)
     {
-        $reservations = Reservation::with('ressource')
-            ->where('demandeur_id', Auth::id()) // TODO: Auth::id() plus tard
-             ->orderByDesc('debut')
-            ->paginate(15); //INSTEAD OF GET BECAUSE GET returns a Collection AND PAGINATE  returns a LengthAwarePaginator
+        $query = Reservation::with('ressource')
+            ->where('demandeur_id', Auth::id());
 
-       return view('profile.reservations', compact('reservations'));
+        // Filters
+        if ($request->filled('ressource')) {
+            $query->whereHas('ressource', function($q) use ($request) {
+                $q->where('nom', 'like', '%' . $request->ressource . '%');
+            });
+        }
 
+        if ($request->filled('statut')) {
+            $query->where('statut', $request->statut);
+        }
+
+        if ($request->filled('date_debut')) {
+            $query->whereDate('debut', '>=', $request->date_debut);
+        }
+
+        if ($request->filled('date_fin')) {
+            $query->whereDate('fin', '<=', $request->date_fin);
+        }
+
+        $reservations = $query->orderByDesc('debut')
+            ->paginate(15);
+
+        return view('profile.reservations', compact('reservations'));
     }
 
     public function create(Ressource $ressource)
     {
         return view('reservations.create', compact('ressource'));
     }
-
-
 
     public function store(Request $request)
     {
@@ -63,8 +83,8 @@ class ReservationController extends Controller
             ]);
         }
 
-        Reservation::create([
-            'demandeur_id'  => Auth::id(), // TODO: Auth::id() (WISSAL doit developpe la partie auth)
+        $reservation = Reservation::create([
+            'demandeur_id'  => Auth::id(),
             'ressource_id'  => $ressource->id,
             'decideur_id'   => null,
             'debut'         => $data['debut'],
@@ -74,28 +94,22 @@ class ReservationController extends Controller
             'note_decision' => null,
         ]);
 
+        // Logging
+        Journal::create([
+            'acteur_id' => Auth::id(),
+            'action'    => 'creation_reservation',
+            'details'   => "Demande de réservation #{$reservation->id} pour la ressource {$ressource->nom}",
+            'ip'        => request()->ip()
+        ]);
+
+        // Trigger notifications
+
+        if ($ressource->manager_id && $manager = \App\Models\User::find($ressource->manager_id)) {
+            $manager->notify(new ReservationRequested($reservation));
+        }
 
 
-         // Create notification for the user
-           if (class_exists(\App\Models\Notification::create([
-    'user_id' => Auth::id(),
-    'type'    => 'message',
-    'titre'   => 'Réservation créée',
-    'contenu' => "Votre demande de réservation pour Pare-feu Principal a été enregistrée.",
-    'lu'      => false,
-    ]) ));
 
-
-            // Notify the resource manager if exists
-            if ($ressource->manager_id) {
-                \App\Models\Notification::create([
-                    'user_id' => $ressource->manager_id,
-                    'type' => 'message',
-                    'titre' => 'Nouvelle demande de réservation',
-                    'message' => "Une nouvelle demande de réservation pour {$ressource->nom} nécessite votre attention.",
-                    'lu' => false
-                ]);
-            }
         
 
         return redirect()->route('reservations.index')
@@ -110,7 +124,7 @@ class ReservationController extends Controller
         // Check if user is authorized to view this reservation
         if ($reservation->demandeur_id !== Auth::id() && 
             !Auth::user()->hasRole('Admin') && 
-            !Auth::user()->hasRole('Responsable')) {
+            !Auth::user()->hasRole('Responsable Technique')) {
             abort(403, 'Non autorisé');
         }
 
@@ -134,6 +148,14 @@ class ReservationController extends Controller
 
         $reservation->update([
             'statut' => 'cancelled'
+        ]);
+
+        // Logging
+        Journal::create([
+            'acteur_id' => Auth::id(),
+            'action'    => 'annulation_reservation',
+            'details'   => "Réservation #{$reservation->id} annulée par l'utilisateur",
+            'ip'        => request()->ip()
         ]);
 
         // Notify user
