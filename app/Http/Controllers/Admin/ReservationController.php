@@ -61,13 +61,13 @@ class ReservationController extends Controller
             'decideur_id' => Auth::id(),
         ]);
 
-       Journal::create([
+        Journal::create([
                 'acteur_id'  => Auth::id(),
-                'objet'      => 'reservation',              // required
-                'objet_id'   => $reservation->id ?? null,   // if relevant
-                'action'     => 'approbation_reservation',
+                'objet'      => 'reservation',
+                'objet_id'   => $reservation->id,
+                'action'     => 'approve',
                 'details'    => "Réservation #{$reservation->id} APPROUVÉE pour l'utilisateur {$reservation->demandeur->nom}",
-                'donnees'    => null,                       // or some array
+                'donnees'    => null,
                 'ip'         => request()->ip(),
                 'user_agent' => request()->userAgent(),
             ]);
@@ -87,11 +87,11 @@ class ReservationController extends Controller
 
         Journal::create([
                 'acteur_id'  => Auth::id(),
-                'objet'      => 'reservation',              // required
-                'objet_id'   => $reservation->id ?? null,   // if relevant
-                'action'     => 'approbation_reservation',
-                'details'    => "Réservation #{$reservation->id} APPROUVÉE pour l'utilisateur {$reservation->demandeur->nom}",
-                'donnees'    => null,                       // or some array
+                'objet'      => 'reservation',
+                'objet_id'   => $reservation->id,
+                'action'     => 'reject',
+                'details'    => "Réservation #{$reservation->id} REFUSÉE pour l'utilisateur {$reservation->demandeur->nom}",
+                'donnees'    => null,
                 'ip'         => request()->ip(),
                 'user_agent' => request()->userAgent(),
             ]);

@@ -9,19 +9,22 @@
 <style>
     /* [Styles identiques au fichier précédent] */
     .page-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        padding: 40px;
+        color: white;
         margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
     }
 
     .page-title {
         font-size: 32px;
         font-weight: 800;
-        color: #2d3748;
+        color: white;
         display: flex;
         align-items: center;
         gap: 15px;
+        margin: 0;
     }
 
     .stats-summary {
@@ -147,6 +150,16 @@
     .status-pending {
         background: rgba(237, 137, 54, 0.12);
         color: #ed8936;
+    }
+
+    .status-approved {
+        background: rgba(72, 187, 120, 0.12);
+        color: #48bb78;
+    }
+
+    .status-rejected {
+        background: rgba(245, 101, 101, 0.12);
+        color: #f56565;
     }
 
     .status-urgent {
@@ -298,47 +311,58 @@
             <div class="request-header">
                 <div>
                     <div class="request-title">
-                        {{ $request->resource->getIcon() }} {{ $request->resource->name }}
+                        @php
+                            $icon = '🖥️';
+                            if($request->ressource && $request->ressource->categorie) {
+                                if(str_contains(strtolower($request->ressource->categorie->nom), 'serveur')) $icon = '🗄️';
+                                if(str_contains(strtolower($request->ressource->categorie->nom), 'virtuel')) $icon = '☁️';
+                                if(str_contains(strtolower($request->ressource->categorie->nom), 'stockage')) $icon = '💾';
+                                if(str_contains(strtolower($request->ressource->categorie->nom), 'réseau')) $icon = '🌐';
+                            }
+                        @endphp
+                        {{ $icon }} {{ $request->ressource->nom }}
                         <span style="font-size: 14px; color: #a0aec0; font-weight: 600;">#REQ-{{ $request->id }}</span>
                     </div>
                     <div class="request-meta">
-                        <span>👤 {{ $request->user->name }}</span>
+                        <span>👤 {{ $request->demandeur->nom }} {{ $request->demandeur->prenom }}</span>
                         <span>•</span>
-                        <span>📅 Du {{ $request->start_date->format('d/m/Y') }} au {{ $request->end_date->format('d/m/Y') }}</span>
+                        <span>📅 Du {{ $request->debut->format('d/m/Y') }} au {{ $request->fin->format('d/m/Y') }}</span>
                         <span>•</span>
                         <span>⏰ {{ $request->created_at->diffForHumans() }}</span>
                     </div>
                 </div>
-                <span class="request-status {{ $request->is_urgent ? 'status-urgent' : 'status-pending' }}">
-                    {{ $request->is_urgent ? '🔥 Urgent' : '⏳ En attente' }}
+                <span class="request-status status-{{ $request->statut }}">
+                    {{ ucfirst($request->statut) }}
                 </span>
             </div>
 
-            @if($request->message)
+            @if($request->justification)
                 <div class="request-message">
-                    <div class="message-header">💬 Message de l'utilisateur</div>
-                    <p class="message-text">{{ $request->message }}</p>
+                    <div class="message-header">💬 Justification de l'utilisateur</div>
+                    <p class="message-text">{{ $request->justification }}</p>
                 </div>
             @endif
 
             <div class="request-actions">
-                <form action="{{ route('responsable.requests.approve', $request->id) }}" method="POST" style="flex: 1;">
-                    @csrf
-                    <button type="submit" class="action-btn btn-approve" onclick="return confirm('Approuver cette demande ?')" style="width: 100%;">
-                        <span>✓</span>
-                        <span>Approuver</span>
-                    </button>
-                </form>
+                @if($request->statut === 'pending')
+                    <form action="{{ route('responsable.requests.approve', $request->id) }}" method="POST" style="flex: 1;">
+                        @csrf
+                        <button type="submit" class="action-btn btn-approve" onclick="return confirm('Approuver cette demande ?')" style="width: 100%;">
+                            <span>✓</span>
+                            <span>Approuver</span>
+                        </button>
+                    </form>
 
-                <form action="{{ route('responsable.requests.reject', $request->id) }}" method="POST" style="flex: 1;">
-                    @csrf
-                    <button type="submit" class="action-btn btn-reject" onclick="return confirm('Refuser cette demande ?')" style="width: 100%;">
-                        <span>✗</span>
-                        <span>Refuser</span>
-                    </button>
-                </form>
+                    <form action="{{ route('responsable.requests.reject', $request->id) }}" method="POST" style="flex: 1;">
+                        @csrf
+                        <button type="submit" class="action-btn btn-reject" onclick="return confirm('Refuser cette demande ?')" style="width: 100%;">
+                            <span>✗</span>
+                            <span>Refuser</span>
+                        </button>
+                    </form>
+                @endif
 
-                <a href="{{ route('responsable.requests.show', $request->id) }}" class="action-btn btn-details">
+                <a href="{{ route('responsable.requests.show', $request->id) }}" class="action-btn btn-details" style="{{ $request->statut !== 'pending' ? 'flex: 1; justify-content: center;' : '' }}">
                     <span>👁️</span>
                     <span>Détails complets</span>
                 </a>

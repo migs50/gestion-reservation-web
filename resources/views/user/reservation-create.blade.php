@@ -415,22 +415,19 @@
                                 <p>{{ $ressource->categorie->nom ?? 'Non catégorisé' }}</p>
                             </div>
                             <div>
-                                @if($ressource->statut == 'disponible')
+                                @if($ressource->etat == 'available')
                                     <span class="badge badge-success">✓ Disponible</span>
                                 @else
-                                    <span class="badge badge-warning">⏳ Occupé</span>
+                                    <span class="badge badge-warning">⏳ Occupé / Maint.</span>
                                 @endif
                             </div>
                         </div>
 
                         <div class="ressource-specs">
-                            @if($ressource->specifications)
-                                @foreach(json_decode($ressource->specifications, true) as $key => $value)
-                                    <div class="spec-item">
-                                        <strong>{{ ucfirst($key) }}:</strong> {{ $value }}
-                                    </div>
-                                @endforeach
-                            @endif
+                            @if($ressource->cpu) <div class="spec-item"><strong>CPU:</strong> {{ $ressource->cpu }}</div> @endif
+                            @if($ressource->ram) <div class="spec-item"><strong>RAM:</strong> {{ $ressource->ram }}</div> @endif
+                            @if($ressource->os) <div class="spec-item"><strong>OS:</strong> {{ $ressource->os }}</div> @endif
+                            @if($ressource->capacite) <div class="spec-item"><strong>Stockage:</strong> {{ $ressource->capacite }}</div> @endif
                         </div>
                     </div>
                     @empty
@@ -450,21 +447,21 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Date et heure de début <span class="required">*</span></label>
-                        <input type="datetime-local" name="date_debut" id="date_debut" 
+                        <input type="datetime-local" name="debut" id="debut" 
                                min="{{ now()->format('Y-m-d\TH:i') }}" 
-                               value="{{ old('date_debut') }}" required>
+                               value="{{ old('debut') }}" required>
                         <small>La date doit être au moins 24h dans le futur</small>
-                        @error('date_debut')
+                        @error('debut')
                             <div class="error-message">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="form-group">
                         <label>Date et heure de fin <span class="required">*</span></label>
-                        <input type="datetime-local" name="date_fin" id="date_fin" 
-                               value="{{ old('date_fin') }}" required>
+                        <input type="datetime-local" name="fin" id="fin" 
+                               value="{{ old('fin') }}" required>
                         <small>Durée maximale: 30 jours</small>
-                        @error('date_fin')
+                        @error('fin')
                             <div class="error-message">{{ $message }}</div>
                         @enderror
                     </div>
@@ -613,8 +610,8 @@ function validateStep(step) {
     }
 
     if (step === 2) {
-        const dateDebut = document.getElementById('date_debut').value;
-        const dateFin = document.getElementById('date_fin').value;
+        const dateDebut = document.getElementById('debut').value;
+        const dateFin = document.getElementById('fin').value;
         const justification = document.querySelector('textarea[name="justification"]').value;
 
         if (!dateDebut || !dateFin) {
@@ -682,12 +679,12 @@ function filterRessources() {
 }
 
 // Calculate and display duration
-document.getElementById('date_debut')?.addEventListener('change', calculateDuration);
-document.getElementById('date_fin')?.addEventListener('change', calculateDuration);
+document.getElementById('debut')?.addEventListener('change', calculateDuration);
+document.getElementById('fin')?.addEventListener('change', calculateDuration);
 
 function calculateDuration() {
-    const dateDebut = document.getElementById('date_debut').value;
-    const dateFin = document.getElementById('date_fin').value;
+    const dateDebut = document.getElementById('debut').value;
+    const dateFin = document.getElementById('fin').value;
 
     if (dateDebut && dateFin) {
         const debut = new Date(dateDebut);
@@ -721,8 +718,8 @@ function updateSummary() {
             ressourceCard.querySelector('p').textContent;
     }
 
-    const dateDebut = document.getElementById('date_debut').value;
-    const dateFin = document.getElementById('date_fin').value;
+    const dateDebut = document.getElementById('debut').value;
+    const dateFin = document.getElementById('fin').value;
     
     if (dateDebut) {
         document.getElementById('summary-debut').textContent = 

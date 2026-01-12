@@ -1,550 +1,299 @@
-
-
 @extends('layouts.app')
 
-@section('title', 'Tableau de bord Responsable')
-@section('breadcrumb', 'Dashboard Responsable')
+@section('title', 'Détails de la demande - Responsable')
 
-@section('content')
+@push('style')
 <style>
-    .welcome-banner {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 20px;
-        padding: 35px;
-        color: white;
-        margin-bottom: 30px;
-        position: relative;
+    :root {
+        --primary: #4f46e5;
+        --success: #10b981;
+        --danger: #ef4444;
+        --warning: #f59e0b;
+        --bg-main: #f8fafc;
+        --card-bg: #ffffff;
+        --text-dark: #1e293b;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+    }
+
+    .detail-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        margin-bottom: 24px;
+        transition: transform 0.2s;
+    }
+
+    .back-link:hover {
+        transform: translateX(-5px);
+    }
+
+    .detail-card {
+        background: var(--card-bg);
+        border-radius: 24px;
+        padding: 0;
         overflow: hidden;
-        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+        border: 1px solid var(--border-color);
     }
 
-    .welcome-banner::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -10%;
-        width: 400px;
-        height: 400px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-    }
-
-    .welcome-content {
-        position: relative;
-        z-index: 1;
-    }
-
-    .welcome-title {
-        font-size: 32px;
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
-
-    .welcome-subtitle {
-        font-size: 16px;
-        opacity: 0.95;
-    }
-
-    .quick-stats {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 25px;
-        margin-bottom: 30px;
-    }
-
-    .stat-card {
-        background: white;
-        border-radius: 18px;
-        padding: 28px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s;
-        cursor: pointer;
-        border-left: 5px solid transparent;
-    }
-
-    .stat-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
-    }
-
-    .stat-card.purple { border-left-color: #667eea; }
-    .stat-card.orange { border-left-color: #ed8936; }
-    .stat-card.green { border-left-color: #48bb78; }
-    .stat-card.red { border-left-color: #f56565; }
-
-    .stat-header {
+    .detail-header {
+        padding: 40px;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        border-bottom: 1px solid var(--border-color);
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 18px;
     }
 
-    .stat-icon {
-        width: 55px;
-        height: 55px;
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 26px;
-    }
-
-    .stat-icon.purple { background: rgba(102, 126, 234, 0.12); }
-    .stat-icon.orange { background: rgba(237, 137, 54, 0.12); }
-    .stat-icon.green { background: rgba(72, 187, 120, 0.12); }
-    .stat-icon.red { background: rgba(245, 101, 101, 0.12); }
-
-    .stat-trend {
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 700;
-    }
-
-    .trend-up {
-        background: rgba(72, 187, 120, 0.12);
-        color: #48bb78;
-    }
-
-    .trend-down {
-        background: rgba(245, 101, 101, 0.12);
-        color: #f56565;
-    }
-
-    .stat-value {
-        font-size: 38px;
+    .header-info h1 {
+        font-size: 2rem;
         font-weight: 800;
-        color: #2d3748;
+        color: var(--text-dark);
         margin-bottom: 8px;
-        line-height: 1;
+        letter-spacing: -0.025em;
     }
 
-    .stat-label {
-        font-size: 15px;
-        color: #718096;
-        font-weight: 600;
+    .header-info p {
+        color: var(--text-muted);
+        font-weight: 500;
     }
 
-    .dashboard-grid {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 25px;
-        margin-bottom: 30px;
+    .status-badge {
+        padding: 8px 20px;
+        border-radius: 999px;
+        font-size: 0.875rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
     }
 
-    .card {
-        background: white;
-        border-radius: 18px;
-        padding: 28px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-approved { background: #d1fae5; color: #065f46; }
+    .status-rejected { background: #fee2e2; color: #991b1b; }
+
+    .detail-body {
+        padding: 40px;
     }
 
-    .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-        padding-bottom: 18px;
-        border-bottom: 2px solid #f7fafc;
-    }
-
-    .card-title {
-        font-size: 22px;
-        font-weight: 800;
-        color: #2d3748;
+    .section-title {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 20px;
         display: flex;
         align-items: center;
         gap: 12px;
     }
 
-    .badge {
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 700;
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+        margin-bottom: 40px;
     }
 
-    .badge-warning {
-        background: rgba(237, 137, 54, 0.12);
-        color: #ed8936;
-    }
-
-    .badge-info {
-        background: rgba(66, 153, 225, 0.12);
-        color: #4299e1;
-    }
-
-    .request-list {
+    .info-item {
         display: flex;
         flex-direction: column;
-        gap: 15px;
-        max-height: 600px;
-        overflow-y: auto;
+        gap: 6px;
     }
 
-    .request-item {
-        padding: 20px;
-        background: #f7fafc;
-        border-radius: 14px;
-        transition: all 0.3s;
-        cursor: pointer;
-        border: 2px solid transparent;
-    }
-
-    .request-item:hover {
-        background: white;
-        border-color: #667eea;
-        transform: translateX(8px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    }
-
-    .request-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 12px;
-    }
-
-    .request-info h4 {
-        font-size: 16px;
+    .info-label {
+        font-size: 0.75rem;
         font-weight: 700;
-        color: #2d3748;
-        margin-bottom: 6px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
     }
 
-    .request-info p {
-        font-size: 13px;
-        color: #718096;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .request-status {
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 700;
-        white-space: nowrap;
-    }
-
-    .status-pending {
-        background: rgba(237, 137, 54, 0.12);
-        color: #ed8936;
-    }
-
-    .status-urgent {
-        background: rgba(245, 101, 101, 0.12);
-        color: #f56565;
-        animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.6; }
-    }
-
-    .request-actions {
-        display: flex;
-        gap: 10px;
-        margin-top: 12px;
-    }
-
-    .btn-sm {
-        padding: 8px 16px;
-        font-size: 13px;
-        border-radius: 8px;
-        border: none;
+    .info-value {
+        font-size: 1.125rem;
         font-weight: 600;
+        color: var(--text-dark);
+    }
+
+    .justification-box {
+        background: #f8fafc;
+        border-radius: 16px;
+        padding: 24px;
+        border-left: 4px solid var(--primary);
+        font-style: italic;
+        color: #475569;
+        line-height: 1.6;
+        margin-bottom: 30px;
+    }
+
+    .decision-panel {
+        background: #fffaf0;
+        border-radius: 20px;
+        padding: 32px;
+        border: 1px solid #feebc8;
+        margin-top: 20px;
+    }
+
+    .decision-panel h3 {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #92400e;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .note-textarea {
+        width: 100%;
+        padding: 16px;
+        border-radius: 12px;
+        border: 2px solid #cbd5e0;
+        font-size: 1rem;
+        transition: all 0.2s;
+        margin-bottom: 20px;
+    }
+
+    .note-textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+    }
+
+    .action-footer {
+        display: flex;
+        gap: 16px;
+    }
+
+    .btn-action {
+        flex: 1;
+        padding: 16px;
+        border-radius: 14px;
+        font-weight: 700;
+        font-size: 1rem;
         cursor: pointer;
         transition: all 0.3s;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    .btn-approve {
-        background: #48bb78;
-        color: white;
-    }
-
-    .btn-approve:hover {
-        background: #38a169;
-        transform: translateY(-2px);
-    }
-
-    .btn-reject {
-        background: #f56565;
-        color: white;
-    }
-
-    .btn-reject:hover {
-        background: #e53e3e;
-        transform: translateY(-2px);
-    }
-
-    .btn-view {
-        background: #4299e1;
-        color: white;
-    }
-
-    .btn-view:hover {
-        background: #3182ce;
-        transform: translateY(-2px);
-    }
-
-    .resource-summary {
+        border: none;
         display: flex;
-        flex-direction: column;
-        gap: 18px;
-    }
-
-    .resource-item {
-        padding: 18px;
-        background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-        border-radius: 12px;
-        transition: all 0.3s;
-    }
-
-    .resource-item:hover {
-        transform: scale(1.03);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .resource-header {
-        display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 12px;
+        justify-content: center;
+        gap: 10px;
     }
 
-    .resource-name {
-        font-weight: 700;
-        color: #2d3748;
-        font-size: 15px;
-    }
+    .btn-approve { background: var(--success); color: white; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); }
+    .btn-reject { background: var(--danger); color: white; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2); }
 
-    .resource-count {
-        font-size: 20px;
-        font-weight: 800;
-        color: #667eea;
-    }
+    .btn-approve:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3); }
+    .btn-reject:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(239, 68, 68, 0.3); }
 
-    .resource-bar {
-        height: 8px;
-        background: #e2e8f0;
-        border-radius: 10px;
-        overflow: hidden;
-        margin-bottom: 8px;
-    }
-
-    .resource-fill {
-        height: 100%;
-        border-radius: 10px;
-        transition: width 0.5s ease;
-    }
-
-    .fill-high { background: #f56565; }
-    .fill-medium { background: #ed8936; }
-    .fill-low { background: #48bb78; }
-
-    .resource-info {
-        display: flex;
-        justify-content: space-between;
-        font-size: 12px;
-        color: #718096;
-    }
-
-    .empty-state {
-        text-align: center;
-        padding: 40px;
-        color: #718096;
-    }
-
-    .empty-state-icon {
-        font-size: 64px;
-        margin-bottom: 15px;
-    }
-
-    @media (max-width: 1024px) {
-        .dashboard-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .quick-stats {
-            grid-template-columns: 1fr;
-        }
+    @media (max-width: 640px) {
+        .info-grid { grid-template-columns: 1fr; }
+        .action-footer { flex-direction: column; }
     }
 </style>
+@endpush
 
-{{-- Welcome Banner --}}
-<div class="welcome-banner">
-    <div class="welcome-content">
-        <h1 class="welcome-title">👋 Bonjour, {{ Auth::user()->name }}</h1>
-        <p class="welcome-subtitle">
-            Vous gérez actuellement <strong>{{ $totalResources }}</strong> ressource(s) avec <strong>{{ $pendingRequests }}</strong> demande(s) en attente
-        </p>
-    </div>
-</div>
+@section('content')
+<div class="detail-container">
+    <a href="{{ route('responsable.requests') }}" class="back-link">
+        ← Retour aux demandes
+    </a>
 
-{{-- Quick Stats --}}
-<div class="quick-stats">
-    <div class="stat-card purple" onclick="window.location.href='{{ route('responsable.ressources') }}'">
-        <div class="stat-header">
-            <div class="stat-icon purple">🖥️</div>
-            <span class="stat-trend {{ $resourceTrend >= 0 ? 'trend-up' : 'trend-down' }}">
-                {{ $resourceTrend >= 0 ? '↑' : '↓' }} {{ abs($resourceTrend) }}%
+    <div class="detail-card">
+        <div class="detail-header">
+            <div class="header-info">
+                <h1>Demande #REQ-{{ $reservation->id }}</h1>
+                <p>Soumise le {{ $reservation->created_at->format('d/m/Y à H:i') }}</p>
+            </div>
+            <span class="status-badge status-{{ $reservation->statut }}">
+                {{ ucfirst($reservation->statut) }}
             </span>
         </div>
-        <div class="stat-value">{{ $totalResources }}</div>
-        <div class="stat-label">Mes ressources</div>
-    </div>
 
-    <div class="stat-card orange" onclick="window.location.href='{{ route('responsable.requests') }}'">
-        <div class="stat-header">
-            <div class="stat-icon orange">⏳</div>
-            <span class="stat-trend {{ $requestTrend >= 0 ? 'trend-up' : 'trend-down' }}">
-                {{ $requestTrend >= 0 ? '↑' : '↓' }} {{ abs($requestTrend) }}
-            </span>
-        </div>
-        <div class="stat-value">{{ $pendingRequests }}</div>
-        <div class="stat-label">Demandes en attente</div>
-    </div>
+        <div class="detail-body">
+            <div class="section-title">👤 Informations Demandeur</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Nom Complet</span>
+                    <span class="info-value">{{ $reservation->demandeur->nom }} {{ $reservation->demandeur->prenom }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Email de contact</span>
+                    <span class="info-value">{{ $reservation->demandeur->email }}</span>
+                </div>
+            </div>
 
-    <div class="stat-card green">
-        <div class="stat-header">
-            <div class="stat-icon green">✓</div>
-            <span class="stat-trend trend-up">↑ {{ $approvedTrend }}%</span>
-        </div>
-        <div class="stat-value">{{ $approvedReservations }}</div>
-        <div class="stat-label">Réservations actives</div>
-    </div>
+            <div class="section-title">🖥️ Ressource Demandée</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Nom de la ressource</span>
+                    <span class="info-value">{{ $reservation->ressource->nom }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Catégorie technique</span>
+                    <span class="info-value">{{ $reservation->ressource->categorie->nom ?? 'N/A' }}</span>
+                </div>
+            </div>
 
-    <div class="stat-card red">
-        <div class="stat-header">
-            <div class="stat-icon red">⚠️</div>
-            <span class="stat-trend {{ $alertTrend >= 0 ? 'trend-up' : 'trend-down' }}">
-                {{ $alertTrend >= 0 ? '↑' : '↓' }} {{ abs($alertTrend) }}
-            </span>
-        </div>
-        <div class="stat-value">{{ $activeAlerts }}</div>
-        <div class="stat-label">Alertes</div>
-    </div>
-</div>
+            <div class="section-title">📅 Période de Réservation</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Date de Début</span>
+                    <span class="info-value">{{ $reservation->debut->format('d/m/Y H:i') }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Date de Fin</span>
+                    <span class="info-value">{{ $reservation->fin->format('d/m/Y H:i') }}</span>
+                </div>
+            </div>
 
-{{-- Main Dashboard Grid --}}
-<div class="dashboard-grid">
-    {{-- Pending Requests --}}
-    <div class="card">
-        <div class="card-header">
-            <h2 class="card-title">
-                <span>📋</span>
-                <span>Demandes en attente</span>
-            </h2>
-            <span class="badge badge-warning">{{ $pendingRequests }} nouvelle(s)</span>
-        </div>
+            @if($reservation->justification)
+                <div class="section-title">📝 Justification de l'utilisateur</div>
+                <div class="justification-box">
+                    "{{ $reservation->justification }}"
+                </div>
+            @endif
 
-        <div class="request-list">
-            @forelse($requests as $request)
-                <div class="request-item">
-                    <div class="request-header">
-                        <div class="request-info">
-                            <h4>{{ $request->resource->name }}</h4>
-                            <p>
-                                <span>👤</span>
-                                <span>{{ $request->user->name }}</span>
-                                <span>•</span>
-                                <span>Du {{ $request->start_date->format('d/m/Y') }} au {{ $request->end_date->format('d/m/Y') }}</span>
-                            </p>
-                        </div>
-                        <span class="request-status {{ $request->is_urgent ? 'status-urgent' : 'status-pending' }}">
-                            {{ $request->is_urgent ? '🔥 Urgent' : '⏳ En attente' }}
-                        </span>
+            @if($reservation->statut === 'pending')
+                <div class="decision-panel">
+                    <h3>🏁 Prendre une décision</h3>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #4b5563; margin-bottom: 10px;">Note de décision (Optionnelle pour approbation, obligatoire pour refus)</label>
+                        <textarea id="note_decision" name="note_decision" class="note-textarea" rows="3" placeholder="Saisissez ici le motif du refus ou une note d'approbation..."></textarea>
                     </div>
-                    <div class="request-actions">
-                        <form action="{{ route('responsable.requests.approve', $request->id) }}" method="POST" style="display: inline;">
+
+                    <div class="action-footer">
+                        <form action="{{ route('responsable.requests.approve', $reservation->id) }}" method="POST" style="flex: 1;" id="approve-form">
                             @csrf
-                            <button type="submit" class="btn-sm btn-approve" onclick="return confirm('Approuver cette demande ?')">
-                                ✓ Approuver
+                            <input type="hidden" name="note_decision" id="note-approve">
+                            <button type="submit" class="btn-action btn-approve" onclick="document.getElementById('note-approve').value = document.getElementById('note_decision').value; return confirm('Confirmer l\'approbation ?')">
+                                <span>✓</span> Approuver
                             </button>
                         </form>
-                        <form action="{{ route('responsable.requests.reject', $request->id) }}" method="POST" style="display: inline;">
+                        <form action="{{ route('responsable.requests.reject', $reservation->id) }}" method="POST" style="flex: 1;" id="reject-form">
                             @csrf
-                            <button type="submit" class="btn-sm btn-reject" onclick="return confirm('Refuser cette demande ?')">
-                                ✗ Refuser
+                            <input type="hidden" name="note_decision" id="note-reject">
+                            <button type="submit" class="btn-action btn-reject" onclick="document.getElementById('note-reject').value = document.getElementById('note_decision').value; if(!document.getElementById('note-reject').value){alert('Veuillez saisir une justification pour le refus.'); return false;} return confirm('Confirmer le refus ?')">
+                                <span>✗</span> Refuser
                             </button>
                         </form>
-                        <a href="{{ route('responsable.requests.show', $request->id) }}" class="btn-sm btn-view">
-                            👁️ Détails
-                        </a>
                     </div>
                 </div>
-            @empty
-                <div class="empty-state">
-                    <div class="empty-state-icon">✅</div>
-                    <p>Aucune demande en attente</p>
+            @elseif($reservation->note_decision)
+                 <div class="section-title">📢 Note de décision enregistrée</div>
+                 <div class="justification-box" style="border-left-color: #94a3b8; background: #f1f5f9;">
+                    {{ $reservation->note_decision }}
                 </div>
-            @endforelse
-        </div>
-
-        @if($requests->count() > 0)
-            <a href="{{ route('responsable.requests') }}" style="display: block; text-align: center; margin-top: 20px; color: #667eea; font-weight: 600; text-decoration: none;">
-                Voir toutes les demandes →
-            </a>
-        @endif
-    </div>
-
-    {{-- Resources Overview --}}
-    <div class="card">
-        <div class="card-header">
-            <h2 class="card-title">
-                <span>📊</span>
-                <span>Vue d'ensemble</span>
-            </h2>
-            <span class="badge badge-info">{{ $totalResources }} total</span>
-        </div>
-
-        <div class="resource-summary">
-            @foreach($resourcesByType as $type => $data)
-                <div class="resource-item">
-                    <div class="resource-header">
-                        <span class="resource-name">{{ ucfirst($type) }}</span>
-                        <span class="resource-count">{{ $data['total'] }}</span>
-                    </div>
-                    <div class="resource-bar">
-                        <div class="resource-fill {{ $data['percentage'] >= 80 ? 'fill-high' : ($data['percentage'] >= 50 ? 'fill-medium' : 'fill-low') }}" 
-                             style="width: {{ $data['percentage'] }}%"></div>
-                    </div>
-                    <div class="resource-info">
-                        <span>{{ $data['percentage'] }}% utilisés</span>
-                        <span>{{ $data['occupied'] }}/{{ $data['total'] }} occupés</span>
-                    </div>
-                </div>
-            @endforeach
+            @endif
         </div>
     </div>
 </div>
-
-<script>
-    // Animate stats on load
-    window.addEventListener('load', () => {
-        document.querySelectorAll('.stat-value').forEach((el, index) => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            
-            setTimeout(() => {
-                el.style.transition = 'all 0.5s ease-out';
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0)';
-            }, index * 100);
-        });
-    });
-
-    // Auto-refresh every 30 seconds
-    setTimeout(() => {
-        location.reload();
-    }, 30000);
-</script>
-
 @endsection

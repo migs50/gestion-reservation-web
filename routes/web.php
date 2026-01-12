@@ -185,6 +185,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/ressources', [ResponsableController::class, 'indexRessources'])->name('ressources');
             Route::get('/ressources/create', [ResponsableController::class, 'createRessource'])->name('ressources.create');
             Route::post('/ressources', [ResponsableController::class, 'storeRessource'])->name('ressources.store');
+            Route::get('/ressources/{resource}/edit', [ResponsableController::class, 'editRessource'])->name('ressources.edit');
+            Route::put('/ressources/{resource}', [ResponsableController::class, 'updateRessource'])->name('ressources.update');
             Route::post('/resources/{resource}/maintenance', [ResponsableController::class, 'maintenance'])->name('resources.maintenance');
             Route::post('/resources/{resource}/enable', [ResponsableController::class, 'enable'])->name('resources.enable');
             Route::post('/resources/{resource}/disable', [ResponsableController::class, 'disable'])->name('resources.disable');
@@ -193,6 +195,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/requests/{reservation}', [ResponsableController::class, 'showRequest'])->name('requests.show');
             Route::post('/requests/{reservation}/approve', [ResponsableController::class, 'approveRequest'])->name('requests.approve');
             Route::post('/requests/{reservation}/reject', [ResponsableController::class, 'rejectRequest'])->name('requests.reject');
+
+            // Moderation
+            Route::get('/discussions', [ResponsableController::class, 'discussions'])->name('discussions');
+            Route::post('/messages/{message}/hide', [ResponsableController::class, 'hideMessage'])->name('messages.hide');
         });
 });
 
