@@ -78,6 +78,40 @@
             <textarea id="description" name="description">{{ old('description', $ressource->description) }}</textarea>
         </div>
 
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 12px; border: 1px dashed #d1d5db;">
+            <div style="grid-column: span 2; font-weight: bold; margin-bottom: 10px; color: #4b5563;">⚙️ Caractéristiques Techniques</div>
+            
+            <div class="form-group">
+                <label for="cpu">CPU</label>
+                <input type="text" id="cpu" name="cpu" value="{{ old('cpu', $ressource->cpu) }}" placeholder="ex: 8 Cores">
+            </div>
+
+            <div class="form-group">
+                <label for="ram">RAM</label>
+                <input type="text" id="ram" name="ram" value="{{ old('ram', $ressource->ram) }}" placeholder="ex: 16 GB">
+            </div>
+
+            <div class="form-group">
+                <label for="os">Système d'exploitation (OS)</label>
+                <input type="text" id="os" name="os" value="{{ old('os', $ressource->os) }}" placeholder="ex: Ubuntu 22.04">
+            </div>
+
+            <div class="form-group">
+                <label for="bande_passante">Bande passante</label>
+                <input type="text" id="bande_passante" name="bande_passante" value="{{ old('bande_passante', $ressource->bande_passante) }}" placeholder="ex: 1 Gbps">
+            </div>
+
+            <div class="form-group">
+                <label for="capacite">Capacité / Stockage</label>
+                <input type="text" id="capacite" name="capacite" value="{{ old('capacite', $ressource->capacite) }}" placeholder="ex: 500 GB">
+            </div>
+
+            <div class="form-group">
+                <label for="type_stockage">Type de stockage</label>
+                <input type="text" id="type_stockage" name="type_stockage" value="{{ old('type_stockage', $ressource->type_stockage) }}" placeholder="ex: SSD NVMe">
+            </div>
+        </div>
+
         <button type="submit" class="btn">Enregistrer</button>
     </form>
 @endsection

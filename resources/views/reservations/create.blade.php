@@ -124,6 +124,22 @@ body {
 
     <p>Ressource : <strong>{{ $ressource->nom }}</strong></p>
 
+    @if($ressource->cpu || $ressource->ram || $ressource->os || $ressource->bande_passante || $ressource->capacite || $ressource->type_stockage)
+    <div style="background: #f1f5f9; border-radius: 12px; padding: 20px; margin-bottom: 30px; border-left: 4px solid #6366f1;">
+        <h3 style="font-size: 16px; margin-bottom: 12px; color: #475569; display: flex; align-items: center; gap: 8px;">
+            ⚙️ Caractéristiques techniques
+        </h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 14px;">
+            @if($ressource->cpu) <div><strong>CPU:</strong> {{ $ressource->cpu }}</div> @endif
+            @if($ressource->ram) <div><strong>RAM:</strong> {{ $ressource->ram }}</div> @endif
+            @if($ressource->os) <div><strong>OS:</strong> {{ $ressource->os }}</div> @endif
+            @if($ressource->bande_passante) <div><strong>Réseau:</strong> {{ $ressource->bande_passante }}</div> @endif
+            @if($ressource->capacite) <div><strong>Capacité:</strong> {{ $ressource->capacite }}</div> @endif
+            @if($ressource->type_stockage) <div><strong>Stockage:</strong> {{ $ressource->type_stockage }}</div> @endif
+        </div>
+    </div>
+    @endif
+
     <form action="{{ route('reservations.store') }}" method="POST">
         @csrf
 

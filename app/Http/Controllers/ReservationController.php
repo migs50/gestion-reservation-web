@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\ReservationRequested;
 use App\Models\Notification as NotificationModel;
+use App\Models\Journal;
 
 
 class ReservationController extends Controller
@@ -93,6 +94,14 @@ class ReservationController extends Controller
             'note_decision' => null,
         ]);
 
+        // Logging
+        Journal::create([
+            'acteur_id' => Auth::id(),
+            'action'    => 'creation_reservation',
+            'details'   => "Demande de réservation #{$reservation->id} pour la ressource {$ressource->nom}",
+            'ip'        => request()->ip()
+        ]);
+
         // Trigger notifications
 
         if ($ressource->manager_id && $manager = \App\Models\User::find($ressource->manager_id)) {
@@ -139,6 +148,14 @@ class ReservationController extends Controller
 
         $reservation->update([
             'statut' => 'cancelled'
+        ]);
+
+        // Logging
+        Journal::create([
+            'acteur_id' => Auth::id(),
+            'action'    => 'annulation_reservation',
+            'details'   => "Réservation #{$reservation->id} annulée par l'utilisateur",
+            'ip'        => request()->ip()
         ]);
 
         // Notify user

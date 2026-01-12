@@ -102,6 +102,12 @@ class RessourceController extends Controller
             'actif'        => 'required|boolean',
             'emplacement'  => 'nullable|string|max:120',
             'description'  => 'nullable|string',
+            'cpu'          => 'nullable|string|max:255',
+            'ram'          => 'nullable|string|max:255',
+            'os'           => 'nullable|string|max:255',
+            'bande_passante' => 'nullable|string|max:255',
+            'capacite'     => 'nullable|string|max:255',
+            'type_stockage' => 'nullable|string|max:255',
         ]);
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Journal;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -60,6 +62,13 @@ class UserController extends Controller
             'statut' => $request->statut,
         ]);
 
+        Journal::create([
+            'acteur_id' => Auth::id(),
+            'action'    => 'creation_utilisateur',
+            'details'   => "Utilisateur créé : {$request->nom} {$request->prenom} ({$request->email})",
+            'ip'        => request()->ip()
+        ]);
+
         return redirect()->route('admin.users')->with('success', 'Utilisateur créé avec succès.');
     }
 
@@ -79,6 +88,13 @@ class UserController extends Controller
             'role_id' => $request->role_id,
         ]);
 
+        Journal::create([
+            'acteur_id' => Auth::id(),
+            'action'    => 'modification_role',
+            'details'   => "Rôle de l'utilisateur {$user->nom} #{$user->id} modifié vers rôle ID : {$request->role_id}",
+            'ip'        => request()->ip()
+        ]);
+
         return redirect()->route('admin.users')->with('success', 'Rôle de l\'utilisateur mis à jour avec succès.');
     }
 
@@ -88,7 +104,16 @@ class UserController extends Controller
             return redirect()->route('admin.users')->with('error', 'Vous ne pouvez pas vous supprimer vous-même.');
         }
 
+        $userDetails = "{$user->nom} {$user->prenom} ({$user->email})";
         $user->delete();
+
+        Journal::create([
+            'acteur_id' => Auth::id(),
+            'action'    => 'suppression_utilisateur',
+            'details'   => "Utilisateur supprimé : $userDetails",
+            'ip'        => request()->ip()
+        ]);
+
         return redirect()->route('admin.users')->with('success', 'Utilisateur supprimé avec succès.');
     }
 
@@ -100,6 +125,13 @@ class UserController extends Controller
 
         $user->statut = ($user->statut === 'active') ? 'inactive' : 'active';
         $user->save();
+
+        Journal::create([
+            'acteur_id' => Auth::id(),
+            'action'    => 'toggle_statut_utilisateur',
+            'details'   => "Statut de l'utilisateur {$user->nom} changé vers : {$user->statut}",
+            'ip'        => request()->ip()
+        ]);
 
         return back()->with('success', 'Statut de l\'utilisateur mis à jour.');
     }

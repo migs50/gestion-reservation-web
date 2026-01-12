@@ -70,7 +70,29 @@ class DashboardController extends Controller
             ->where('etat', 'available')
             ->count();
 
-        return view('dashboard.user', compact('stats', 'recent_reservations', 'notifications', 'available_ressources'));
+        // Activity data for chart (last 7 days)
+        $activity = $user->reservations()
+            ->selectRaw('DATE(debut) as date, COUNT(*) as total')
+            ->where('debut', '>=', now()->subDays(7))
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        $activity_data = [
+            'labels' => [],
+            'values' => []
+        ];
+
+        for ($i = 6; $i >= 0; $i--) {
+            $date = now()->subDays($i)->format('Y-m-d');
+            $label = now()->subDays($i)->format('d/m');
+            $activity_data['labels'][] = $label;
+            
+            $match = $activity->firstWhere('date', $date);
+            $activity_data['values'][] = $match ? $match->total : 0;
+        }
+
+        return view('dashboard.user', compact('stats', 'recent_reservations', 'notifications', 'available_ressources', 'activity_data'));
     }
 
     private function responsableDashboard($user, $notifications)

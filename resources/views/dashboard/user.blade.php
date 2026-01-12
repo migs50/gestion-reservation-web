@@ -276,6 +276,57 @@
     @endif
 </div>
 
+<div class="recent-section" style="margin-top: 30px;">
+    <h2>📈 Activité des 7 derniers jours</h2>
+    <div style="height: 300px; position: relative;">
+        <canvas id="userActivityChart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('userActivityChart').getContext('2d');
+    const activityData = @json($activity_data);
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: activityData.labels,
+            datasets: [{
+                label: 'Réservations',
+                data: activityData.values,
+                borderColor: '#667eea',
+                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: '#764ba2',
+                pointBorderColor: '#fff',
+                pointRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1, color: '#94a3b8' },
+                    grid: { color: '#f1f5f9' }
+                },
+                x: {
+                    ticks: { color: '#94a3b8' },
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+});
+</script>
+
 @if(session('success'))
 <script>
     alert('✅ {{ session('success') }}');

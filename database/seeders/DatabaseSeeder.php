@@ -139,10 +139,12 @@ class DatabaseSeeder extends Seeder
         );
         // Create default categories for ressources
         $categories = [
-            'Serveur',
-            'Réseau',
+            'Serveurs',
+            'Machines virtuelles',
             'Stockage',
+            'Équipements réseau',
             'Énergie',
+            'Sauvegardes',
         ];
 
         foreach ($categories as $catNom) {
