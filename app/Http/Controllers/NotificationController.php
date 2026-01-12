@@ -20,24 +20,13 @@ class NotificationController extends Controller
         /** @var User $user */
         $user = Auth::user();
         
-         $notifications = $user->notifications()
-        ->latest()
-        ->paginate(15);
-        
-        // Try to get real notifications if model exists
-        try {
-            if (class_exists(Notification::class)) {
-                $notifications = $user->notifications()
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(15);
-            } else {
-                $notifications = collect([]);
-            }
-        } catch (\Exception $e) {
-            // Model not ready yet, use empty collection
-            $notifications = collect([]);
-        }
+        // Automatiquement marquer toutes les notifications comme lues
+        $user->notifications()->where('lu', false)->update(['lu' => true]);
 
+        $notifications = $user->notifications()
+            ->latest()
+            ->paginate(15);
+        
         return view('user.notifications', compact('notifications'));
     }
 

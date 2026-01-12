@@ -236,41 +236,8 @@
 <!-- Header -->
 <div class="page-header">
     <h1>🔔 Mes Notifications</h1>
-    <div class="header-actions">
-        <form action="{{ route('user.notifications.markAllRead') }}" method="POST" style="display: inline;">
-            @csrf
-            <button type="submit" class="btn btn-secondary">
-                ✓ Tout marquer comme lu
-            </button>
-        </form>
-    </div>
 </div>
 
-<!-- Filters -->
-<div class="filters-card">
-    <div class="filters-grid">
-        <button class="filter-btn {{ !request('type') ? 'active' : '' }}" 
-                onclick="filterNotifications('')">
-            📋 Toutes
-        </button>
-        <button class="filter-btn {{ request('type') == 'decision' ? 'active' : '' }}" 
-                onclick="filterNotifications('decision')">
-            📅 Décisions
-        </button>
-        <button class="filter-btn {{ request('type') == 'maintenance' ? 'active' : '' }}" 
-                onclick="filterNotifications('maintenance')">
-            🔧 Maintenances
-        </button>
-        <button class="filter-btn {{ request('type') == 'expiration' ? 'active' : '' }}" 
-                onclick="filterNotifications('expiration')">
-            ⏰ Expirations
-        </button>
-        <button class="filter-btn {{ request('type') == 'incident' ? 'active' : '' }}" 
-                onclick="filterNotifications('incident')">
-            ⚠️ Incidents
-        </button>
-    </div>
-</div>
 
 <!-- Notifications List -->
 <div class="notifications-container">

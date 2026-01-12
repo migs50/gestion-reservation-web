@@ -101,7 +101,7 @@ class ResponsableController extends Controller
 
     public function approveRequest(Reservation $reservation)
     {
-        $this->authorizeAccess($reservation);
+        $this->checkReservationAccess($reservation);
         
         $reservation->update([
             'statut' => 'approved',
@@ -117,7 +117,7 @@ class ResponsableController extends Controller
 
     public function rejectRequest(Reservation $reservation)
     {
-        $this->authorizeAccess($reservation);
+        $this->checkReservationAccess($reservation);
 
         $reservation->update([
             'statut' => 'rejected',
@@ -133,13 +133,13 @@ class ResponsableController extends Controller
 
     public function showRequest(Reservation $reservation)
     {
-        $this->authorizeAccess($reservation);
+        $this->checkReservationAccess($reservation);
         return view('responsable.approve-reservation', compact('reservation'));
     }
 
     public function maintenance(Ressource $resource)
     {
-        $this->authorizeResource($resource);
+        $this->checkResourceAccess($resource);
         $resource->update(['etat' => 'maintenance']);
 
         // Notify users who have active or future reservations for this resource
@@ -164,26 +164,26 @@ class ResponsableController extends Controller
 
     public function enable(Ressource $resource)
     {
-        $this->authorizeResource($resource);
+        $this->checkResourceAccess($resource);
         $resource->update(['etat' => 'available', 'actif' => true]);
         return back()->with('success', 'Ressource activée.');
     }
 
     public function disable(Ressource $resource)
     {
-        $this->authorizeResource($resource);
+        $this->checkResourceAccess($resource);
         $resource->update(['etat' => 'disabled', 'actif' => false]);
         return back()->with('success', 'Ressource désactivée.');
     }
 
-    private function authorizeAccess(Reservation $reservation)
+    private function checkReservationAccess(Reservation $reservation)
     {
         if ($reservation->ressource->manager_id !== Auth::id()) {
             abort(403);
         }
     }
 
-    private function authorizeResource(Ressource $resource)
+    private function checkResourceAccess(Ressource $resource)
     {
         if ($resource->manager_id !== Auth::id()) {
             abort(403);

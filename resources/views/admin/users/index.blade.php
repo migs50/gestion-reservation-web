@@ -92,7 +92,7 @@
                 </td>
                 <td>{{ $user->organisation ?? '-' }}</td>
                 <td>
-                    @if($user->actif)
+                    @if($user->statut === 'active')
                         <span class="badge badge-success">Actif</span>
                     @else
                         <span class="badge badge-secondary">Inactif</span>
@@ -100,17 +100,30 @@
                 </td>
                 <td>{{ $user->created_at ? $user->created_at->format('d/m/Y') : '-' }}</td>
                 <td>
-                    <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm" title="Éditer">✏️</a>
-                    
-                    @if($user->id != Auth::id())
-                    <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete({{ $user->id }}, '{{ $user->nom }} {{ $user->prenom }}')" title="Supprimer">
-                        🗑️
-                    </button>
-                    <form id="delete-form-{{ $user->id }}" action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display: none;">
-                        @csrf
-                        @method('DELETE')
-                    </form>
-                    @endif
+                    <div style="display: flex; gap: 5px;">
+                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-primary" title="Éditer" style="padding: 5px 10px; font-size: 14px;">✏️</a>
+                        
+                        <form action="{{ route('admin.users.toggleStatus', $user->id) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="btn btn-sm {{ $user->statut === 'active' ? 'btn-warning' : 'btn-success' }}" 
+                                    title="{{ $user->statut === 'active' ? 'Désactiver' : 'Activer' }}" 
+                                    style="padding: 5px 10px; font-size: 14px;">
+                                {{ $user->statut === 'active' ? '🚫' : '✅' }}
+                            </button>
+                        </form>
+
+                        @if($user->id != Auth::id())
+                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete({{ $user->id }}, '{{ $user->nom }} {{ $user->prenom }}')" 
+                                    title="Supprimer" style="padding: 5px 10px; font-size: 14px;">
+                                🗑️
+                            </button>
+                            <form id="delete-form-{{ $user->id }}" action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                        @endif
+                    </div>
                 </td>
             </tr>
             @empty

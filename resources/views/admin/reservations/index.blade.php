@@ -32,15 +32,17 @@
                     <td>{{ $reservation->statut }}</td>
                     <td>
                         @if($reservation->statut === 'pending')
-                            <form action="{{ route('admin.reservations.approve', $reservation) }}" method="POST" style="display:inline">
-                                @csrf
-                                <button class="btn btn-success btn-sm">Accepter</button>
-                            </form>
+                            <div style="display: flex; gap: 5px;">
+                                <form action="{{ route('admin.reservations.approve', $reservation) }}" method="POST">
+                                    @csrf
+                                    <button class="btn btn-success btn-sm">Accepter</button>
+                                </form>
 
-                            <form action="{{ route('admin.reservations.refuse', $reservation) }}" method="POST" style="display:inline">
-                                @csrf
-                                <button class="btn btn-danger btn-sm">Refuser</button>
-                            </form>
+                                <form action="{{ route('admin.reservations.refuse', $reservation) }}" method="POST">
+                                    @csrf
+                                    <button class="btn btn-danger btn-sm">Refuser</button>
+                                </form>
+                            </div>
                         @else
                             {{ ucfirst($reservation->statut) }}
                         @endif

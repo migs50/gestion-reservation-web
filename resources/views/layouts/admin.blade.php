@@ -269,6 +269,26 @@
             color: white;
         }
 
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .table .btn-sm {
+            margin: 2px;
+        }
+
+        /* Reset for inline forms in tables */
+        .table form {
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+            background: none;
+            box-shadow: none;
+            border-radius: 0;
+            max-width: none;
+        }
+
         /* Table */
         .table {
             width: 100%;
@@ -413,7 +433,7 @@ h1 {
 }
 
 /* Carte du formulaire Réservation */
-form {
+.form-card {
     max-width: 640px;
     margin: 1.5rem auto;
     padding: 2rem 2.4rem;
@@ -423,7 +443,7 @@ form {
 }
 
 /* Labels */
-form label {
+.form-card label {
     display: block;
     margin-bottom: 0.35rem;
     font-size: 0.9rem;
@@ -432,9 +452,9 @@ form label {
 }
 
 /* Champs */
-form select,
-form input[type="datetime-local"],
-form textarea {
+.form-card select,
+.form-card input[type="datetime-local"],
+.form-card textarea {
     width: 100%;
     padding: 0.55rem 0.8rem;
     margin-bottom: 1rem;
@@ -447,15 +467,15 @@ form textarea {
 }
 
 /* Textarea */
-form textarea {
+.form-card textarea {
     min-height: 110px;
     resize: vertical;
 }
 
 /* Focus */
-form select:focus,
-form input[type="datetime-local"]:focus,
-form textarea:focus {
+.form-card select:focus,
+.form-card input[type="datetime-local"]:focus,
+.form-card textarea:focus {
     outline: none;
     border-color: #6366f1;
     background: #ffffff;
@@ -464,7 +484,7 @@ form textarea:focus {
 }
 
 /* Bouton */
-form button[type="submit"] {
+.form-card button[type="submit"] {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -480,13 +500,13 @@ form button[type="submit"] {
 }
 
 /* Hover / Active bouton */
-form button[type="submit"]:hover {
+.form-card button[type="submit"]:hover {
     transform: translateY(-1px);
     box-shadow: 0 12px 25px rgba(15, 23, 42, 0.25);
     background: linear-gradient(135deg, #0f172a, #374151);
 }
 
-form button[type="submit"]:active {
+.form-card button[type="submit"]:active {
     transform: translateY(0);
     box-shadow: 0 6px 12px rgba(15, 23, 42, 0.2);
 }
@@ -721,10 +741,10 @@ form.form .btn:active {
             </li>
         </ul> --}}
 
-                    <ul class="sidebar-menu">
+            <ul class="sidebar-menu">
                 <li>
-                    <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                        <span>📊</span> Tableau de bord
+                    <a href="{{ route('admin.statistics') }}" class="{{ request()->routeIs('admin.statistics') ? 'active' : '' }}">
+                        <span>📊</span> Statistiques
                     </a>
                 </li>
 
@@ -735,8 +755,20 @@ form.form .btn:active {
                 </li>
 
                 <li>
+                    <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                        <span>📁</span> Catégories
+                    </a>
+                </li>
+
+                <li>
                     <a href="{{ route('admin.users') }}" class="{{ request()->routeIs('admin.users*') ? 'active' : '' }}">
                         <span>👥</span> Utilisateurs
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin.roles.index') }}" class="{{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
+                        <span>🔐</span> Rôles & Permissions
                     </a>
                 </li>
 
@@ -746,11 +778,11 @@ form.form .btn:active {
                     </a>
                 </li>
 
-                {{-- <li>
-                    <a href="{{ route('home') }}">
-                        <span>🏠</span> Retour au site
+                <li>
+                    <a href="{{ route('admin.maintenance.index') }}" class="{{ request()->routeIs('admin.maintenance.*') ? 'active' : '' }}">
+                        <span>🔧</span> Maintenance
                     </a>
-                </li> --}}
+                </li>
 
                 <li>
                     <form action="{{ route('logout') }}" method="POST">

@@ -91,4 +91,16 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('admin.users')->with('success', 'Utilisateur supprimé avec succès.');
     }
+
+    public function toggleStatus(User $user)
+    {
+        if ($user->id == auth()->id()) {
+            return back()->with('error', 'Vous ne pouvez pas modifier votre propre statut.');
+        }
+
+        $user->statut = ($user->statut === 'active') ? 'inactive' : 'active';
+        $user->save();
+
+        return back()->with('success', 'Statut de l\'utilisateur mis à jour.');
+    }
 }

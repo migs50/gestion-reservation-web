@@ -16,6 +16,9 @@ use App\Http\Controllers\Admin\StatisticsController as AdminStatisticsController
 use App\Http\Controllers\Admin\RessourceController as AdminRessourceController;
 use App\Http\Controllers\Admin\ReservationController as AdminReservationController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\CategorieController as AdminCategorieController;
+use App\Http\Controllers\Admin\MaintenanceController as AdminMaintenanceController;
+use App\Http\Controllers\Admin\RoleController as AdminRoleController;
 use App\Http\Controllers\Responsable\ResponsableController;
 
 /*
@@ -110,6 +113,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/reservations/create', [ReservationController::class, 'create']) ->name('reservations.create');
     Route::post('/reservations/{reservation}/approve', [ReservationController::class, 'approve'])->name('reservations.approve');
     Route::post('/reservations/{reservation}/refuse', [ReservationController::class, 'refuse'])->name('reservations.refuse');
+    Route::delete('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');
     
     // User Incidents (Reporting)
     Route::get('/incidents', [App\Http\Controllers\IncidentController::class, 'index'])->name('user.incidents.index');
@@ -152,6 +156,16 @@ Route::middleware('auth')->group(function () {
             Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
             Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
             Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+            Route::patch('/users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggleStatus');
+
+            // Admin categories management
+            Route::resource('categories', AdminCategorieController::class);
+
+            // Admin maintenance management
+            Route::resource('maintenance', AdminMaintenanceController::class);
+
+            // Admin roles & permissions
+            Route::resource('roles', AdminRoleController::class);
 
             // Admin ressources management
             Route::resource('ressources', AdminRessourceController::class);
