@@ -38,7 +38,7 @@
                     <td>#{{ $category->id }}</td>
                     <td><strong>{{ $category->nom }}</strong></td>
                     <td>{{ Str::limit($category->description, 50) }}</td>
-                    <td>{{ $category->created_at->format('d/m/Y') }}</td>
+                    <td>{{ $category->created_at ? $category->created_at->format('d/m/Y') : '-' }}</td>
                     <td>
                         <div style="display: flex; gap: 5px;">
                             <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-sm btn-primary" style="padding: 5px 10px; font-size: 12px;">Modifier</a>
