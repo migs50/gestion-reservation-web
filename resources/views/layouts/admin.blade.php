@@ -71,6 +71,35 @@
             font-size: 20px;
         }
 
+        /* Logout Link/Button */
+        .sidebar-logout-link {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background: transparent;
+            border: none;
+            border-left: 4px solid transparent;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: left;
+            font-family: inherit;
+        }
+
+        .sidebar-logout-link:hover {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .sidebar-logout-link span {
+            margin-right: 12px;
+            font-size: 20px;
+        }
+
         /* Main Content */
         .main-wrapper {
             flex: 1;
@@ -361,57 +390,6 @@
             .stats-grid {
                 grid-template-columns: 1fr;
             }
-                 /* Sidebar */
-        .sidebar {
-            width: 260px;
-            background: #2c3e50;
-            color: white;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar-header {
-            padding: 25px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            text-align: center;
-        }
-
-        .sidebar-header h2 {
-            font-size: 20px;
-            margin-top: 10px;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-            padding: 20px 0;
-        }
-
-        .sidebar-menu li {
-            margin: 5px 0;
-        }
-
-        .sidebar-menu a {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            color: #bdc3c7;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar-menu a:hover,
-        .sidebar-menu a.active {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border-left: 4px solid #667eea;
-        }
-
-        .sidebar-menu a span {
-            margin-right: 12px;
-            font-size: 20px;
-        }
         }
 
 </style>
@@ -742,6 +720,12 @@ form.form .btn:active {
         </ul> --}}
 
             <ul class="sidebar-menu">
+                <li>
+                    <a href="{{ route('admin.statistics') }}" class="{{ request()->is('admin/statistics') ? 'active' : '' }}">
+                        <span>🏠</span> Tableau de Bord
+                    </a>
+                </li>
+
                 <li>
                     <a href="{{ route('admin.statistics') }}" class="{{ request()->routeIs('admin.statistics') ? 'active' : '' }}">
                         <span>📊</span> Statistiques
