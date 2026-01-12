@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\StatisticsController as AdminStatisticsController
 use App\Http\Controllers\Admin\RessourceController as AdminRessourceController;
 use App\Http\Controllers\Admin\ReservationController as AdminReservationController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Responsable\ResponsableController;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,6 +111,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/reservations/{reservation}/approve', [ReservationController::class, 'approve'])->name('reservations.approve');
     Route::post('/reservations/{reservation}/refuse', [ReservationController::class, 'refuse'])->name('reservations.refuse');
     
+    // User Incidents (Reporting)
+    Route::get('/incidents', [App\Http\Controllers\IncidentController::class, 'index'])->name('user.incidents.index');
+    Route::get('/incidents/create', [App\Http\Controllers\IncidentController::class, 'create'])->name('user.incidents.create');
+    Route::post('/incidents', [App\Http\Controllers\IncidentController::class, 'store'])->name('user.incidents.store');
+    Route::get('/incidents/{incident}', [App\Http\Controllers\IncidentController::class, 'show'])->name('user.incidents.show');
+    
     /*
     |--------------------------------------------------------------------------
     | ADMIN routes (only Admin role, under /admin)
@@ -143,12 +150,35 @@ Route::middleware('auth')->group(function () {
             Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
             Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
             Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+            Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
             Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
 
             // Admin ressources management
             Route::resource('ressources', AdminRessourceController::class);
             Route::patch('ressources/{ressource}/toggle-actif', [AdminRessourceController::class, 'toggleActif'])
                 ->name('ressources.toggleActif');
+        });
+
+    /*
+    |--------------------------------------------------------------------------
+    | RESPONSABLE routes (Only Responsable Technique)
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware('role:Responsable Technique')
+        ->prefix('responsable')
+        ->name('responsable.')
+        ->group(function () {
+            Route::get('/ressources', [ResponsableController::class, 'indexRessources'])->name('ressources');
+            Route::get('/ressources/create', [ResponsableController::class, 'createRessource'])->name('ressources.create');
+            Route::post('/ressources', [ResponsableController::class, 'storeRessource'])->name('ressources.store');
+            Route::post('/resources/{resource}/maintenance', [ResponsableController::class, 'maintenance'])->name('resources.maintenance');
+            Route::post('/resources/{resource}/enable', [ResponsableController::class, 'enable'])->name('resources.enable');
+            Route::post('/resources/{resource}/disable', [ResponsableController::class, 'disable'])->name('resources.disable');
+
+            Route::get('/requests', [ResponsableController::class, 'indexRequests'])->name('requests');
+            Route::get('/requests/{reservation}', [ResponsableController::class, 'showRequest'])->name('requests.show');
+            Route::post('/requests/{reservation}/approve', [ResponsableController::class, 'approveRequest'])->name('requests.approve');
+            Route::post('/requests/{reservation}/reject', [ResponsableController::class, 'rejectRequest'])->name('requests.reject');
         });
 });
 

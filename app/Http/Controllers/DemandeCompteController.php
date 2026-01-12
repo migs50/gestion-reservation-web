@@ -24,7 +24,7 @@ class DemandeCompteController extends Controller
         'prenom'        => 'required|string|max:75',
         'email'         => 'required|email|unique:users,email|unique:demande_comptes,email',
         'telephone'     => 'required|string|max:30',
-        'type_demande'  => 'required|in:Interne,Responsable',
+        'type_demande'  => 'required|in:Interne,Responsable Technique',
         'justification' => 'required|string|min:50',
         'password'      => 'required|string|min:8|confirmed',
     ]);
@@ -65,14 +65,16 @@ class DemandeCompteController extends Controller
            $existing = User::where('email', $demande->email)->first();
 
            if (! $existing) {
-                $user = User::create([
-                    'nom'      => $demande->nom_complet, // if your users table has nom/prenom
-                    'prenom'   => '',                    // or split the name if needed
-                    'email'    => $demande->email,
-                    'password' => $demande->password,
-                    'role_id'  => 2, // normal user role id
-                    'statut'   => 'active',
-                ]);
+                $role = Role::where('nom', $demande->type_demande)->first() ?? Role::where('nom', 'User')->first();
+            
+            $user = User::create([
+                'nom'      => $demande->nom_complet, // if your users table has nom/prenom
+                'prenom'   => '',                    // or split the name if needed
+                'email'    => $demande->email,
+                'password' => $demande->password,
+                'role_id'  => $role ? $role->id : 2, // normal user role id
+                'statut'   => 'active',
+            ]);
            }
 
                 $demande->update([

@@ -18,23 +18,40 @@ class ReservationController extends Controller
 
 
 
-    public function index()
+    public function index(Request $request)
     {
-        $reservations = Reservation::with('ressource')
-            ->where('demandeur_id', Auth::id()) // TODO: Auth::id() plus tard
-             ->orderByDesc('debut')
-            ->paginate(15); //INSTEAD OF GET BECAUSE GET returns a Collection AND PAGINATE  returns a LengthAwarePaginator
+        $query = Reservation::with('ressource')
+            ->where('demandeur_id', Auth::id());
 
-       return view('profile.reservations', compact('reservations'));
+        // Filters
+        if ($request->filled('ressource')) {
+            $query->whereHas('ressource', function($q) use ($request) {
+                $q->where('nom', 'like', '%' . $request->ressource . '%');
+            });
+        }
 
+        if ($request->filled('statut')) {
+            $query->where('statut', $request->statut);
+        }
+
+        if ($request->filled('date_debut')) {
+            $query->whereDate('debut', '>=', $request->date_debut);
+        }
+
+        if ($request->filled('date_fin')) {
+            $query->whereDate('fin', '<=', $request->date_fin);
+        }
+
+        $reservations = $query->orderByDesc('debut')
+            ->paginate(15);
+
+        return view('profile.reservations', compact('reservations'));
     }
 
     public function create(Ressource $ressource)
     {
         return view('reservations.create', compact('ressource'));
     }
-
-
 
     public function store(Request $request)
     {
@@ -77,7 +94,6 @@ class ReservationController extends Controller
         ]);
 
         // Trigger notifications
-        Auth::user()->notify(new \App\Notifications\ReservationDecision($reservation)); // Information de création
 
         if ($ressource->manager_id && $manager = \App\Models\User::find($ressource->manager_id)) {
             $manager->notify(new ReservationRequested($reservation));
@@ -99,7 +115,7 @@ class ReservationController extends Controller
         // Check if user is authorized to view this reservation
         if ($reservation->demandeur_id !== Auth::id() && 
             !Auth::user()->hasRole('Admin') && 
-            !Auth::user()->hasRole('Responsable')) {
+            !Auth::user()->hasRole('Responsable Technique')) {
             abort(403, 'Non autorisé');
         }
 

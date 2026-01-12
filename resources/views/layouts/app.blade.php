@@ -226,6 +226,7 @@
                         </a>
                     </li>
                     @endauth
+                    <li><a href="{{ route('user.incidents.index') }}">Mes Incidents</a></li>
                     <li><a href="{{ route('dashboard') }}">Tableau de bord</a></li>
                     <li>
                         <form action="{{ route('logout') }}" method="POST" style="display:inline;">
@@ -258,7 +259,20 @@
                     <li><a href="{{ route('home') }}">Accueil</a></li>
                     <li><a href="{{ route('publique.ressources') }}">Ressources</a></li>
                     <li><a href="{{ route('rules') }}">Règles d'utilisation</a></li>
+                    @guest
                     <li><a href="{{ route('demande.compte') }}">Demander un compte</a></li>
+                    @endguest
+                    @auth
+                    <li><a href="{{ route('dashboard') }}">Tableau de bord</a></li>
+                    <li>
+                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" style="background:none;border:none;padding:0;color:inherit;cursor:pointer;">
+                                Déconnexion
+                            </button>
+                        </form>
+                    </li>
+                    @endauth
                 </ul>
             </div>
             <div>

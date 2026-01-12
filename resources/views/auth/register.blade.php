@@ -147,7 +147,7 @@
         <label for="type_demande">Type de compte</label>
         <select id="type_demande" name="type_demande" required>
             <option value="Interne">Interne</option>
-            <option value="Responsable">Responsable</option>
+            <option value="Responsable Technique">Responsable Technique</option>
         </select>
     </div>
 

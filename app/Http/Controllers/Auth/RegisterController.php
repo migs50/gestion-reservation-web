@@ -23,7 +23,7 @@ class RegisterController extends Controller
             'nom_complet' => 'required|string|max:150',
             'email' => 'required|email|max:191|unique:demande_comptes,email',
             'telephone' => 'required|string|max:30',
-            'type_demande' => 'required|in:Interne,Responsable',
+            'type_demande' => 'required|in:Interne,Responsable Technique',
             'justification' => 'required|string',
         ]);
 

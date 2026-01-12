@@ -179,6 +179,46 @@
     .btn-view:hover {
         background: #dfe6e9;
     }
+    .filters-bar {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .filters-form {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        align-items: end;
+    }
+
+    .filter-input {
+        padding: 10px;
+        border: 1px solid #dfe6e9;
+        border-radius: 8px;
+        font-size: 14px;
+        width: 100%;
+    }
+
+    .filter-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #636e72;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .btn-search {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+    }
 </style>
 
 <div class="reservations-container">
@@ -187,6 +227,37 @@
         <a href="{{ route('catalogue') }}" class="navbar-menu a btn-primary" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 25px;">
             ➕ Nouvelle réservation
         </a>
+    </div>
+
+    <!-- Filters Bar -->
+    <div class="filters-bar">
+        <form action="{{ route('reservations.index') }}" method="GET" class="filters-form">
+            <div>
+                <label class="filter-label">Ressource</label>
+                <input type="text" name="ressource" class="filter-input" placeholder="Nom..." value="{{ request('ressource') }}">
+            </div>
+            <div>
+                <label class="filter-label">Statut</label>
+                <select name="statut" class="filter-input">
+                    <option value="">Tous</option>
+                    <option value="pending" {{ request('statut') == 'pending' ? 'selected' : '' }}>En attente</option>
+                    <option value="approved" {{ request('statut') == 'approved' ? 'selected' : '' }}>Approuvée</option>
+                    <option value="active" {{ request('statut') == 'active' ? 'selected' : '' }}>Active</option>
+                    <option value="refused" {{ request('statut') == 'refused' ? 'selected' : '' }}>Refusée</option>
+                    <option value="terminated" {{ request('statut') == 'terminated' ? 'selected' : '' }}>Terminée</option>
+                </select>
+            </div>
+            <div>
+                <label class="filter-label">Du</label>
+                <input type="date" name="date_debut" class="filter-input" value="{{ request('date_debut') }}">
+            </div>
+            <div>
+                <label class="filter-label">Au</label>
+                <input type="date" name="date_fin" class="filter-input" value="{{ request('date_fin') }}">
+            </div>
+            <button type="submit" class="btn-search">Filtrer</button>
+            <a href="{{ route('reservations.index') }}" class="btn-action btn-view" style="text-align: center;">Réinitialiser</a>
+        </form>
     </div>
 
     <!-- Stats Summary -->

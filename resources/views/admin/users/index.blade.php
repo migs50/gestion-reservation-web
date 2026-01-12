@@ -42,7 +42,7 @@
     <select name="role" id="roleFilter" onchange="applyFilters()">
         <option value="">Tous les rôles</option>
         <option value="utilisateur" {{ request('role') == 'utilisateur' ? 'selected' : '' }}>Utilisateur</option>
-        <option value="responsable" {{ request('role') == 'responsable' ? 'selected' : '' }}>Responsable</option>
+        <option value="Responsable Technique" {{ request('role') == 'Responsable Technique' ? 'selected' : '' }}>Responsable Technique</option>
         <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
     </select>
 
@@ -82,9 +82,13 @@
                 <td>{{ $user->nom }} {{ $user->prenom }}</td>
                 <td>{{ $user->email }}</td>
                 <td>
-                    <span class="badge badge-{{ $user->role == 'admin' ? 'danger' : ($user->role == 'responsable' ? 'warning' : 'info') }}">
-                        {{ ucfirst($user->role) }}
-                    </span>
+                    @if($user->role)
+                        <span class="badge badge-{{ $user->role->nom == 'Admin' ? 'danger' : (str_contains($user->role->nom, 'Responsable') ? 'warning' : 'info') }}">
+                            {{ $user->role->nom }}
+                        </span>
+                    @else
+                        <span class="badge badge-secondary">-</span>
+                    @endif
                 </td>
                 <td>{{ $user->organisation ?? '-' }}</td>
                 <td>
@@ -94,7 +98,7 @@
                         <span class="badge badge-secondary">Inactif</span>
                     @endif
                 </td>
-                <td>{{ $user->created_at->format('d/m/Y') }}</td>
+                <td>{{ $user->created_at ? $user->created_at->format('d/m/Y') : '-' }}</td>
                 <td>
                     <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm" title="Éditer">✏️</a>
                     

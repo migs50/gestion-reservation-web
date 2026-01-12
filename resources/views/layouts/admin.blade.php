@@ -735,9 +735,16 @@ form.form .btn:active {
                 </li>
 
                 <li>
+                    <a href="{{ route('admin.users') }}" class="{{ request()->routeIs('admin.users*') ? 'active' : '' }}">
+                        <span>👥</span> Utilisateurs
+                    </a>
+                </li>
+
+                <li>
                     <a href="{{ route('admin.reservations.index') }}" class="{{ request()->routeIs('admin.reservations.*') ? 'active' : '' }}">
                         <span>📋</span> Réservations
                     </a>
+                </li>
 
                 {{-- <li>
                     <a href="{{ route('home') }}">

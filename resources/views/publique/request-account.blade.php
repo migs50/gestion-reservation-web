@@ -267,7 +267,7 @@
                 <select name="type_demande" required>
                     <option value="">-- Sélectionnez un type --</option>
                     <option value="Interne" {{ old('type_demande') == 'Interne' ? 'selected' : '' }}>Utilisateur Interne</option>
-                    <option value="Responsable" {{ old('type_demande') == 'Responsable' ? 'selected' : '' }}>Responsable de Ressource</option>
+                    <option value="Responsable Technique" {{ old('type_demande') == 'Responsable Technique' ? 'selected' : '' }}>Responsable Technique</option>
                 </select>
             </div>
 

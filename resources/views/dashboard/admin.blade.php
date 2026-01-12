@@ -156,6 +156,54 @@
     </table>
 </div>
 
+<!-- Liste des Utilisateurs -->
+<div class="chart-container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3>👥 Utilisateurs enregistrés</h3>
+        <a href="{{ route('admin.users') }}" class="btn btn-sm">Voir tous</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Rôle</th>
+                <th>Date d'inscription</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($stats['users']->take(5) as $user)
+            <tr>
+                <td>#{{ $user->id }}</td>
+                <td>{{ $user->nom }} {{ $user->prenom }}</td>
+                <td>{{ $user->email }}</td>
+                <td>
+                    @if($user->role)
+                        <span class="badge badge-{{ $user->role->nom == 'Admin' ? 'danger' : (str_contains($user->role->nom, 'Responsable') ? 'warning' : 'info') }}">
+                            {{ $user->role->nom }}
+                        </span>
+                    @else
+                        <span class="badge badge-secondary">-</span>
+                    @endif
+                </td>
+                <td>{{ $user->created_at ? $user->created_at->format('d/m/Y') : '-' }}</td>
+                <td>
+                    <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm">Gérer</a>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 30px; color: #7f8c8d;">
+                    Aucun utilisateur enregistré
+                </td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Animation des compteurs
