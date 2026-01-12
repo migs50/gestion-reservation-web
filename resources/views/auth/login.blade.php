@@ -100,7 +100,7 @@
         <label for="password">Mot de passe</label>
         <input type="password" id="password" name="password" placeholder="••••••••" required>
         <div class="forgot-link">
-            <a href="{{ route('password.request') }}">Mot de passe oublié ?</a>
+            <a href="{{ route('secret.email') }}">Mot de passe oublié ?</a>
         </div>
     </div>
 

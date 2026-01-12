@@ -1,10 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+// Auth
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\PasswordSecretController;
+
+// User Controllers
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GuestController;
@@ -12,44 +17,52 @@ use App\Http\Controllers\DemandeCompteController;
 use App\Http\Controllers\RessourceController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReservationController;
-use App\Http\Controllers\Admin\StatisticsController as AdminStatisticsController;
+
+// Admin Controllers
+use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\RessourceController as AdminRessourceController;
 use App\Http\Controllers\Admin\ReservationController as AdminReservationController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 
 /*
 |--------------------------------------------------------------------------
-| Notifications (user)
+| Notifications (User)
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
 
-Route::get('/notifications', [NotificationController::class, 'index'])
-    ->name('user.notifications');
+    Route::get('/notifications', [NotificationController::class, 'index'])
+        ->name('user.notifications');
 
-Route::post('/notifications/{id}/mark-read', [NotificationController::class, 'markAsRead'])
-    ->name('user.notifications.markRead');
+    Route::post('/notifications/{id}/mark-read', [NotificationController::class, 'markAsRead'])
+        ->name('user.notifications.markRead');
 
-Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead'])
-    ->name('user.notifications.markAllRead');
+    Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead'])
+        ->name('user.notifications.markAllRead');
 
-Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])
-    ->name('user.notifications.destroy');
+    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])
+        ->name('user.notifications.destroy');
 });
+
 /*
 |--------------------------------------------------------------------------
 | Public Routes (Guest)
 |--------------------------------------------------------------------------
 */
 
-
 Route::get('/', [GuestController::class, 'index'])->name('home');
-
 Route::get('/catalogue', [GuestController::class, 'catalogue'])->name('catalogue');
-Route::get('/ressources/{ressource}', [RessourceController::class, 'show'])->name('ressources.show');
+
+Route::get('/contact', [GuestController::class, 'contact'])->name('contact');
 Route::get('/regles', [GuestController::class, 'regles'])->name('regles');
 Route::get('/rules', [GuestController::class, 'rules'])->name('rules');
-Route::get('/contact', [GuestController::class, 'contact'])->name('contact');
+
+// Public ressources catalogue
+Route::get('/ressources', [RessourceController::class, 'index'])
+    ->name('publique.ressources');
+
+Route::get('/ressources/{ressource}', [RessourceController::class, 'show'])
+    ->name('ressources.show');
 
 /*
 |--------------------------------------------------------------------------
@@ -73,25 +86,23 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink
 Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 
-/*
-|--------------------------------------------------------------------------
-| Public ressources (catalogue details)
-|--------------------------------------------------------------------------
-*/
+// Secret question reset
+Route::get('/forgot-password-secret', [PasswordSecretController::class, 'showEmailForm'])->name('secret.email');
+Route::post('/forgot-password-secret', [PasswordSecretController::class, 'checkEmail']);
+Route::get('/forgot-password-secret/question', [PasswordSecretController::class, 'showQuestionForm'])->name('secret.question');
+Route::post('/forgot-password-secret/reset', [PasswordSecretController::class, 'resetPassword'])->name('secret.reset');
 
 /*
 |--------------------------------------------------------------------------
-| Authenticated Routes
+| Authenticated Routes (Users)
 |--------------------------------------------------------------------------
 */
-
-
 
 Route::middleware('auth')->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard/user', [DashboardController::class, 'user']) ->name('dashboard.user');
+    Route::get('/dashboard/user', [DashboardController::class, 'user'])->name('dashboard.user');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
@@ -100,81 +111,55 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
     Route::get('/profile/reservations', [ProfileController::class, 'reservations'])->name('profile.reservations');
 
-    // User reservations (normal users)
+    // Reservations (User)
     Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
-    Route::get('/ressources/{ressource}/reserver', [ReservationController::class, 'create'])->name('reservations.create');
+    Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
+
+    Route::get('/ressources/{ressource}/reserver', [ReservationController::class, 'create'])
+        ->name('reservations.create');
+
     Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
-    Route::get('/reservations/create', [ReservationController::class, 'create']) ->name('reservations.create');
-    Route::post('/reservations/{reservation}/approve', [ReservationController::class, 'approve'])->name('reservations.approve');
-    Route::post('/reservations/{reservation}/refuse', [ReservationController::class, 'refuse'])->name('reservations.refuse');
-    
+
+    Route::post('/reservations/{reservation}/approve', [ReservationController::class, 'approve'])
+        ->name('reservations.approve');
+    Route::post('/reservations/{reservation}/refuse', [ReservationController::class, 'refuse'])
+        ->name('reservations.refuse');
+
     /*
     |--------------------------------------------------------------------------
-    | ADMIN routes (only Admin role, under /admin)
+    | ADMIN Routes
     |--------------------------------------------------------------------------
     */
-
     Route::middleware('role:Admin')
         ->prefix('admin')
         ->name('admin.')
         ->group(function () {
 
-            // Admin ressources
+            // Ressources admin
             Route::get('/ressources', [AdminRessourceController::class, 'index'])->name('ressources.index');
             Route::get('/ressources/create', [AdminRessourceController::class, 'create'])->name('ressources.create');
             Route::post('/ressources', [AdminRessourceController::class, 'store'])->name('ressources.store');
 
-            // Admin reservations
+            // Reservations admin
             Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
             Route::get('/reservations/create', [AdminReservationController::class, 'create'])->name('reservations.create');
             Route::post('/reservations', [AdminReservationController::class, 'store'])->name('reservations.store');
 
-            // Approve / refuse reservations
             Route::post('/reservations/{reservation}/approve', [AdminReservationController::class, 'approve'])
                 ->name('reservations.approve');
             Route::post('/reservations/{reservation}/refuse', [AdminReservationController::class, 'refuse'])
                 ->name('reservations.refuse');
 
-            // Demandes de compte (admin validates new users)
+            // Demandes compte
             Route::get('/demandes', [DemandeCompteController::class, 'index'])->name('demandes.index');
             Route::post('/demandes/{demande}/accept', [DemandeCompteController::class, 'accept'])->name('demandes.accept');
             Route::post('/demandes/{demande}/reject', [DemandeCompteController::class, 'reject'])->name('demandes.reject');
+
+            // Admin users
+            Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
+            Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
+
+            // Admin statistics
+            Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics');
         });
 });
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/ressources', [RessourceController::class, 'index'])
-        ->name('admin.ressources');
-});
-use App\Http\Controllers\Admin\StatisticsController;
-
-Route::middleware(['auth', 'role:Admin'])->group(function () {
-    Route::get('/admin/statistics', [StatisticsController::class, 'index'])
-        ->name('admin.statistics');
-});
-
-Route::middleware(['auth', 'role:Admin'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-        // ...
-        Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
-        Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
-    });
-
-// catalogue public
-Route::get('/ressources', [RessourceController::class, 'index'])
-    ->name('publique.ressources');
-
-Route::get('/ressources/{ressource}', [RessourceController::class, 'show'])
-    ->name('ressources.show');
-
-
-
-    Route::middleware(['auth', 'role:Admin'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-        Route::get('/ressources', [AdminRessourceController::class, 'index'])
-            ->name('ressources.index'); // => admin.ressources.index
-    });
-

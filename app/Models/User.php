@@ -21,12 +21,15 @@ class User extends Authenticatable
         'prenom',
         'email',
         'password',
-        'statut'
+        'statut',
+        'secret_question',  
+        'secret_answer'
     ];
 
     protected $hidden = [
         'password',
-        'remember_token'
+        'remember_token',
+        'secret_answer'
     ];
 
     protected $casts = [

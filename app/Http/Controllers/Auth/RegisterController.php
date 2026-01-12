@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\DemandeCompte;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+
 
 class RegisterController extends Controller
 {
@@ -25,6 +27,8 @@ class RegisterController extends Controller
             'telephone' => 'required|string|max:30',
             'type_demande' => 'required|in:Interne,Responsable',
             'justification' => 'required|string',
+            'secret_question' => 'required|string|max:255',   
+            'secret_answer' => 'required|string|max:255', 
         ]);
 
         DemandeCompte::create([
@@ -34,6 +38,8 @@ class RegisterController extends Controller
             'type_demande' => $validated['type_demande'],
             'justification' => $validated['justification'],
             'statut' => 'pending',
+            'secret_question' => $validated['secret_question'],  
+            'secret_answer' => $validated['secret_answer'],
         ]);
 
       return redirect()->route('register.success');

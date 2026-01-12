@@ -26,6 +26,9 @@ class DemandeCompteController extends Controller
         'type_demande'  => 'required|in:Interne,Responsable',
         'justification' => 'required|string',
         'password'      => 'required|string|min:8|confirmed',
+        'secret_question' => 'required|string|max:255',
+        'secret_answer'   => 'required|string|max:255',
+
     ]);
 
     $passwordHash = Hash::make($data['password']);
@@ -38,6 +41,9 @@ class DemandeCompteController extends Controller
         'justification' => $data['justification'],
         'password'      => $passwordHash,
         'statut'        => 'pending',
+        'secret_question' => $data['secret_question'],
+        'secret_answer'   => Hash::make($data['secret_answer']),
+
     ]);
         
         
@@ -71,6 +77,8 @@ class DemandeCompteController extends Controller
                     'password' => $demande->password,
                     'role_id'  => 3, // normal user role id
                     'statut'   => 'active',
+                    'secret_question' => $demande->secret_question,   
+                    'secret_answer' => $demande->secret_answer,
                 ]);
            }
 

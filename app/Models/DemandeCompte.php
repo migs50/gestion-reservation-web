@@ -17,7 +17,9 @@ class DemandeCompte extends Model
         'password',
         'statut',
         'decided_by',
-        'note_decision'
+        'note_decision',
+        'secret_question',  
+        'secret_answer'   
     ];
 
     protected $casts = [
