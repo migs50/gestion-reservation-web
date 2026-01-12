@@ -106,11 +106,81 @@ Route::middleware('auth')->group(function () {
     Route::post('/reservations/{reservation}/approve', [ReservationController::class, 'approve'])->name('reservations.approve');
     Route::post('/reservations/{reservation}/refuse', [ReservationController::class, 'refuse'])->name('reservations.refuse');
 
+<<<<<<< HEAD
     // Incidents (User)
     Route::get('/incidents', [IncidentController::class, 'index'])->name('user.incidents.index');
     Route::get('/incidents/create', [IncidentController::class, 'create'])->name('user.incidents.create');
     Route::post('/incidents', [IncidentController::class, 'store'])->name('user.incidents.store');
     Route::get('/incidents/{incident}', [IncidentController::class, 'show'])->name('user.incidents.show');
+=======
+            // Admin reservations
+            Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
+            Route::get('/reservations/create', [AdminReservationController::class, 'create'])->name('reservations.create');
+            Route::post('/reservations', [AdminReservationController::class, 'store'])->name('reservations.store');
+
+            // Approve / refuse reservations
+            Route::post('/reservations/{reservation}/approve', [AdminReservationController::class, 'approve'])
+                ->name('reservations.approve');
+            Route::post('/reservations/{reservation}/refuse', [AdminReservationController::class, 'refuse'])
+                ->name('reservations.refuse');
+
+            // Demandes de compte (admin validates new users)
+            Route::get('/demandes', [DemandeCompteController::class, 'index'])->name('demandes.index');
+            Route::post('/demandes/{demande}/accept', [DemandeCompteController::class, 'accept'])->name('demandes.accept');
+            Route::post('/demandes/{demande}/reject', [DemandeCompteController::class, 'reject'])->name('demandes.reject');
+
+            // Admin users management
+            Route::get('/users', [AdminUserController::class, 'index'])->name('users');
+            Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
+            Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
+            Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+            Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+            Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+            Route::patch('/users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggleStatus');
+
+            // Admin categories management
+            Route::resource('categories', AdminCategorieController::class);
+
+            // Admin maintenance management
+            Route::resource('maintenance', AdminMaintenanceController::class);
+
+            // Admin roles & permissions
+            Route::resource('roles', AdminRoleController::class);
+
+            // Admin ressources management
+            Route::resource('ressources', AdminRessourceController::class);
+            Route::patch('ressources/{ressource}/toggle-actif', [AdminRessourceController::class, 'toggleActif'])
+                ->name('ressources.toggleActif');
+        });
+
+    /*
+    |--------------------------------------------------------------------------
+    | RESPONSABLE routes (Only Responsable Technique)
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware('role:Responsable Technique')
+        ->prefix('responsable')
+        ->name('responsable.')
+        ->group(function () {
+            Route::get('/ressources', [ResponsableController::class, 'indexRessources'])->name('ressources');
+            Route::get('/ressources/create', [ResponsableController::class, 'createRessource'])->name('ressources.create');
+            Route::post('/ressources', [ResponsableController::class, 'storeRessource'])->name('ressources.store');
+            Route::get('/ressources/{resource}/edit', [ResponsableController::class, 'editRessource'])->name('ressources.edit');
+            Route::put('/ressources/{resource}', [ResponsableController::class, 'updateRessource'])->name('ressources.update');
+            Route::post('/resources/{resource}/maintenance', [ResponsableController::class, 'maintenance'])->name('resources.maintenance');
+            Route::post('/resources/{resource}/enable', [ResponsableController::class, 'enable'])->name('resources.enable');
+            Route::post('/resources/{resource}/disable', [ResponsableController::class, 'disable'])->name('resources.disable');
+
+            Route::get('/requests', [ResponsableController::class, 'indexRequests'])->name('requests');
+            Route::get('/requests/{reservation}', [ResponsableController::class, 'showRequest'])->name('requests.show');
+            Route::post('/requests/{reservation}/approve', [ResponsableController::class, 'approveRequest'])->name('requests.approve');
+            Route::post('/requests/{reservation}/reject', [ResponsableController::class, 'rejectRequest'])->name('requests.reject');
+
+            // Moderation
+            Route::get('/discussions', [ResponsableController::class, 'discussions'])->name('discussions');
+            Route::post('/messages/{message}/hide', [ResponsableController::class, 'hideMessage'])->name('messages.hide');
+        });
+>>>>>>> ff3d250ae1208e7886148a1fa8f85b36f64b3f00
 });
 
 /*

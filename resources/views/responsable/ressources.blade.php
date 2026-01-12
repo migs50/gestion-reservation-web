@@ -15,21 +15,25 @@
 <style>
     /* [Reprendre les mêmes styles que précédemment] */
     .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        padding: 40px;
+        color: white;
+        margin-bottom: 30px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 30px;
-        flex-wrap: wrap;
-        gap: 20px;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
     }
 
     .page-title {
         font-size: 32px;
         font-weight: 800;
-        color: #2d3748;
+        color: white;
         display: flex;
         align-items: center;
         gap: 15px;
+        margin: 0;
     }
 
     .page-actions {
@@ -51,10 +55,16 @@
         gap: 8px;
     }
 
-    .btn-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    .btn-white {
+        background: white;
+        color: #667eea;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-white:hover {
+        transform: translateY(-2px);
+        background: #f8fafc;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
 
     .btn-primary:hover {
@@ -252,7 +262,7 @@
         Mes Ressources
     </h1>
     <div class="page-actions">
-        <a href="{{ route('responsable.ressources.create') }}" class="btn btn-primary">
+        <a href="{{ route('responsable.ressources.create') }}" class="btn btn-white">
             <span>➕</span>
             Nouvelle ressource
         </a>
@@ -308,48 +318,61 @@
     @forelse($resources as $resource)
         <div class="resource-card">
             <div class="resource-image">
-                {{ $resource->getIcon() }}
-                <span class="resource-badge badge-{{ $resource->status }}">
-                    {{ ucfirst($resource->status) }}
+                @php
+                    $icon = '🖥️';
+                    if($resource->categorie) {
+                        if(str_contains(strtolower($resource->categorie->nom), 'serveur')) $icon = '🗄️';
+                        if(str_contains(strtolower($resource->categorie->nom), 'virtuel')) $icon = '☁️';
+                        if(str_contains(strtolower($resource->categorie->nom), 'stockage')) $icon = '💾';
+                        if(str_contains(strtolower($resource->categorie->nom), 'réseau')) $icon = '🌐';
+                    }
+                @endphp
+                {{ $icon }}
+                <span class="resource-badge badge-{{ $resource->etat }}">
+                    {{ ucfirst($resource->etat) }}
                 </span>
             </div>
             <div class="resource-body">
-                <h3 class="resource-title">{{ $resource->name }}</h3>
-                <p class="resource-type">{{ ucfirst($resource->type) }}</p>
+                <h3 class="resource-title">{{ $resource->nom }}</h3>
+                <p class="resource-type">{{ $resource->categorie ? $resource->categorie->nom : 'Sans catégorie' }}</p>
                 
                 <div class="resource-specs">
-                    @if($resource->specifications)
-                        @foreach($resource->specifications as $key => $value)
-                            <div class="spec-item">
-                                <span>⚡</span>
-                                <span>{{ ucfirst($key) }}: {{ $value }}</span>
-                            </div>
-                        @endforeach
+                    @if($resource->cpu)
+                        <div class="spec-item"><span>⚡</span><span>CPU: {{ $resource->cpu }}</span></div>
+                    @endif
+                    @if($resource->ram)
+                        <div class="spec-item"><span>🧠</span><span>RAM: {{ $resource->ram }}</span></div>
+                    @endif
+                    @if($resource->os)
+                        <div class="spec-item"><span>💿</span><span>OS: {{ $resource->os }}</span></div>
                     @endif
                 </div>
 
-                <div class="resource-actions">
-                    @if($resource->status !== 'maintenance')
+                <div class="resource-actions" style="grid-template-columns: 1fr 1fr 1fr;">
+                    <a href="{{ route('responsable.ressources.edit', $resource->id) }}" class="action-btn" style="background: #4299e1; color: white; text-align: center; text-decoration: none;">
+                        📝 Éditer
+                    </a>
+                    @if($resource->etat !== 'maintenance')
                         <form action="{{ route('responsable.resources.maintenance', $resource->id) }}" method="POST">
                             @csrf
                             <button type="submit" class="action-btn action-maintenance" onclick="return confirm('Mettre en maintenance ?')">
-                                🔧 Maintenance
+                                🔧 Maint.
                             </button>
                         </form>
                     @else
                         <form action="{{ route('responsable.resources.enable', $resource->id) }}" method="POST">
                             @csrf
                             <button type="submit" class="action-btn action-enable" onclick="return confirm('Réactiver ?')">
-                                ✓ Réactiver
+                                ✓ Activer
                             </button>
                         </form>
                     @endif
 
-                    @if($resource->status !== 'disabled')
+                    @if($resource->etat !== 'disabled')
                         <form action="{{ route('responsable.resources.disable', $resource->id) }}" method="POST">
                             @csrf
                             <button type="submit" class="action-btn action-disable" onclick="return confirm('Désactiver ?')">
-                                ⛔ Désactiver
+                                ⛔ Désact.
                             </button>
                         </form>
                     @else

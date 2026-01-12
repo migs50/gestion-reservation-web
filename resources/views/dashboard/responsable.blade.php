@@ -7,10 +7,10 @@
 
 @section('content')
 <style>
-    .welcome-banner {
+    .page-header {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         border-radius: 20px;
-        padding: 35px;
+        padding: 40px;
         color: white;
         margin-bottom: 30px;
         position: relative;
@@ -18,7 +18,7 @@
         box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
     }
 
-    .welcome-banner::before {
+    .page-header::before {
         content: '';
         position: absolute;
         top: -50%;
@@ -29,18 +29,18 @@
         border-radius: 50%;
     }
 
-    .welcome-content {
+    .header-content {
         position: relative;
         z-index: 1;
     }
 
-    .welcome-title {
+    .page-title {
         font-size: 32px;
         font-weight: 700;
         margin-bottom: 10px;
     }
 
-    .welcome-subtitle {
+    .page-subtitle {
         font-size: 16px;
         opacity: 0.95;
     }
@@ -378,11 +378,11 @@
     }
 </style>
 
-{{-- Welcome Banner --}}
-<div class="welcome-banner">
-    <div class="welcome-content">
-        <h1 class="welcome-title">👋 Bonjour, {{ Auth::user()->nom }}</h1>
-        <p class="welcome-subtitle">
+{{-- Page Header --}}
+<div class="page-header">
+    <div class="header-content">
+        <h1 class="page-title">👋 Bonjour, {{ Auth::user()->nom }}</h1>
+        <p class="page-subtitle">
             Vous gérez actuellement <strong>{{ $totalResources }}</strong> ressource(s) avec <strong>{{ $pendingRequests }}</strong> demande(s) en attente
         </p>
     </div>
@@ -421,15 +421,13 @@
         <div class="stat-label">Réservations actives</div>
     </div>
 
-    <div class="stat-card red">
+    <div class="stat-card blue" onclick="window.location.href='{{ route('responsable.discussions') }}'">
         <div class="stat-header">
-            <div class="stat-icon red">⚠️</div>
-            <span class="stat-trend {{ $alertTrend >= 0 ? 'trend-up' : 'trend-down' }}">
-                {{ $alertTrend >= 0 ? '↑' : '↓' }} {{ abs($alertTrend) }}
-            </span>
+            <div class="stat-icon blue" style="background: rgba(66, 153, 225, 0.12); color: #4299e1;">💬</div>
+            <span class="stat-trend trend-up">Admin</span>
         </div>
-        <div class="stat-value">{{ $activeAlerts }}</div>
-        <div class="stat-label">Alertes</div>
+        <div class="stat-value">💬</div>
+        <div class="stat-label">Modération</div>
     </div>
 </div>
 

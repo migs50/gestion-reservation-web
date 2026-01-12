@@ -24,4 +24,13 @@ class Message extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
     ];
+    public function discussion()
+    {
+        return $this->belongsTo(Discussion::class);
+    }
+
+    public function auteur()
+    {
+        return $this->belongsTo(User::class, 'auteur_id');
+    }
 }

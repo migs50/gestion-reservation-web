@@ -97,11 +97,11 @@ class ReservationController extends Controller
         // Logging
              Journal::create([
                 'acteur_id'  => Auth::id(),
-                'objet'      => 'reservation',              // required
-                'objet_id'   => $reservation->id ?? null,   // if relevant
-                'action'     => 'approbation_reservation',
-                'details'    => "Réservation #{$reservation->id} APPROUVÉE pour l'utilisateur {$reservation->demandeur->nom}",
-                'donnees'    => null,                       // or some array
+                'objet'      => 'reservation',
+                'objet_id'   => $reservation->id,
+                'action'     => 'create',
+                'details'    => "Demande de réservation #{$reservation->id} pour la ressource {$ressource->nom}",
+                'donnees'    => null,
                 'ip'         => request()->ip(),
                 'user_agent' => request()->userAgent(),
             ]);
@@ -158,11 +158,11 @@ class ReservationController extends Controller
         // Logging
             Journal::create([
                 'acteur_id'  => Auth::id(),
-                'objet'      => 'reservation',              // required
-                'objet_id'   => $reservation->id ?? null,   // if relevant
-                'action'     => 'approbation_reservation',
-                'details'    => "Réservation #{$reservation->id} APPROUVÉE pour l'utilisateur {$reservation->demandeur->nom}",
-                'donnees'    => null,                       // or some array
+                'objet'      => 'reservation',
+                'objet_id'   => $reservation->id,
+                'action'     => 'cancel',
+                'details'    => "Réservation #{$reservation->id} annulée par l'utilisateur",
+                'donnees'    => null,
                 'ip'         => request()->ip(),
                 'user_agent' => request()->userAgent(),
             ]);

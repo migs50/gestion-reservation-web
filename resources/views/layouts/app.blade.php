@@ -191,6 +191,7 @@
             }
         }
     </style>
+    @stack('style')
 </head>
 <body>
     <!-- Navigation -->
