@@ -238,6 +238,20 @@
                     <input type="password" name="password_confirmation" required placeholder="Confirmez votre mot de passe">
                 </div>
             </div>
+            <div class="form-group">
+                <label for="secret_question">Question secrète</label>
+                <select name="secret_question" id="secret_question" required>
+                    <option value="">Choisir une question</option>
+                    <option value="school">Nom de votre première école ?</option>
+                    <option value="pet">Nom de votre premier animal ?</option>
+                    <option value="city">Ville de naissance ?</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="secret_answer">Réponse à la question secrète</label>
+                <input type="text" id="secret_answer" name="secret_answer" placeholder="Votre réponse" required>
+            </div>
 
             <!-- Informations professionnelles -->
             <h3 style="color: #2c3e50; margin: 30px 0 20px;">🏢 Informations professionnelles</h3>

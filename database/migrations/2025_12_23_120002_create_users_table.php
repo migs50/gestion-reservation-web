@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('email', 191)->unique();
             $table->string('password');
             $table->enum('statut', ['active', 'inactive', 'suspended']);
+             $table->string('secret_question')->nullable();
+            $table->string('secret_answer')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

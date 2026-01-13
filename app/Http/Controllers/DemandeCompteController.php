@@ -79,6 +79,8 @@ class DemandeCompteController extends Controller
                     'password' => $demande->password,
                     'role_id'  => 3, // normal user role id
                     'statut'   => 'active',
+                    'secret_question' => $demande->secret_question,
+                    'secret_answer'   => $demande->secret_answer,
                 ]);
            }
 

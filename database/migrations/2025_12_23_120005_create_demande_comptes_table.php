@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('nom_complet', 150);
             $table->string('email', 191);
             $table->string('telephone', 30);
-            $table->enum('type_demande', ['Interne', 'Responsable']);
+            $table->enum('type_demande', ['Interne', 'Responsable Technique']);
             $table->text('justification');
             $table->string('password')->nullable();
             $table->enum('statut', ['pending', 'approved', 'refused']);
