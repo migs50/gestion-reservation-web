@@ -214,7 +214,7 @@
 
                 @guest
                     <li><a href="{{ route('login') }}" class="btn-primary">Connexion</a></li>
-                    <li><a href="{{ route('register') }}">Inscription</a></li>
+                    <li><a href="{{ route('demande.compte') }}">Inscription</a></li>
                 @else
                     @auth
                     <li>
