@@ -3,6 +3,8 @@
 @section('title', 'Mes réservations')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <style>
     .reservations-container {
         padding: 20px 0;

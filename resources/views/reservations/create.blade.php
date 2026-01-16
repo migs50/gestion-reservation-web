@@ -3,6 +3,8 @@
 @section('title', 'Nouvelle réservation')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 
 <style>
 /* Fond global */

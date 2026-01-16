@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Administration') - DataCenter Manager</title>
+    <title>@yield('title', 'Administration') - Data Center </title>
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
+    <!-- External CSS 
     
     <style>
         * {
@@ -29,10 +32,9 @@
             overflow-y: auto;
             transition: transform 0.3s ease;
         }
-
-        .sidebar-header {
+   .sidebar-header {
             padding: 25px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background:#2c3e50;
             text-align: center;
         }
 
@@ -152,7 +154,7 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #2c3e50;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -274,7 +276,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #2c3e50;
             color: white;
         }
 
@@ -392,9 +394,9 @@
             }
         }
 
-</style>
 
-<style>
+
+
 /* Fond global */
 main .content,
 .admin-main,
@@ -500,12 +502,7 @@ h1 {
         font-size: 1.6rem;
     }
 }
-</style>
 
-
-
-
-<style>
 
 /* Fond global de la page admin */
 main .content,
@@ -657,114 +654,66 @@ form.form .btn:active {
     border-left: 4px solid #667eea;
 }
 
- 
+     
 </style>
+-->
 
-
-
-
-
-
-
-    </style>
 </head>
 <body>
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <div style="font-size: 40px;">🖥️</div>
+            <div style="font-size: 40px;"></div>
             <h2>Admin Panel</h2>
         </div>
 
-        {{-- <ul class="sidebar-logout-link">
-            <li>
-                <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                    <span>📊</span> Tableau de bord
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.users') }}" class="{{ request()->routeIs('admin.users') ? 'active' : '' }}">
-                    <span>👥</span> Utilisateurs
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.ressources') }}" class="{{ request()->routeIs('admin.ressources') ? 'active' : '' }}">
-                    <span>💾</span> Ressources
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.categories') }}" class="{{ request()->routeIs('admin.categories') ? 'active' : '' }}">
-                    <span>📁</span> Catégories
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.statistics') }}" class="{{ request()->routeIs('admin.statistics') ? 'active' : '' }}">
-                    <span>📈</span> Statistiques
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.maintenance') }}" class="{{ request()->routeIs('admin.maintenance') ? 'active' : '' }}">
-                    <span>🔧</span> Maintenance
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('home') }}">
-                    <span>🏠</span> Retour au site
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('logout') }}">
-                    <span>🚪</span> Déconnexion
-                </a>
-            </li>
-        </ul> --}}
 
             <ul class="sidebar-menu">
                 <li>
                     <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                        <span>🏠</span> Tableau de Bord
+                        <span></span> Tableau de Bord
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('admin.statistics') }}" class="{{ request()->routeIs('admin.statistics') ? 'active' : '' }}">
-                        <span>📊</span> Statistiques
+                        <span></span> Statistiques
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('admin.ressources.index') }}" class="{{ request()->routeIs('admin.ressources.*') ? 'active' : '' }}">
-                        <span>💾</span> Ressources
+                        <span></span> Ressources
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
-                        <span>📁</span> Catégories
+                        <span></span> Catégories
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users*') ? 'active' : '' }}">
-                        <span>👥</span> Utilisateurs
+                        <span></span> Utilisateurs
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('admin.roles.index') }}" class="{{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
-                        <span>🔐</span> Rôles & Permissions
+                        <span></span> Rôles & Permissions
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('admin.reservations.index') }}" class="{{ request()->routeIs('admin.reservations.*') ? 'active' : '' }}">
-                        <span>📋</span> Réservations
+                        <span></span> Réservations
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('admin.maintenances.index') }}" class="{{ request()->routeIs('admin.maintenance.*') ? 'active' : '' }}">
-                        <span>🔧</span> Maintenance
+                        <span></span> Maintenance
                     </a>
                 </li>
 
@@ -772,7 +721,7 @@ form.form .btn:active {
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="sidebar-logout-link">
-                            <span>🚪</span> Déconnexion
+                            <span></span> Déconnexion
                         </button>
                     </form>
                 </li>

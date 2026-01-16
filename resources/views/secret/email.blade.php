@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mot de passe oublié - DataCenter Manager</title>
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
     <style>
         * {
             margin: 0;
@@ -13,7 +15,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #454e76ff;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -22,7 +24,7 @@
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(247, 244, 244, 0.95);
             border-radius: 24px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             max-width: 480px;
@@ -31,7 +33,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #454e76ff;
             padding: 40px 40px 32px 40px;
             text-align: center;
             color: white;
@@ -69,7 +71,7 @@
             border-radius: 10px;
             padding: 16px;
             margin-bottom: 24px;
-            border-left: 3px solid #667eea;
+            border-left: 3px solid #464f75ff;
         }
 
         .info-box p {
@@ -102,8 +104,8 @@
 
         input[type="email"]:focus {
             outline: none;
-            border-color: #667eea;
-            background: white;
+            border-color: #4d5269ff;
+            background: #353e5cff;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
@@ -120,7 +122,7 @@
         .submit-btn {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #5b6385ff 0%, #764ba2 100%);
             color: white;
             border: none;
             border-radius: 10px;
@@ -145,7 +147,7 @@
         }
 
         .back-link a {
-            color: #667eea;
+            color: #242424ff;
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
@@ -183,7 +185,7 @@
 <div class="container">
     <div class="header">
         <div class="icon">💻</div>
-        <h1>DataCenter Manager</h1>
+        <h1>Data Center Manager</h1>
         <p>Réinitialisation du mot de passe</p>
     </div>
 
