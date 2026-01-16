@@ -3,10 +3,12 @@
 @section('title', 'Gestion des Catégories')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <div class="card">
     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-        <h3>Liste des Catégories</h3>
-        <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">➕ Nouvelle Catégorie</a>
+        <h1 style="margin-bottom: 20px; color: #2c3e50;">Liste des Catégories</h1>
+        <a href="{{ route('admin.categories.create') }}" class="btn btn-primary"> Nouvelle Catégorie</a>
     </div>
 
     @if(session('success'))

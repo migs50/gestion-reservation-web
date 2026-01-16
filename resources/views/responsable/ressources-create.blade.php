@@ -3,6 +3,8 @@
 @section('title', 'Nouvelle ressource')
 
 @push('style')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <style>
     :root {
         --primary: #4f46e5;

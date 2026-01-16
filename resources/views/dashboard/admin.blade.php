@@ -3,6 +3,7 @@
 @section('title', 'Dashboard Administrateur')
 
 @section('content')
+
 <style>
     .stats-grid {
         display: grid;
@@ -20,12 +21,13 @@
     .stat-card:hover {
         transform: translateY(-5px);
     }
-    //*.stat-card h3 {
+    /*.stat-card h3 {
         font-size: 32px;
         color: #2c3e50;
         margin-bottom: 10px;
         align-self: auto;
-    }*//
+    }*/
+
       .stats-row {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -63,26 +65,26 @@
     }
 </style>
 
-<!-- Statistiques -->
 <div class="stats-row">
     <a href="{{ route('admin.users.index') }}" style="text-decoration:none; color:inherit;">
         <div class="stat-card">
-            <h3 id="totalUsers">{{ $stats['total_users'] ?? 0 }}</h3>
-            <p>👥 Utilisateurs</p>
+            <h3 id="totalUsers" style="align-items: center; justify-content: center; text-align: center; margin-bottom: 10px;">{{ $stats['total_users'] ?? 0 }}</h3>
+            <h3 style="color: #2c3e50;"> 
+                Utilisateurs</h3>
         </div>
     </a>
 
     <a href="{{ route('admin.ressources.index') }}" style="text-decoration:none; color:inherit;">
         <div class="stat-card">
-            <h3 id="totalRessources">{{ $stats['total_ressources'] ?? 0 }}</h3>
-            <p>� Ressources</p>
+            <h3 id="totalRessources" style="align-items: center; justify-content: center; text-align: center; margin-bottom: 10px;">{{ $stats['total_ressources'] ?? 0 }}</h3>
+            <h3 style="color: #2c3e50;"> Ressources</h3>
         </div>
     </a>
  {{-- A HREF IS FOR THE ROUTING TO THE DEMAND PAGE WHEN U CLICK ON THE DEMANDES CARD AS AN ADMIN --}}
     <a href="{{ route('admin.demandes.index') }}" style="text-decoration:none; color:inherit;">
     <div class="stat-card">
-        <h3 id="pendingRequests">{{ $stats['pending_requests'] ?? 0 }}</h3>
-        <p>⚠️ Demandes</p>
+        <h3 id="pendingRequests" style="align-items: center; justify-content: center; text-align: center; margin-bottom: 10px;">{{ $stats['pending_requests'] ?? 0 }}</h3>
+        <h3 style="color: #2c3e50;"> Demandes</h3>
     </div>
 
 </a>
@@ -90,21 +92,21 @@
 </div>
 
 <!-- Actions Rapides -->
-<h3 style="margin-bottom: 15px;">⚡ Actions rapides</h3>
+<h3 style="margin-bottom: 15px; color: #2c3e50"> Actions rapides</h3>
 <div class="quick-actions">
 
 {{-- CREATE USER DFEATURE FOR LATER IF WE WANT IT ADDED --}}
     <a href="{{ route('admin.ressources.index') }}" class="action-card">
-        <div style="font-size: 36px; margin-bottom: 10px;">🖥️</div>
+        <div style="font-size: 36px; margin-bottom: 10px;"></div>
         <div>ressource</div>
     </a>
     <a href="{{ route('admin.reservations.index') }}" class="action-card">
-        <div style="font-size: 36px; margin-bottom: 10px;">📋</div>
+        <div style="font-size: 36px; margin-bottom: 10px;"></div>
         <div>Voir réservations</div>
     </a>
    {{--TO ADD LATER ADMIN STATISTICS --}}
     <a href="{{ route('admin.statistics') }}" class="action-card">
-    <div style="font-size: 36px; margin-bottom: 10px;">📊</div>
+    <div style="font-size: 36px; margin-bottom: 10px;"></div>
         <div>Statistiques</div>
     </a>
 </div>
@@ -112,7 +114,7 @@
 
 <!-- Réservations Récentes -->
 <div class="chart-container">
-    <h3 style="margin-bottom: 20px;">📌 Réservations récentes</h3>
+    <h3 style="margin-bottom: 20px; color: #2c3e50;"> Réservations récentes</h3>
     <table class="table">
         <thead>
             <tr>
@@ -159,7 +161,7 @@
 <!-- Liste des Utilisateurs -->
 <div class="chart-container">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3>👥 Utilisateurs enregistrés</h3>
+        <h3 style="color: #2c3e50;"> Utilisateurs enregistrés</h3>
         <a href="{{ route('admin.users.index') }}" class="btn btn-sm">Voir tous</a>
     </div>
     <table class="table">

@@ -3,7 +3,9 @@
 @section('title', 'Réservations')
 
 @section('content')
-    <h1>Liste des réservations</h1>
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
+    <h1 style="margin-bottom: 20px; color: #2c3e50;">Liste des réservations</h1>
 
     <a href="{{ route('admin.reservations.create') }}" class="btn btn-primary">
         Nouvelle réservation

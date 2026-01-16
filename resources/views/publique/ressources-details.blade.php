@@ -3,6 +3,8 @@
 @section('title', 'Détails de la ressource')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <style>
     .back-link {
         display: inline-flex;
@@ -25,7 +27,7 @@
     }
 
     .details-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #454e76ff;
         padding: 40px;
         color: white;
         text-align: center;
@@ -163,7 +165,6 @@
             <h3 style="color: #2c3e50; margin-bottom: 15px;">📝 Description</h3>
             <p>{{ $ressource->description }}</p>
         </div>
-
         <div class="details-grid">
             {{-- Caractéristiques techniques --}}
             <div class="details-section">

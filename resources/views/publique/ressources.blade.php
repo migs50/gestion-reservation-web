@@ -3,189 +3,12 @@
 @section('title', 'Ressources disponibles')
 
 @section('content')
-<style>
-    .page-header {
-        background: white;
-        border-radius: 12px;
-        padding: 30px;
-        margin-bottom: 30px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 
-    .page-header h1 {
-        font-size: 32px;
-        color: #2c3e50;
-        margin-bottom: 10px;
-    }
 
-    .page-header p {
-        color: #7f8c8d;
-        font-size: 16px;
-    }
-
-    .filters {
-        background: white;
-        border-radius: 12px;
-        padding: 25px;
-        margin-bottom: 30px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
-
-    .filters h3 {
-        margin-bottom: 20px;
-        color: #2c3e50;
-    }
-
-    .filter-group {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
-        margin-bottom: 20px;
-    }
-
-    .filter-group select,
-    .filter-group input {
-        padding: 12px;
-        border: 2px solid #ecf0f1;
-        border-radius: 8px;
-        font-size: 14px;
-    }
-
-    .filter-group select:focus,
-    .filter-group input:focus {
-        outline: none;
-        border-color: #667eea;
-    }
-
-    .btn-filter {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 12px 30px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-    }
-
-    .btn-filter:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-    }
-
-    .ressources-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 25px;
-    }
-
-    .ressource-card {
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .ressource-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    }
-
-    .ressource-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 25px;
-        color: white;
-        text-align: center;
-    }
-
-    .ressource-icon {
-        font-size: 48px;
-        margin-bottom: 10px;
-    }
-
-    .ressource-header h3 {
-        font-size: 20px;
-        margin-bottom: 5px;
-    }
-
-    .ressource-category {
-        font-size: 13px;
-        opacity: 0.9;
-    }
-
-    .ressource-body {
-        padding: 20px;
-    }
-
-    .ressource-info {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        margin-bottom: 20px;
-    }
-
-    .info-item {
-        display: flex;
-        justify-content: space-between;
-        padding: 10px;
-        background: #f8f9fa;
-        border-radius: 6px;
-    }
-
-    .info-label {
-        color: #7f8c8d;
-        font-size: 14px;
-    }
-
-    .info-value {
-        font-weight: 600;
-        color: #2c3e50;
-        font-size: 14px;
-    }
-
-    .status-badge {
-        display: inline-block;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-    }
-
-    .status-available {
-        background: #d4edda;
-        color: #155724;
-    }
-
-    .status-busy {
-        background: #fff3cd;
-        color: #856404;
-    }
-
-    .status-maintenance {
-        background: #f8d7da;
-        color: #721c24;
-    }
-
-    .btn-details {
-        display: block;
-        width: 100%;
-        padding: 12px;
-        background: #667eea;
-        color: white;
-        text-align: center;
-        text-decoration: none;
-        border-radius: 8px;
-        font-weight: 600;
-        transition: background 0.3s ease;
-    }
-
-    .btn-details:hover {
-        background: #5568d3;
-    }
-</style>
 
 <div class="page-header">
-    <h1>📦 Ressources disponibles</h1>
+    <h1> Ressources disponibles</h1>
     <p>Découvrez toutes les ressources informatiques de notre Data Center</p>
 </div>
 
@@ -211,7 +34,8 @@
 
         <input type="text" id="searchInput" placeholder="Rechercher une ressource...">
 
-        <button class="btn-filter" onclick="filterRessources()">Filtrer</button>
+        <button class="btn-filter" onclick="filterRessources()">
+            Filtrer</button>
     </div>
 </div>
 
@@ -264,7 +88,7 @@
         </div>
     @endforeach
 </div>
-
+    
 
 <script>
 function filterRessources() {

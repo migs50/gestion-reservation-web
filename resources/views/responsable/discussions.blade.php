@@ -3,9 +3,11 @@
 @section('title', 'Modération des Discussions')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <style>
     .page-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #676f9d 0%, #424769 100%);
         border-radius: 20px;
         padding: 40px;
         color: white;

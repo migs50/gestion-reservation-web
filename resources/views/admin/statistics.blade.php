@@ -5,6 +5,8 @@
 @section('title', 'Statistiques Avancées')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <style>
     .page-header {
         display: flex;
@@ -129,7 +131,7 @@
 </style>
 
 <div class="page-header">
-    <h2>📊 Statistiques Avancées</h2>
+    <h2> Statistiques Avancées</h2>
     <button onclick="exportStatistics()" class="btn btn-primary">📥 Exporter PDF</button>
 </div>
 
@@ -153,7 +155,7 @@
 <div class="stats-grid">
     <div class="stat-card">
         <h3 id="totalReservations">{{ $stats['total_reservations'] }}</h3>
-        <p>📋 Réservations totales</p>
+        <p> Réservations totales</p>
         <span class="stat-change {{ $stats['reservations_change'] >= 0 ? 'up' : 'down' }}">
             {{ $stats['reservations_change'] >= 0 ? '↑' : '↓' }} {{ abs($stats['reservations_change']) }}% vs période précédente
         </span>
@@ -161,7 +163,7 @@
 
     <div class="stat-card">
         <h3 id="tauxOccupation">{{ $stats['taux_occupation'] }}%</h3>
-        <p>📊 Taux d'occupation moyen</p>
+        <p> Taux d'occupation moyen</p>
         <span class="stat-change {{ $stats['occupation_change'] >= 0 ? 'up' : 'down' }}">
             {{ $stats['occupation_change'] >= 0 ? '↑' : '↓' }} {{ abs($stats['occupation_change']) }}% vs période précédente
         </span>
@@ -169,7 +171,7 @@
 
     <div class="stat-card">
         <h3 id="dureeeMoyenne">{{ $stats['duree_moyenne'] }}j</h3>
-        <p>⏱️ Durée moyenne réservation</p>
+        <p>⏱ Durée moyenne réservation</p>
         <span class="stat-change {{ $stats['duree_change'] >= 0 ? 'up' : 'down' }}">
             {{ $stats['duree_change'] >= 0 ? '↑' : '↓' }} {{ abs($stats['duree_change']) }}% vs période précédente
         </span>
@@ -177,7 +179,7 @@
 
     <div class="stat-card">
         <h3 id="tauxApprobation">{{ $stats['taux_approbation'] }}%</h3>
-        <p>✅ Taux d'approbation</p>
+        <p> Taux d'approbation</p>
         <span class="stat-change {{ $stats['approbation_change'] >= 0 ? 'up' : 'down' }}">
             {{ $stats['approbation_change'] >= 0 ? '↑' : '↓' }} {{ abs($stats['approbation_change']) }}% vs période précédente
         </span>
@@ -188,7 +190,7 @@
 <div class="grid-2col">
     <!-- Évolution des réservations -->
     <div class="chart-container">
-        <h3>📈 Évolution des réservations</h3>
+        <h3> Évolution des réservations</h3>
         <div class="chart-wrapper">
             <canvas id="reservationsChart"></canvas>
         </div>
@@ -196,7 +198,7 @@
 
     <!-- Répartition par statut -->
     <div class="chart-container">
-        <h3>🎯 Répartition par statut</h3>
+        <h3> Répartition par statut</h3>
         <div class="chart-wrapper">
             <canvas id="statutChart"></canvas>
         </div>
@@ -205,7 +207,7 @@
 
 <!-- Répartition par catégorie -->
 <div class="chart-container">
-    <h3>📊 Réservations par catégorie de ressource</h3>
+    <h3> Réservations par catégorie de ressource</h3>
     <div class="chart-wrapper" style="height: 300px;">
         <canvas id="categoriesChart"></canvas>
     </div>
@@ -214,7 +216,7 @@
 <!-- Top utilisateurs et ressources -->
 <div class="grid-2col">
     <div class="chart-container">
-        <h3>🏆 Top 10 Utilisateurs</h3>
+        <h3> Top 10 Utilisateurs</h3>
         <ul class="top-items">
             @foreach($top_users as $index => $user)
             <li>
@@ -226,14 +228,14 @@
                         <small style="color: #7f8c8d;">{{ $user->email }}</small>
                     </div>
                 </div>
-                <strong style="color: #667eea;">{{ $user->reservations_count }} réservations</strong>
+                <strong style="color:#2d334fff ;">{{ $user->reservations_count }} réservations</strong>
             </li>
             @endforeach
         </ul>
     </div>
 
     <div class="chart-container">
-        <h3>💾 Top 10 Ressources</h3>
+        <h3> Top 10 Ressources</h3>
         <ul class="top-items">
             @foreach($top_ressources as $index => $ressource)
             <li>
@@ -245,7 +247,7 @@
                         <small style="color: #7f8c8d;">{{ $ressource->categorie->nom ?? 'N/A' }}</small>
                     </div>
                 </div>
-                <strong style="color: #667eea;">{{ $ressource->reservations_count }} réservations</strong>
+                <strong style="color: #2d334fff;">{{ $ressource->reservations_count }} réservations</strong>
             </li>
             @endforeach
         </ul>
@@ -254,31 +256,31 @@
 
 <!-- Statistiques détaillées -->
 <div class="chart-container">
-    <h3>📋 Détails statistiques</h3>
+    <h3> Détails statistiques</h3>
     <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-        <div style="padding: 15px; background: #f8f9fa; border-radius: 6px;">
+        <div style="padding: 15px; background: #f8f9fa; border-radius: 6px; color: #2d334fff;">
             <strong style="display: block; margin-bottom: 8px;">Total demandes</strong>
-            <span style="font-size: 24px; font-weight: 700; color: #667eea;">{{ $stats['total_demandes'] }}</span>
+            <span style="font-size: 24px; font-weight: 700; color: #2d334fff;">{{ $stats['total_demandes'] }}</span>
         </div>
-        <div style="padding: 15px; background: #f8f9fa; border-radius: 6px;">
+        <div style="padding: 15px; background: #f8f9fa; border-radius: 6px; color: #2d334fff;">
             <strong style="display: block; margin-bottom: 8px;">Approuvées</strong>
             <span style="font-size: 24px; font-weight: 700; color: #48bb78;">{{ $stats['approuvees'] }}</span>
         </div>
-        <div style="padding: 15px; background: #f8f9fa; border-radius: 6px;">
+        <div style="padding: 15px; background: #f8f9fa; border-radius: 6px; color: #2d334fff;">
             <strong style="display: block; margin-bottom: 8px;">Refusées</strong>
             <span style="font-size: 24px; font-weight: 700; color: #e74c3c;">{{ $stats['refusees'] }}</span>
         </div>
-        <div style="padding: 15px; background: #f8f9fa; border-radius: 6px;">
+        <div style="padding: 15px; background: #f8f9fa; border-radius: 6px; color: #2d334fff;">
             <strong style="display: block; margin-bottom: 8px;">En attente</strong>
             <span style="font-size: 24px; font-weight: 700; color: #f39c12;">{{ $stats['en_attente'] }}</span>
         </div>
-        <div style="padding: 15px; background: #f8f9fa; border-radius: 6px;">
+        <div style="padding: 15px; background: #f8f9fa; border-radius: 6px; color: #2d334fff;">
             <strong style="display: block; margin-bottom: 8px;">Ressources actives</strong>
-            <span style="font-size: 24px; font-weight: 700; color: #667eea;">{{ $stats['ressources_actives'] }}</span>
+            <span style="font-size: 24px; font-weight: 700; color: #2d334fff;">{{ $stats['ressources_actives'] }}</span>
         </div>
-        <div style="padding: 15px; background: #f8f9fa; border-radius: 6px;">
+        <div style="padding: 15px; background: #f8f9fa; border-radius: 6px; color: #2d334fff;">
             <strong style="display: block; margin-bottom: 8px;">Utilisateurs actifs</strong>
-            <span style="font-size: 24px; font-weight: 700; color: #667eea;">{{ $stats['utilisateurs_actifs'] }}</span>
+            <span style="font-size: 24px; font-weight: 700; color: #2d334fff;">{{ $stats['utilisateurs_actifs'] }}</span>
         </div>
     </div>
 </div>
@@ -299,7 +301,7 @@ new Chart(ctxEvolution, {
         datasets: [{
             label: 'Réservations',
             data: evolutionData.values,
-            borderColor: '#667eea',
+            borderColor: '#2d334fff',
             backgroundColor: 'rgba(102, 126, 234, 0.1)',
             tension: 0.4,
             fill: true
@@ -340,7 +342,7 @@ new Chart(ctxCategories, {
         datasets: [{
             label: 'Réservations',
             data: categoriesData.values,
-            backgroundColor: '#764ba2'
+            backgroundColor: '#2d334fff'
         }]
     },
     options: {

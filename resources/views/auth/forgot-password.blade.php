@@ -5,6 +5,8 @@
 @section('subtitle', 'Réinitialisation de mot de passe')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <style>
     .form-group {
         margin-bottom: 20px;

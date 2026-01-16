@@ -3,6 +3,8 @@
 @section('title', 'Modifier ressource')
 
 @push('style')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
     {{-- tu peux réutiliser exactement le même CSS que dans create --}}
 @endpush
 

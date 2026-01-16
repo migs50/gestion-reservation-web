@@ -1,6 +1,8 @@
 @extends('layouts.auth')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
     <h2>Demande envoyée</h2>
     <p>Votre demande de création de compte a été envoyée avec succès.</p>
     <p>Elle est actuellement <strong>en attente</strong> de validation par l'administrateur.</p>

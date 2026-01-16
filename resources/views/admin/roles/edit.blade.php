@@ -3,6 +3,8 @@
 @section('title', 'Gérer les Permissions')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <div class="card">
     <div class="card-header">
         <h3>Permissions pour le rôle : {{ $role->nom }}</h3>

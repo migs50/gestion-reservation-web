@@ -3,6 +3,8 @@
 @section('title', 'Règles d\'utilisation')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <style>
     .rules-container {
         background: white;
@@ -122,13 +124,13 @@
 
 <div class="rules-container">
     <div class="rules-header">
-        <h1>📜 Règles d'utilisation</h1>
+        <h1> Règles d'utilisation</h1>
         <p>Conditions générales d'utilisation des ressources du Data Center</p>
     </div>
 
     <!-- Section 1 -->
     <div class="rules-section">
-        <h2>🎯 1. Objectif et portée</h2>
+        <h2> 1. Objectif et portée</h2>
         <p>
             Les présentes règles définissent les conditions d'accès et d'utilisation des ressources informatiques 
             mises à disposition par le Data Center. Elles s'appliquent à tous les utilisateurs, qu'ils soient 
@@ -138,7 +140,7 @@
 
     <!-- Section 2 -->
     <div class="rules-section">
-        <h2>👤 2. Droits et responsabilités des utilisateurs</h2>
+        <h2> 2. Droits et responsabilités des utilisateurs</h2>
         
         <h3>2.1 Droits des utilisateurs</h3>
         <ul class="rules-list">
@@ -159,7 +161,7 @@
 
     <!-- Section 3 -->
     <div class="rules-section">
-        <h2>📅 3. Réservation des ressources</h2>
+        <h2> 3. Réservation des ressources</h2>
         
         <h3>3.1 Procédure de réservation</h3>
         <ul class="rules-list">
@@ -178,7 +180,7 @@
     </div>
 
     <div class="warning-box">
-        <h4>⚠️ Important</h4>
+        <h4> Important</h4>
         <p>
             Les réservations non justifiées ou l'utilisation abusive des ressources peuvent entraîner la suspension 
             ou la révocation de votre compte. Assurez-vous de libérer les ressources dès que vous n'en avez plus besoin.
@@ -187,7 +189,7 @@
 
     <!-- Section 4 -->
     <div class="rules-section">
-        <h2>🔒 4. Sécurité et confidentialité</h2>
+        <h2> 4. Sécurité et confidentialité</h2>
         
         <ul class="rules-list">
             <li><strong>Mots de passe :</strong> Les mots de passe doivent contenir au moins 12 caractères avec majuscules, minuscules, chiffres et caractères spéciaux.</li>
@@ -200,7 +202,7 @@
 
     <!-- Section 5 -->
     <div class="rules-section">
-        <h2>🚫 5. Utilisations interdites</h2>
+        <h2> 5. Utilisations interdites</h2>
         
         <ul class="rules-list">
             <li><strong>Activités illégales :</strong> Toute utilisation à des fins illégales est strictement interdite.</li>
@@ -213,7 +215,7 @@
     </div>
 
     <div class="warning-box">
-        <h4>⚠️ Sanctions</h4>
+        <h4> Sanctions</h4>
         <p>
             Toute violation des règles d'utilisation peut entraîner : suspension immédiate du compte, 
             révocation définitive de l'accès, poursuites judiciaires en cas d'activités illégales, 
@@ -223,7 +225,7 @@
 
     <!-- Section 6 -->
     <div class="rules-section">
-        <h2>🔧 6. Maintenance et disponibilité</h2>
+        <h2> 6. Maintenance et disponibilité</h2>
         
         <ul class="rules-list">
             <li><strong>SLA :</strong> Le Data Center garantit une disponibilité de 99.5% hors maintenance planifiée.</li>
@@ -235,10 +237,10 @@
 
     <!-- Section 7 -->
     <div class="rules-section">
-        <h2>📞 7. Support et assistance</h2>
+        <h2> 7. Support et assistance</h2>
         
         <div class="info-box">
-            <h4>ℹ️ Contacts support</h4>
+            <h4> Contacts support</h4>
             <p>
                 <strong>Email :</strong> support@datacenter.local<br>
                 <strong>Téléphone :</strong> +212 5XX-XXXXXX<br>
@@ -250,7 +252,7 @@
 
     <!-- Section 8 -->
     <div class="rules-section">
-        <h2>📝 8. Modifications des règles</h2>
+        <h2> 8. Modifications des règles</h2>
         
         <p>
             Le Data Center se réserve le droit de modifier ces règles à tout moment. Les utilisateurs seront 
@@ -261,7 +263,7 @@
 
     <!-- Acceptance Box -->
     <div class="acceptance-box">
-        <h3>✅ Acceptation des règles</h3>
+        <h3> Acceptation des règles</h3>
         <p>
             En créant un compte et en utilisant les ressources du Data Center, vous acceptez de respecter 
             l'intégralité de ces règles d'utilisation.

@@ -1,15 +1,12 @@
-{{-- 
-    📄 Fichier : maintenance.blade.php
-    📁 Chemin : resources/views/admin/maintenance.blade.php
-    🎯 Rôle : Admin (gestion maintenance système)
-    📝 Description : Outils de maintenance (cache, logs, backups, DB)
---}}
+
 
 @extends('layouts.admin')
 
 @section('title', 'Maintenance Système')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <style>
     .page-header {
         display: flex;

@@ -3,6 +3,8 @@
 @section('title', 'Signaler un Incident')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <style>
     .page-header {
         background: white;
