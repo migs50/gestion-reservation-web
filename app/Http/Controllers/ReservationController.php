@@ -56,6 +56,7 @@ class ReservationController extends Controller
 
     public function store(Request $request)
     {
+        //   dd('store hit', $request->all());
         $data = $request->validate([
             'ressource_id'  => 'required|exists:ressources,id',
             'debut'         => 'required|date|after:now',
@@ -184,4 +185,71 @@ class ReservationController extends Controller
         return redirect()->route('reservations.index')
             ->with('success', 'Demande de réservation enregistrée.');
     }
+    public function responsableIndex()
+{
+    $user = auth()->user();
+
+    $reservations = Reservation::whereHas('ressource', function ($q) use ($user) {
+            $q->where('manager_id', $user->id);   // or whatever column stores responsable
+        })
+        ->with('demandeur', 'ressource')
+        ->orderByDesc('debut')
+        ->paginate(15);
+
+    return view('responsable.reservations.index', compact('reservations'));
+}
+
+    
+public function approve(Request $request, Reservation $reservation)
+{
+    $request->validate([
+        'note_decision' => 'required|string|min:3',
+    ]);
+
+    $reservation->update([
+        'statut'        => 'approved',
+        'decideur_id'   => auth()->id(),
+        'note_decision' => $request->note_decision,
+    ]);
+
+    Journal::create([
+        'acteur_id'  => Auth::id(),
+        'objet'      => 'reservation',
+        'objet_id'   => $reservation->id,
+        'action'     => 'approve',
+        'details'    => "Réservation #{$reservation->id} approuvée avec note : {$request->note_decision}",
+        'donnees'    => null,
+        'ip'         => request()->ip(),
+        'user_agent' => request()->userAgent(),
+    ]);
+
+    return back()->with('success', 'Réservation approuvée.');
+}
+
+public function refuse(Request $request, Reservation $reservation)
+{
+    $request->validate([
+        'note_decision' => 'required|string|min:3',
+    ]);
+
+    $reservation->update([
+        'statut'        => 'refused',
+        'decideur_id'   => auth()->id(),
+        'note_decision' => $request->note_decision,
+    ]);
+
+    Journal::create([
+        'acteur_id'  => Auth::id(),
+        'objet'      => 'reservation',
+        'objet_id'   => $reservation->id,
+        'action'     => 'refuse',
+        'details'    => "Réservation #{$reservation->id} refusée avec note : {$request->note_decision}",
+        'donnees'    => null,
+        'ip'         => request()->ip(),
+        'user_agent' => request()->userAgent(),
+    ]);
+
+    return back()->with('success', 'Réservation refusée.');
+}
+
 }

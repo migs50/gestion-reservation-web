@@ -25,6 +25,7 @@ class CheckRole
         $user = Auth::user();
         $userRole = $user->role->nom ?? null;
 
+
         if (!in_array($userRole, $roles)) {
             abort(403, 'Accès non autorisé.');
         }

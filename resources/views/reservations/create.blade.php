@@ -3,6 +3,17 @@
 @section('title', 'Nouvelle réservation')
 
 @section('content')
+<div class="container">
+
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
 <style>
 /* Fond global */
@@ -113,7 +124,6 @@ body {
 }
 </style>
 
-
 <div class="container" style="max-width: 800px; margin: 40px auto;">
 @if($errors->has('debut'))
     <div class="alert alert-danger">
@@ -142,6 +152,7 @@ body {
 
     <form action="{{ route('reservations.store') }}" method="POST">
         @csrf
+        <div>FORM ACTION: {{ route('reservations.store') }}</div>
 
         <input type="hidden" name="ressource_id" value="{{ $ressource->id }}">
 

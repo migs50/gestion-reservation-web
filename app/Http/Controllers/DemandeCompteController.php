@@ -32,6 +32,7 @@ class DemandeCompteController extends Controller
         'secret_answer'   => 'required|string|max:255',
 
     ]);
+    
 
     $passwordHash = Hash::make($data['password']);
 

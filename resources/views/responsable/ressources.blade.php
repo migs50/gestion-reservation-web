@@ -268,6 +268,11 @@
         </a>
     </div>
 </div>
+<div class="page-header">
+    <h1 class="page-title">
+        <a href="{{ route('responsable.reservations.index') }}">Mes réservations</a>
+    </h1>
+</div>
 
 {{-- Filters --}}
 <div class="filters-bar">

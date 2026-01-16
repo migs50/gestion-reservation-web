@@ -104,8 +104,7 @@ Route::middleware('auth')->group(function () {
 
     // Reservations (User)
     Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
-    Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
-    Route::get('/ressources/{ressource}/reserver', [ReservationController::class, 'create'])->name('reservations.create.ressource');
+    Route::get('/ressources/{ressource}/reserver', [ReservationController::class, 'create'])->name('reservations.create');
     Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
     Route::post('/reservations/{reservation}/approve', [ReservationController::class, 'approve'])->name('reservations.approve');
     Route::post('/reservations/{reservation}/refuse', [ReservationController::class, 'refuse'])->name('reservations.refuse');
@@ -121,7 +120,7 @@ Route::middleware('auth')->group(function () {
     | RESPONSABLE routes (Only Responsable Technique)
     |--------------------------------------------------------------------------
     */
-    Route::middleware('role:Responsable Technique')
+    Route::middleware('role:Responsable')
         ->prefix('responsable')
         ->name('responsable.')
         ->group(function () {
@@ -133,6 +132,10 @@ Route::middleware('auth')->group(function () {
             Route::post('/resources/{resource}/maintenance', [ResponsableController::class, 'maintenance'])->name('resources.maintenance');
             Route::post('/resources/{resource}/enable', [ResponsableController::class, 'enable'])->name('resources.enable');
             Route::post('/resources/{resource}/disable', [ResponsableController::class, 'disable'])->name('resources.disable');
+            
+            Route::get('/reservations', [ReservationController::class, 'responsableIndex'])->name('reservations.index');
+            Route::post('/reservations/{reservation}/approve', [ReservationController::class, 'approve'])->name('reservations.approve');
+            Route::post('/reservations/{reservation}/refuse', [ReservationController::class, 'refuse'])->name('reservations.refuse');
 
             Route::get('/requests', [ResponsableController::class, 'indexRequests'])->name('requests');
             Route::get('/requests/{reservation}', [ResponsableController::class, 'showRequest'])->name('requests.show');
