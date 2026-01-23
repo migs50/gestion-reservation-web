@@ -38,7 +38,7 @@
 
         <div style="margin-top: 20px;">
             <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-            <a href="{{ route('admin.users') }}" class="btn btn-secondary">Annuler</a>
+            <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Annuler</a>
         </div>
     </form>
 </div>

@@ -337,7 +337,7 @@
                                 </span>
                             </td>
                             <td>
-                                <a href="{{ route('reservations.show', $reservation->id) }}" class="btn-action btn-view">
+                                <a href="{{ route('reservations.index', $reservation->id) }}" class="btn-action btn-view">
                                     Détails
                                 </a>
                             </td>

@@ -33,7 +33,7 @@
 
                 @guest
                     <li><a href="{{ route('login') }}" class="btn-primary">Connexion</a></li>
-                    <li><a href="{{ route('register') }}">Inscription</a></li>
+                    <li><a href="{{ route('demande.compte') }}">Inscription</a></li>
                 @else
                     @auth
                     <li>
@@ -78,6 +78,11 @@
                 <ul>
                     <li><a href="{{ route('home') }}">Accueil</a></li>
                     <li><a href="{{ route('publique.ressources') }}">Ressources</a></li>
+                    @auth
+                        @if(auth()->user()->role && auth()->user()->role->nom === 'Responsable')
+                            <li><a href="{{ route('responsable.ressources') }}">Mes ressources</a></li>
+                        @endif
+                    @endauth
                     <li><a href="{{ route('rules') }}">Règles d'utilisation</a></li>
                     @guest
                     <li><a href="{{ route('demande.compte') }}">Demander un compte</a></li>

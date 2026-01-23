@@ -57,4 +57,9 @@ public function demandeur()
     {
         return $this->belongsTo(User::class, 'manager_id');
     }
+    public function responsable()
+{
+    return $this->belongsTo(User::class, 'manager_id');
+}
+
 }

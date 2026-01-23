@@ -64,6 +64,7 @@ class UserController extends Controller
 
         Journal::create([
             'acteur_id' => Auth::id(),
+            'objet'     => 'user',
             'action'    => 'creation_utilisateur',
             'details'   => "Utilisateur créé : {$request->nom} {$request->prenom} ({$request->email})",
             'ip'        => request()->ip()
@@ -90,12 +91,14 @@ class UserController extends Controller
 
         Journal::create([
             'acteur_id' => Auth::id(),
+            'objet'     => 'user',
+            'objet_id'   => $user->id,   
             'action'    => 'modification_role',
             'details'   => "Rôle de l'utilisateur {$user->nom} #{$user->id} modifié vers rôle ID : {$request->role_id}",
             'ip'        => request()->ip()
         ]);
 
-        return redirect()->route('admin.users')->with('success', 'Rôle de l\'utilisateur mis à jour avec succès.');
+        return redirect()->route('admin.users.index')->with('success', 'Rôle de l\'utilisateur mis à jour avec succès.');
     }
 
     public function destroy(User $user)
@@ -109,6 +112,7 @@ class UserController extends Controller
 
         Journal::create([
             'acteur_id' => Auth::id(),
+            'objet'     => 'user',
             'action'    => 'suppression_utilisateur',
             'details'   => "Utilisateur supprimé : $userDetails",
             'ip'        => request()->ip()
@@ -128,6 +132,7 @@ class UserController extends Controller
 
         Journal::create([
             'acteur_id' => Auth::id(),
+            'objet'     => 'user',
             'action'    => 'toggle_statut_utilisateur',
             'details'   => "Statut de l'utilisateur {$user->nom} changé vers : {$user->statut}",
             'ip'        => request()->ip()
