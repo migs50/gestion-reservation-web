@@ -7,21 +7,22 @@
 
 <style>
     .dashboard-header {
-        background: white;
+        background-color: #383a59;
         border-radius: 12px;
         padding: 30px;
         margin-bottom: 30px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        color: white; /* Text color for the whole block */
     }
 
     .welcome-text h1 {
         font-size: 28px;
-        color: #2c3e50;
+        color: white; /* White text */
         margin-bottom: 10px;
     }
 
     .welcome-text p {
-        color: #7f8c8d;
+        color: rgba(255, 255, 255, 0.8); /* Slightly faded white */
         font-size: 16px;
     }
 

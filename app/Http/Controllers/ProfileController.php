@@ -102,6 +102,6 @@ class ProfileController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
-        return view('profile.reservations', compact('reservations'));
+        return view('user.history', compact('reservations'));
     }
 }

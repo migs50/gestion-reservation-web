@@ -46,12 +46,12 @@ class ReservationController extends Controller
         $reservations = $query->orderByDesc('debut')
             ->paginate(15);
 
-        return view('profile.reservations', compact('reservations'));
+        return view('user.history', compact('reservations'));
     }
 
     public function create(Ressource $ressource)
     {
-        return view('reservations.create', compact('ressource'));
+        return view('user.reservations.create', compact('ressource'));
     }
 
     public function store(Request $request)
@@ -134,7 +134,7 @@ class ReservationController extends Controller
             abort(403, 'Non autorisé');
         }
 
-        return view('reservations.show', compact('reservation'));
+        return view('user.reservations.show', compact('reservation'));
     }
 
     /**

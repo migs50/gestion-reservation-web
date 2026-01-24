@@ -108,6 +108,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
     Route::post('/reservations/{reservation}/approve', [ReservationController::class, 'approve'])->name('reservations.approve');
     Route::post('/reservations/{reservation}/refuse', [ReservationController::class, 'refuse'])->name('reservations.refuse');
+    Route::delete('/reservations/{reservation}', [ReservationController::class, 'cancel'])->name('reservations.cancel');
+    Route::get('/reservations/{reservation}', [ReservationController::class, 'show'])->name('reservations.show');
 
     // Incidents (User)
     Route::get('/incidents', [IncidentController::class, 'index'])->name('user.incidents.index');

@@ -743,7 +743,7 @@ form.form .btn:active {
                     <div class="user-avatar">A</div>
                     <div>
                         <div style="font-weight: 600; font-size: 14px;">Admin</div>
-                        <div style="font-size: 12px; color: #7f8c8d;">Administrateur</div>
+                        <div style="font-size: 12px; color: #676f9d;">Administrateur</div>
                     </div>
                 </div>
             </div>
