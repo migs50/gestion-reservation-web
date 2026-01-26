@@ -67,42 +67,34 @@ class DemandeCompteController extends Controller
 
     // Accept a demande: create User + mark accepted
     public function accept(DemandeCompte $demande)
-    {
-           
-           // it only creates a user if one does not exist yet:(Avoid double creation for the same demande)
-           $existing = User::where('email', $demande->email)->first();
+{
+    // Vérifier si l'utilisateur existe déjà
+    $existing = User::where('email', $demande->email)->first();
 
-           if (! $existing) {
-                $user = User::create([
-                    'nom'      => $demande->nom_complet, // if your users table has nom/prenom
-                    'prenom'   => '',                    // or split the name if needed
-                    'email'    => $demande->email,
-                    'password' => $demande->password,
-                    'role_id'  => 3, // normal user role id
-                    'statut'   => 'active',
-                    'secret_question' => $demande->secret_question,
-                    'secret_answer'   => $demande->secret_answer,
-                ]);
-           }
+    if (! $existing) {
+        // Déterminer le role_id selon le type de demande
+        $role_id = ($demande->type_demande === 'Responsable Technique') ? 2 : 3;
 
-                $demande->update([
-                    'statut'       => 'approved',
-                    'decided_by'   => auth()->id(),
-                    'note_decision'=> 'Compte créé',
-                ]);
-
-                return back()->with('success', 'Demande acceptée, compte utilisateur créé.');
-    }
-
-    // Reject a demande
-    public function reject(DemandeCompte $demande)
-    {
-        $demande->update([
-            'statut'       => 'refused',
-            'decided_by'   => auth()->id(),
-            'note_decision'=> 'Demande refusée',
+        // Créer l'utilisateur
+        $user = User::create([
+            'nom'      => $demande->nom_complet, 
+            'prenom'   => '',
+            'email'    => $demande->email,
+            'password' => $demande->password,
+            'role_id'  => $role_id,
+            'statut'   => 'active',
+            'secret_question' => $demande->secret_question,
+            'secret_answer'   => $demande->secret_answer,
         ]);
-
-        return back()->with('success', 'Demande refusée.');
     }
+
+    // Mettre à jour la demande comme approuvée
+    $demande->update([
+        'statut'       => 'approved',
+        'decided_by'   => auth()->id(),
+        'note_decision'=> 'Compte créé',
+    ]);
+
+    return back()->with('success', 'Demande acceptée, compte utilisateur créé.');
+}
 }
