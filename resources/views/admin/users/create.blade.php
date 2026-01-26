@@ -7,7 +7,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h3>➕ Ajouter un nouvel utilisateur</h3>
+        <h3> Ajouter un nouvel utilisateur</h3>
     </div>
     
     <form action="{{ route('admin.users.store') }}" method="POST" class="form">

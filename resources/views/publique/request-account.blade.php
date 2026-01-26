@@ -8,17 +8,17 @@
 <div class="request-container">
     <div class="request-card">
         <div class="request-header">
-            <h1>📝 Demande de création de compte</h1>
+            <h1> Demande de création de compte</h1>
             <p>Remplissez ce formulaire pour demander l'accès aux ressources du Data Center</p>
         </div>
 
         <div class="success-message" id="successMessage">
-            <strong>✅ Demande envoyée avec succès !</strong><br>
+            <strong> Demande envoyée avec succès !</strong><br>
             Votre demande a été transmise à l'administrateur. Vous recevrez une réponse par email dans les 48 heures.
         </div>
 
         <div class="info-box">
-            <h4>📋 Informations importantes</h4>
+            <h4> Informations importantes</h4>
             <ul>
                 <li>Votre demande sera examinée par un administrateur sous 48 heures</li>
                 <li>Vous recevrez un email de confirmation une fois votre compte créé</li>
@@ -41,7 +41,7 @@
             @endif
 
             <!-- Informations personnelles -->
-            <h3 style="color: #2c3e50; margin-bottom: 20px;">👤 Informations personnelles</h3>
+            <h3 style="color: #4f8cc9ff; margin-bottom: 20px;"> Informations personnelles</h3>
             
             <div class="form-row">
                 <div class="form-group">
@@ -69,7 +69,7 @@
             </div>
 
             <!-- Sécurité -->
-            <h3 style="color: #2c3e50; margin: 30px 0 20px;">🔒 Sécurité</h3>
+            <h3 style="color: #4f8cc9ff; margin: 30px 0 20px;">Sécurité</h3>
             
             <div class="form-row">
                 <div class="form-group">
@@ -98,7 +98,7 @@
             </div>
 
             <!-- Informations professionnelles -->
-            <h3 style="color: #2c3e50; margin: 30px 0 20px;">🏢 Informations professionnelles</h3>
+            <h3 style="color: #4f8cc9ff; margin: 30px 0 20px;"> Informations professionnelles</h3>
 
             <div class="form-row">
                 <div class="form-group">
@@ -118,7 +118,7 @@
             </div>
 
             <!-- Détails de la demande -->
-            <h3 style="color: #2c3e50; margin: 30px 0 20px;">📌 Détails de la demande</h3>
+            <h3 style="color: #4f8cc9ff; margin: 30px 0 20px;"> Détails de la demande</h3>
 
             <div class="form-group">
                 <label>Type de compte souhaité <span class="required">*</span></label>
@@ -150,7 +150,7 @@
                 </label>
             </div>
 
-            <button type="submit" class="btn-submit">📤 Envoyer la demande</button>
+            <button type="submit" class="btn-submit"> Envoyer la demande</button>
         </form>
     </div>
 </div>

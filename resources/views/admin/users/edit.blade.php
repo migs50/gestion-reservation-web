@@ -7,7 +7,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h3>✏️ Modifier l'utilisateur : {{ $user->nom }} {{ $user->prenom }}</h3>
+        <h3>Modifier l'utilisateur : {{ $user->nom }} {{ $user->prenom }}</h3>
     </div>
     
     <form action="{{ route('admin.users.update', $user->id) }}" method="POST" class="form">

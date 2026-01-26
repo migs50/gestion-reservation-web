@@ -14,7 +14,7 @@
 
 <!-- Filters -->
 <div class="filters">
-    <h3>🔍 Filtrer les ressources</h3>
+    <h3> Filtrer les ressources</h3>
     <div class="filter-group">
     <select id="categoryFilter">
     <option value="">Toutes les catégories</option>
@@ -48,7 +48,7 @@
             <div class="ressource-header">
                 <div class="ressource-icon">
                     {{-- You can customize icon based on category if you want --}}
-                    🖥️
+                    
                 </div>
                 <h3>{{ $ressource->nom }}</h3>
                 <p class="ressource-category">

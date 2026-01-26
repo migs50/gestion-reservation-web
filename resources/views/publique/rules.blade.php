@@ -120,6 +120,9 @@
         color: #7f8c8d;
         margin-bottom: 20px;
     }
+    li{
+        color: #4f8cc9ff;
+    }
 </style>
 
 <div class="rules-container">
@@ -131,7 +134,7 @@
     <!-- Section 1 -->
     <div class="rules-section">
         <h2> 1. Objectif et portée</h2>
-        <p>
+        <p style="color: #000000ff;">
             Les présentes règles définissent les conditions d'accès et d'utilisation des ressources informatiques 
             mises à disposition par le Data Center. Elles s'appliquent à tous les utilisateurs, qu'ils soient 
             internes ou externes à l'organisation.

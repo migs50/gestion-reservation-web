@@ -154,6 +154,7 @@ class DashboardController extends Controller
             'total_users' => $users->count(),
             'total_ressources' => Ressource::count(),
             'active_reservations' => Reservation::where('statut', 'active')->count(),
+            'pending_reservations' => Reservation::where('statut', 'pending')->count(), // Ajouté
             'pending_requests' => DemandeCompte::where('statut', 'pending')->count(),
             'users' => $users,
         ];

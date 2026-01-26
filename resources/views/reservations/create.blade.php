@@ -3,6 +3,22 @@
 @section('title', 'Nouvelle réservation')
 
 @section('content')
+<<<<<<<<< Temporary merge branch 1
+<div class="container">
+
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+=========
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
+>>>>>>>>> Temporary merge branch 2
 
 <style>
 /* Fond global */

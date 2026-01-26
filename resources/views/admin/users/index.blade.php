@@ -23,8 +23,8 @@
 
     <input type="text" name="search" id="searchInput" placeholder="Rechercher..." value="{{ request('search') }}">
     
-    <button type="submit" class="btn" style="margin-top: 10px;">🔍 Filtrer</button>
-    <button type="button" class="btn btn-secondary" style="margin-top: 20px;" onclick="resetFilters()">🔄 Réinitialiser</button>
+    <button type="submit" class="btn" style="margin-top: 10px;"> Filtrer</button>
+    <button type="button" class="btn btn-secondary" style="margin-top: 20px;" onclick="resetFilters()"> Réinitialiser</button>
 </form>
 
 @if(session('success'))
@@ -35,9 +35,49 @@
 <div class="alert alert-error" id="errorAlert">{{ session('error') }}</div>
 @endif
 
+@push('style')
+<style>
+    /* Optimisation de la table pour qu'elle occupe tout l'espace sans être coupée */
+    .card-table {
+        padding: 0 !important; /* On enlève le padding pour que la table touche les bords si besoin */
+        overflow: hidden;
+    }
+
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto; /* Permet le défilement horizontal si le tableau est trop large */
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table {
+        margin-bottom: 0 !important;
+        width: 100%;
+        min-width: 1000px; /* Force une largeur minimale pour éviter que les colonnes soient trop serrées */
+    }
+
+    .table th, .table td {
+        white-space: nowrap; /* Évite que le texte passe à la ligne et déforme le tableau */
+        padding: 1rem 1.5rem !important;
+    }
+
+    /* Style pour le scrollbar horizontal personnalisé */
+    .table-responsive::-webkit-scrollbar {
+        height: 8px;
+    }
+    .table-responsive::-webkit-scrollbar-track {
+        background: var(--bg-primary);
+    }
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: var(--accent-primary);
+        border-radius: 4px;
+    }
+</style>
+@endpush
+
 <!-- Table -->
-<div class="card">
-    <table class="table" id="usersTable">
+<div class="card card-table">
+    <div class="table-responsive">
+        <table class="table" id="usersTable">
         <thead>
             <tr>
                 <th onclick="sortTable(0)">ID ⬍</th>
@@ -110,6 +150,7 @@
             @endforelse
         </tbody>
     </table>
+</div>
 
     <div style="padding: 20px;">
         {{ $users->links() }}

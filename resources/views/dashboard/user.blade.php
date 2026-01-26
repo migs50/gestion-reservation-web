@@ -35,44 +35,38 @@
 
     .stat-card {
         background: white;
-        border-radius: 12px;
-        padding: 25px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(45, 50, 80, 0.05);
+        border: 1px solid rgba(103, 111, 157, 0.1);
         display: flex;
+        flex-direction: column;
         align-items: center;
-        gap: 20px;
-        transition: transform 0.3s ease;
+        text-align: center;
+        transition: all 0.3s ease;
     }
 
     .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        transform: translateY(-8px);
+        box-shadow: 0 15px 40px rgba(45, 50, 80, 0.1);
+        border-color: var(--accent-primary);
     }
 
-    .stat-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 28px;
+    .stat-details h3.stat-number {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: var(--accent-primary);
+        line-height: 1;
+        margin-bottom: 10px;
+        font-family: 'Raleway', sans-serif;
     }
 
-    .stat-icon.blue { background: rgba(102, 126, 234, 0.1); }
-    .stat-icon.green { background: rgba(46, 204, 113, 0.1); }
-    .stat-icon.orange { background: rgba(230, 126, 34, 0.1); }
-    .stat-icon.purple { background: rgba(155, 89, 182, 0.1); }
-
-    .stat-details h3 {
-        font-size: 32px;
-        color: #2c3e50;
-        margin-bottom: 5px;
-    }
-
-    .stat-details p {
-        color: #7f8c8d;
-        font-size: 14px;
+    .stat-label {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #424769;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     .quick-actions {
@@ -191,22 +185,22 @@
 <div class="stats-grid">
     <div class="stat-card">
         <div class="stat-details">
-            <h3>{{ $stats['total'] ?? 0 }}</h3>
-            <p style="color: #667787ff; font-size: 24px;">Réservations totales</p>
+            <h3 id="totalUserReservations" class="stat-number">0</h3>
+            <p class="stat-label">Réservations totales</p>
         </div>
     </div>
 
     <div class="stat-card">
         <div class="stat-details">
-            <h3>{{ $stats['actives'] ?? 0 }}</h3>
-            <p style="color: #667787ff; font-size: 24px;">Réservations actives</p>
+            <h3 id="activeUserReservations" class="stat-number">0</h3>
+            <p class="stat-label">Réservations actives</p>
         </div>
     </div>
     
     <div class="stat-card">
         <div class="stat-details">
-            <h3>{{ $stats['en_attente'] ?? 0 }}</h3>
-            <p style="color: #667787ff; font-size: 24px;">En attente</p>
+            <h3 id="pendingUserReservations" class="stat-number">0</h3>
+            <p class="stat-label">En attente</p>
         </div>
     </div>
 </div>
@@ -286,6 +280,9 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Animation des compteurs
+    animateCounters();
+
     const ctx = document.getElementById('userActivityChart').getContext('2d');
     const activityData = @json($activity_data);
 
@@ -296,35 +293,81 @@ document.addEventListener('DOMContentLoaded', function() {
             datasets: [{
                 label: 'Réservations',
                 data: activityData.values,
-                borderColor: '#667eea',
-                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                borderColor: '#f9b17a',
+                backgroundColor: 'rgba(249, 177, 122, 0.1)',
+                borderWidth: 3,
                 tension: 0.4,
                 fill: true,
-                pointBackgroundColor: '#764ba2',
-                pointBorderColor: '#fff',
-                pointRadius: 5
+                pointBackgroundColor: '#2d3250',
+                pointBorderColor: '#f9b17a',
+                pointBorderWidth: 2,
+                pointRadius: 6,
+                pointHoverRadius: 8
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: { display: false }
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#2d3250',
+                    titleColor: '#f9b17a',
+                    bodyColor: '#fff',
+                    padding: 12,
+                    cornerRadius: 8,
+                    displayColors: false
+                }
             },
             scales: {
                 y: {
                     beginAtZero: true,
-                    ticks: { stepSize: 1, color: '#94a3b8' },
-                    grid: { color: '#f1f5f9' }
+                    ticks: { 
+                        stepSize: 1, 
+                        color: '#94a3b8',
+                        font: { family: 'Raleway' }
+                    },
+                    grid: { color: 'rgba(226, 232, 240, 0.5)' }
                 },
                 x: {
-                    ticks: { color: '#94a3b8' },
+                    ticks: { 
+                        color: '#94a3b8',
+                        font: { family: 'Raleway' }
+                    },
                     grid: { display: false }
                 }
             }
         }
     });
 });
+
+function animateCounters() {
+    const counters = [
+        { id: 'totalUserReservations', target: {{ $stats['total'] ?? 0 }} },
+        { id: 'activeUserReservations', target: {{ $stats['actives'] ?? 0 }} },
+        { id: 'pendingUserReservations', target: {{ $stats['en_attente'] ?? 0 }} }
+    ];
+
+    counters.forEach(counter => {
+        const element = document.getElementById(counter.id);
+        if(!element) return;
+        
+        let current = 0;
+        const duration = 1000; // 1 seconde
+        const stepTime = 20;
+        const increment = counter.target / (duration / stepTime);
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= counter.target) {
+                element.textContent = counter.target;
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(current);
+            }
+        }, stepTime);
+    });
+}
 </script>
 
 @if(session('success'))

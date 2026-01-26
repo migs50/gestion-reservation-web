@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Administration') - Data Center </title>
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    @stack('style')
 
     <!-- External CSS 
     
@@ -699,11 +700,6 @@ form.form .btn:active {
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{ route('admin.roles.index') }}" class="{{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
-                        <span></span> Rôles & Permissions
-                    </a>
-                </li>
 
                 <li>
                     <a href="{{ route('admin.reservations.index') }}" class="{{ request()->routeIs('admin.reservations.*') ? 'active' : '' }}">

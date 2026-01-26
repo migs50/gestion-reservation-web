@@ -5,90 +5,114 @@
 @section('content')
 
 <style>
-    .stats-grid {
+    .stats-row {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-        margin-bottom: 30px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+        margin-bottom: 40px;
     }
+
     .stat-card {
         background: white;
-        padding: 25px;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        transition: transform 0.3s;
+        border-radius: 20px;
+        padding: 40px 30px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(45, 50, 80, 0.05);
+        border: 1px solid rgba(103, 111, 157, 0.1);
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 220px;
     }
-    .stat-card:hover {
-        transform: translateY(-5px);
-    }
-    /*.stat-card h3 {
-        font-size: 32px;
-        color: #2c3e50;
-        margin-bottom: 10px;
-        align-self: auto;
-    }*/
 
-      .stats-row {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 20px;
+    .stat-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(45, 50, 80, 0.1);
+        border-color: var(--accent-primary);
     }
-    @media (max-width: 992px) {
-        .stats-row {
-            grid-template-columns: 1fr;
-        }
+
+    .stat-number {
+        font-size: 4rem;
+        font-weight: 800;
+        color: var(--accent-primary);
+        line-height: 1;
+        margin-bottom: 15px;
+        font-family: 'Raleway', sans-serif;
     }
+
+    .stat-label {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #424769;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+    .stat-icon {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+        opacity: 0.8;
+    }
+    
+    .chart-container {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(45, 50, 80, 0.05);
+        margin-bottom: 30px;
+        border: 1px solid rgba(103, 111, 157, 0.1);
+    }
+
     .quick-actions {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
+        gap: 20px;
         margin: 30px 0;
     }
+
     .action-card {
         background: white;
-        padding: 20px;
-        border-radius: 8px;
+        padding: 25px;
+        border-radius: 15px;
         text-align: center;
         text-decoration: none;
-        color: #2c3e50;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        transition: transform 0.2s;
+        color: #424769;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(103, 111, 157, 0.1);
+        font-weight: 600;
     }
+
     .action-card:hover {
-        transform: translateY(-3px);
-    }
-    .chart-container {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
+        background: var(--accent-primary);
+        color: white;
+        transform: translateY(-5px);
     }
 </style>
 
 <div class="stats-row">
-    <a href="{{ route('admin.users.index') }}" style="text-decoration:none; color:inherit;">
+    <a href="{{ route('admin.users.index') }}" style="text-decoration:none;">
         <div class="stat-card">
-            <h3 id="totalUsers" style="align-items: center; justify-content: center; text-align: center; margin-bottom: 10px;">{{ $stats['total_users'] ?? 0 }}</h3>
-            <h3 style="color: #2c3e50;"> 
-                Utilisateurs</h3>
+            <div class="stat-number" id="totalUsers">{{ $stats['total_users'] ?? 0 }}</div>
+            <div class="stat-label">Utilisateurs</div>
         </div>
     </a>
 
-    <a href="{{ route('admin.ressources.index') }}" style="text-decoration:none; color:inherit;">
+    <a href="{{ route('admin.ressources.index') }}" style="text-decoration:none;">
         <div class="stat-card">
-            <h3 id="totalRessources" style="align-items: center; justify-content: center; text-align: center; margin-bottom: 10px;">{{ $stats['total_ressources'] ?? 0 }}</h3>
-            <h3 style="color: #2c3e50;"> Ressources</h3>
+            <div class="stat-number" id="totalRessources">{{ $stats['total_ressources'] ?? 0 }}</div>
+            <div class="stat-label">Ressources</div>
         </div>
     </a>
- {{-- A HREF IS FOR THE ROUTING TO THE DEMAND PAGE WHEN U CLICK ON THE DEMANDES CARD AS AN ADMIN --}}
-    <a href="{{ route('admin.demandes.index') }}" style="text-decoration:none; color:inherit;">
-    <div class="stat-card">
-        <h3 id="pendingRequests" style="align-items: center; justify-content: center; text-align: center; margin-bottom: 10px;">{{ $stats['pending_requests'] ?? 0 }}</h3>
-        <h3 style="color: #2c3e50;"> Demandes</h3>
-    </div>
 
-</a>
-
+    <a href="{{ route('admin.demandes.index') }}" style="text-decoration:none;">
+        <div class="stat-card">
+            <div class="stat-number" id="pendingRequests">{{ $stats['pending_requests'] ?? 0 }}</div>
+            <div class="stat-label">Demandes</div>
+        </div>
+    </a>
 </div>
 
 <!-- Actions Rapides -->
@@ -224,7 +248,6 @@ function animateCounters() {
     const counters = [
         { id: 'totalUsers', target: {{ $stats['total_users'] ?? 0 }} },
         { id: 'totalRessources', target: {{ $stats['total_ressources'] ?? 0 }} },
-        { id: 'pendingReservations', target: {{ $stats['pending_reservations'] ?? 0 }} },
         { id: 'pendingRequests', target: {{ $stats['pending_requests'] ?? 0 }} }
     ];
 
