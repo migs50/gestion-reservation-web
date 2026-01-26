@@ -77,7 +77,7 @@ class DemandeCompteController extends Controller
 
         // Créer l'utilisateur
         $user = User::create([
-            'nom'      => $demande->nom_complet, 
+            'nom'      => $demande->nom_complet,
             'prenom'   => '',
             'email'    => $demande->email,
             'password' => $demande->password,
