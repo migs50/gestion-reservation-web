@@ -5,6 +5,8 @@
 @section('subtitle', 'Créez votre compte utilisateur')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <style>
     .form-group {
         margin-bottom: 18px;

@@ -3,37 +3,12 @@
 @section('title', 'Gestion Utilisateurs')
 
 @section('content')
-<style>
-    .page-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-    }
-    .filters {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        display: flex;
-        gap: 15px;
-        flex-wrap: wrap;
-    }
-    .filters select,
-    .filters input {
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        flex: 1;
-        min-width: 200px;
-    }
-    .highlighted-row {
-        background: #fff9e6 !important;
-    }
-</style>
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
+
 
 <div class="page-header">
-    <h2>👥 Gestion des Utilisateurs ({{ $users->total() }})</h2>
+    <h2> Gestion des Utilisateurs ({{ $users->total() }})</h2>
     <a href="{{ route('admin.users.create') }}" class="btn btn-primary">➕ Nouvel utilisateur</a>
 </div>
 
@@ -48,8 +23,8 @@
 
     <input type="text" name="search" id="searchInput" placeholder="Rechercher..." value="{{ request('search') }}">
     
-    <button type="submit" class="btn">🔍 Filtrer</button>
-    <button type="button" class="btn btn-secondary" onclick="resetFilters()">🔄 Réinitialiser</button>
+    <button type="submit" class="btn" style="margin-top: 10px;">🔍 Filtrer</button>
+    <button type="button" class="btn btn-secondary" style="margin-top: 20px;" onclick="resetFilters()">🔄 Réinitialiser</button>
 </form>
 
 @if(session('success'))

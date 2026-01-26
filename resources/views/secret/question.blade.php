@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Question secrète - DataCenter Manager</title>
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
     <style>
         * {
             margin: 0;
@@ -13,7 +15,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: rgba(255, 255, 255, 0.1);;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -31,7 +33,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: rgba(255, 255, 255, 0.15);
             padding: 48px 40px;
             text-align: center;
             color: white;
@@ -69,13 +71,13 @@
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 32px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #2f3a6bff;
         }
 
         .question-label {
             font-size: 13px;
             font-weight: 600;
-            color: #667eea;
+            color: #2f3a6bff;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 8px;
@@ -83,7 +85,7 @@
 
         .question-text {
             font-size: 16px;
-            color: #2d3748;
+            color: #2f3a6bff;
             font-weight: 500;
         }
 
@@ -95,7 +97,7 @@
             display: block;
             font-size: 14px;
             font-weight: 600;
-            color: #2d3748;
+            color: #2f3a6bff;
             margin-bottom: 8px;
         }
 
@@ -113,8 +115,8 @@
         input[type="text"]:focus,
         input[type="password"]:focus {
             outline: none;
-            border-color: #667eea;
-            background: white;
+            border-color: #4c5682ff;
+            background: rgba(255, 255, 255, 0.1);
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
@@ -131,7 +133,7 @@
         .submit-btn {
             width: 100%;
             padding: 16px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2f3a6bff 0%, #2f3a6bff 100%);
             color: white;
             border: none;
             border-radius: 12px;

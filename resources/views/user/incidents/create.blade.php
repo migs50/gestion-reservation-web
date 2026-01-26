@@ -3,6 +3,8 @@
 @section('title', 'Signaler un incident')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <div style="max-width: 800px; margin: 0 auto;">
     <div style="margin-bottom: 30px;">
         <h1>Signaler un problème technique</h1>

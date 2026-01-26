@@ -6,10 +6,12 @@
 @section('breadcrumb', 'Demandes de Réservation')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <style>
     /* [Styles identiques au fichier précédent] */
     .page-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #424769 0%, #2d3250 100%);
         border-radius: 20px;
         padding: 40px;
         color: white;
@@ -88,7 +90,7 @@
 
     .btn-filter {
         padding: 12px 20px;
-        background: #667eea;
+        background: #2d3250;
         color: white;
         border: none;
         border-radius: 10px;
@@ -226,7 +228,7 @@
     }
 
     .btn-details {
-        background: #4299e1;
+        background: #f9b17a;
         color: white;
     }
 
@@ -247,7 +249,7 @@
 {{-- Page Header --}}
 <div class="page-header">
     <h1 class="page-title">
-        <span>📋</span>
+        <span></span>
         Demandes de Réservation
     </h1>
 </div>
@@ -312,7 +314,7 @@
                 <div>
                     <div class="request-title">
                         @php
-                            $icon = '🖥️';
+                            $icon = '';
                             if($request->ressource && $request->ressource->categorie) {
                                 if(str_contains(strtolower($request->ressource->categorie->nom), 'serveur')) $icon = '🗄️';
                                 if(str_contains(strtolower($request->ressource->categorie->nom), 'virtuel')) $icon = '☁️';
@@ -324,11 +326,11 @@
                         <span style="font-size: 14px; color: #a0aec0; font-weight: 600;">#REQ-{{ $request->id }}</span>
                     </div>
                     <div class="request-meta">
-                        <span>👤 {{ $request->demandeur->nom }} {{ $request->demandeur->prenom }}</span>
+                        <span> {{ $request->demandeur->nom }} {{ $request->demandeur->prenom }}</span>
                         <span>•</span>
-                        <span>📅 Du {{ $request->debut->format('d/m/Y') }} au {{ $request->fin->format('d/m/Y') }}</span>
+                        <span> Du {{ $request->debut->format('d/m/Y') }} au {{ $request->fin->format('d/m/Y') }}</span>
                         <span>•</span>
-                        <span>⏰ {{ $request->created_at->diffForHumans() }}</span>
+                        <span> {{ $request->created_at->diffForHumans() }}</span>
                     </div>
                 </div>
                 <span class="request-status status-{{ $request->statut }}">
@@ -338,7 +340,7 @@
 
             @if($request->justification)
                 <div class="request-message">
-                    <div class="message-header">💬 Justification de l'utilisateur</div>
+                    <div class="message-header"> Justification de l'utilisateur</div>
                     <p class="message-text">{{ $request->justification }}</p>
                 </div>
             @endif
@@ -363,7 +365,7 @@
                 @endif
 
                 <a href="{{ route('responsable.requests.show', $request->id) }}" class="action-btn btn-details" style="{{ $request->statut !== 'pending' ? 'flex: 1; justify-content: center;' : '' }}">
-                    <span>👁️</span>
+                    <span></span>
                     <span>Détails complets</span>
                 </a>
             </div>

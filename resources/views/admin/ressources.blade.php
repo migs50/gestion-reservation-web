@@ -3,6 +3,8 @@
 @section('title', 'Gestion Ressources')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <style>
     .page-header {
         display: flex;

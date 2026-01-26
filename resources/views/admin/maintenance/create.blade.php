@@ -3,6 +3,8 @@
 @section('title', 'Planifier une Maintenance')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <div class="card">
     <div class="card-header">
         <h3>Nouvelle Période d'Indisponibilité</h3>

@@ -3,6 +3,7 @@
 @section('title', 'Nouvelle réservation')
 
 @section('content')
+<<<<<<< HEAD
 <div class="container">
 
     @if($errors->any())
@@ -14,6 +15,10 @@
             </ul>
         </div>
     @endif
+=======
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
+>>>>>>> a35ab04aa44c904177982d44272ad18961cd149b
 
 <style>
 /* Fond global */

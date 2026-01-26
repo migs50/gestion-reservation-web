@@ -1,269 +1,25 @@
-{{-- 
-    📄 Fichier : ressources.blade.php
-    📁 Chemin : resources/views/responsable/ressources.blade.php
-    🎯 Rôle : Responsable de ressources (avec données dynamiques)
-    📝 Description : Liste et gestion des ressources avec actions (maintenance, désactivation)
-    🔐 Route : Route::middleware(['auth', 'role:responsable'])->group()
---}}
+
 
 @extends('layouts.app')
 
 @section('title', 'Mes Ressources - Responsable')
 @section('breadcrumb', 'Mes Ressources')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
+
 
 @section('content')
-<style>
-    /* [Reprendre les mêmes styles que précédemment] */
-    .page-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 20px;
-        padding: 40px;
-        color: white;
-        margin-bottom: 30px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
-    }
 
-    .page-title {
-        font-size: 32px;
-        font-weight: 800;
-        color: white;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin: 0;
-    }
-
-    .page-actions {
-        display: flex;
-        gap: 12px;
-    }
-
-    .btn {
-        padding: 12px 24px;
-        border-radius: 10px;
-        font-weight: 600;
-        font-size: 14px;
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .btn-white {
-        background: white;
-        color: #667eea;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-white:hover {
-        transform: translateY(-2px);
-        background: #f8fafc;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-    }
-
-    .filters-bar {
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        margin-bottom: 25px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-    }
-
-    .filters-grid {
-        display: grid;
-        grid-template-columns: 2fr 1fr 1fr auto;
-        gap: 15px;
-        align-items: end;
-    }
-
-    .filter-group {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .filter-label {
-        font-size: 13px;
-        font-weight: 600;
-        color: #4a5568;
-    }
-
-    .filter-input, .filter-select {
-        padding: 12px 15px;
-        border: 2px solid #e2e8f0;
-        border-radius: 10px;
-        font-size: 14px;
-        transition: all 0.3s;
-    }
-
-    .filter-input:focus, .filter-select:focus {
-        outline: none;
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-
-    .resources-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 25px;
-        margin-bottom: 30px;
-    }
-
-    .resource-card {
-        background: white;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s;
-    }
-
-    .resource-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
-    }
-
-    .resource-image {
-        height: 180px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 64px;
-        position: relative;
-    }
-
-    .resource-badge {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 700;
-        backdrop-filter: blur(10px);
-    }
-
-    .badge-available {
-        background: rgba(72, 187, 120, 0.9);
-        color: white;
-    }
-
-    .badge-reserved {
-        background: rgba(237, 137, 54, 0.9);
-        color: white;
-    }
-
-    .badge-maintenance {
-        background: rgba(245, 101, 101, 0.9);
-        color: white;
-    }
-
-    .badge-disabled {
-        background: rgba(160, 174, 192, 0.9);
-        color: white;
-    }
-
-    .resource-body {
-        padding: 22px;
-    }
-
-    .resource-title {
-        font-size: 18px;
-        font-weight: 700;
-        color: #2d3748;
-        margin-bottom: 5px;
-    }
-
-    .resource-type {
-        font-size: 13px;
-        color: #718096;
-        font-weight: 600;
-        margin-bottom: 15px;
-    }
-
-    .resource-specs {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        margin: 15px 0;
-        padding: 15px;
-        background: #f7fafc;
-        border-radius: 10px;
-    }
-
-    .spec-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 13px;
-        color: #4a5568;
-    }
-
-    .resource-actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-    }
-
-    .action-btn {
-        padding: 10px;
-        border: none;
-        border-radius: 8px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-
-    .action-maintenance {
-        background: #ed8936;
-        color: white;
-    }
-
-    .action-disable {
-        background: #718096;
-        color: white;
-    }
-
-    .action-enable {
-        background: #48bb78;
-        color: white;
-    }
-
-    .action-btn:hover {
-        transform: translateY(-2px);
-    }
-
-    @media (max-width: 768px) {
-        .filters-grid {
-            grid-template-columns: 1fr;
-        }
-        .resources-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
 
 {{-- Page Header --}}
 <div class="page-header">
     <h1 class="page-title">
-        <span>🖥️</span>
+        <span></span>
         Mes Ressources
     </h1>
     <div class="page-actions">
         <a href="{{ route('responsable.ressources.create') }}" class="btn btn-white">
-            <span>➕</span>
+            <span></span>
             Nouvelle ressource
         </a>
     </div>
@@ -279,7 +35,7 @@
     <form action="{{ route('responsable.ressources') }}" method="GET">
         <div class="filters-grid">
             <div class="filter-group">
-                <label class="filter-label">🔍 Rechercher</label>
+                <label class="filter-label" style="margin-bottom: 10px;">🔍 Rechercher</label>
                 <input 
                     type="text" 
                     name="search"
@@ -290,7 +46,7 @@
             </div>
 
             <div class="filter-group">
-                <label class="filter-label">📁 Type</label>
+                <label class="filter-label" style="margin-bottom: 10px;">📁 Type</label>
                 <select name="type" class="filter-select">
                     <option value="">Tous les types</option>
                     <option value="serveur" {{ request('type') == 'serveur' ? 'selected' : '' }}>Serveur</option>
@@ -301,7 +57,7 @@
             </div>
 
             <div class="filter-group">
-                <label class="filter-label">📊 État</label>
+                <label class="filter-label" style="margin-bottom: 10px;">📊 État</label>
                 <select name="status" class="filter-select">
                     <option value="">Tous les états</option>
                     <option value="available" {{ request('status') == 'available' ? 'selected' : '' }}>Disponible</option>
@@ -311,7 +67,7 @@
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary" style="margin-bottom: 20px; margin-top: 20px;">
                 🔍 Filtrer
             </button>
         </div>
@@ -354,7 +110,7 @@
                 </div>
 
                 <div class="resource-actions" style="grid-template-columns: 1fr 1fr 1fr;">
-                    <a href="{{ route('responsable.ressources.edit', $resource->id) }}" class="action-btn" style="background: #4299e1; color: white; text-align: center; text-decoration: none;">
+                    <a href="{{ route('responsable.ressources.edit', $resource->id) }}" class="action-btn" style="background: #f9b17a; color: white; text-align: center; text-decoration: none;">
                         📝 Éditer
                     </a>
                     @if($resource->etat !== 'maintenance')

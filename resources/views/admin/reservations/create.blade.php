@@ -3,6 +3,8 @@
 @section('title', 'Nouvelle réservation')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
     <h1>Nouvelle réservation</h1>
 
 <form action="{{ route('reservations.store') }}" method="POST" class="form-card">

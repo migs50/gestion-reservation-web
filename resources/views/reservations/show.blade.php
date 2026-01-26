@@ -3,6 +3,8 @@
 @section('title', 'Détails de la Réservation')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <style>
     .back-link {
         display: inline-flex;

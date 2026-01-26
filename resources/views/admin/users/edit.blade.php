@@ -3,6 +3,8 @@
 @section('title', 'Modifier Utilisateur')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <div class="card">
     <div class="card-header">
         <h3>✏️ Modifier l'utilisateur : {{ $user->nom }} {{ $user->prenom }}</h3>

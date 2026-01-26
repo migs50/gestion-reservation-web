@@ -3,6 +3,8 @@
 @section('title', 'Nouvelle ressource')
 
 @push('style')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <style>
 /* Fond global de la page admin */
 main .content,

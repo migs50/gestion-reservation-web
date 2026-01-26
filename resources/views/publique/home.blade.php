@@ -3,153 +3,27 @@
 @section('title', 'Accueil')
 
 @section('content')
-<style>
-    .hero {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border-radius: 15px;
-        padding: 80px 40px;
-        text-align: center;
-        margin-bottom: 50px;
-    }
-
-    .hero h1 {
-        font-size: 48px;
-        margin-bottom: 20px;
-    }
-
-    .hero p {
-        font-size: 20px;
-        margin-bottom: 30px;
-        opacity: 0.95;
-    }
-
-    .hero-buttons {
-        display: flex;
-        gap: 15px;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .hero-btn {
-        padding: 15px 35px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 16px;
-        transition: transform 0.3s ease;
-    }
-
-    .hero-btn-primary {
-        background: white;
-        color: #667eea;
-    }
-
-    .hero-btn-secondary {
-        background:  white;
-        color:#667eea;
-        border: 2px solid white;
-    }
-
-    .hero-btn:hover {
-        transform: translateY(-3px);
-    }
-
-    .features {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 30px;
-        margin-bottom: 50px;
-    }
-
-    .feature-card {
-        background: white;
-        border-radius: 12px;
-        padding: 35px;
-        text-align: center;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    }
-
-    .feature-icon {
-        font-size: 50px;
-        margin-bottom: 20px;
-    }
-
-    .feature-card h3 {
-        font-size: 22px;
-        margin-bottom: 15px;
-        color: #2c3e50;
-    }
-
-    .feature-card p {
-        color: #7f8c8d;
-        line-height: 1.6;
-    }
-
-    .stats-section {
-        background: white;
-        border-radius: 12px;
-        padding: 50px 40px;
-        margin-bottom: 50px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-    }
-
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 30px;
-        text-align: center;
-    }
-
-    .stat-item h4 {
-        font-size: 42px;
-        color: #667eea;
-        margin-bottom: 10px;
-    }
-
-    .stat-item p {
-        color: #7f8c8d;
-        font-size: 16px;
-    }
-
-    @media (max-width: 768px) {
-        .hero h1 {
-            font-size: 32px;
-        }
-
-        .hero p {
-            font-size: 16px;
-        }
-
-        .hero {
-            padding: 50px 20px;
-        }
-    }
-</style>
 
 <!-- Hero Section -->
-<div class="hero">
+<section class="hero-section-compact">
+<div class="hero-container-compact">
+
     <h1>Gérez vos ressources en toute simplicité</h1>
     <p>Une plateforme moderne pour réserver, suivre et gérer vos ressources partagées.</p>
     
     <div class="hero-buttons">
-        <a href="{{ route('publique.ressources') }}" class="hero-btn hero-btn-primary">
+        <a href="{{ route('publique.ressources') }}" class="hero-link hero-link-primary">
             Explorer les ressources
         </a>
 
         @guest
-            <a href="{{ route('demande.compte') }}" class="hero-btn hero-btn-secondary">
+            <a href="{{ route('demande.compte') }}" class="hero-link hero-link-secondary">
                 Demander un accès
             </a>
         @endguest
     </div>
 </div>
+</section>
 
 
 <!-- Features -->
@@ -190,21 +64,11 @@
         <p>Accédez à vos ressources depuis n'importe quel appareil, PC, tablette ou smartphone.</p>
     </div>
 </section>
-
-<!-- Statistics 
+    
+<!-- Statistics -->
 <section class="stats-section">
-    <h2 style="text-align: center; margin-bottom: 40px; color: #2c3e50; font-size: 32px;">
-        Nos statistiques
-    </h2>
-    <div class="stats-grid">
-        <div class="stat-item">
-            <h4>250+</h4>
-            <p>Ressources disponibles</p>
-        </div>
-        <div class="stat-item">
-            <h4>1500+</h4>
-            <p>Utilisateurs actifs</p>
-        </div>
+
+   
         <div class="stat-item">
             <h4>95%</h4>
             <p>Taux de satisfaction</p>
@@ -212,7 +76,7 @@
         <div class="stat-item">
             <h4>24/7</h4>
             <p>Support disponible</p>
-        </div> 
-    </div>-->
+        </div>
+    </div>
 </section>
 @endsection

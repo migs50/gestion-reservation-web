@@ -1,12 +1,13 @@
 @extends('layouts.admin')
 
 @section('title', 'Gestion de la Maintenance')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 
 @section('content')
 <div class="card">
     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-        <h3>Périodes d'Indisponibilité</h3>
-        <a href="{{ route('admin.maintenances.create') }}" class="btn btn-primary">🔧 Planifier une Maintenance</a>
+        <h3 style="margin-bottom: 20px; color: #2c3e50;">Périodes d'Indisponibilité</h3>
+        <a href="{{ route('admin.maintenances.create') }}" class="btn btn-primary"> Planifier une Maintenance</a>
     </div>
 
     @if(session('success'))

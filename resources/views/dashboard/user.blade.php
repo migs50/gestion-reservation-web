@@ -3,6 +3,8 @@
 @section('title', 'Mon Tableau de Bord')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <style>
     .dashboard-header {
         background: white;
@@ -106,7 +108,7 @@
     }
 
     .action-btn:hover {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #323361b3 0%, #484980ff 100%);
         color: white;
         border-color: transparent;
         transform: translateY(-2px);
@@ -179,7 +181,7 @@
 <!-- Header -->
 <div class="dashboard-header">
     <div class="welcome-text">
-        <h1>👋 Bonjour, {{ Auth::user()->nom }} {{ Auth::user()->prenom }}</h1>
+        <h1> Bonjour, {{ Auth::user()->nom }} {{ Auth::user()->prenom }}</h1>
         <p>Bienvenue sur votre tableau de bord personnel</p>
     </div>
 </div>
@@ -187,46 +189,43 @@
 <!-- Statistics -->
 <div class="stats-grid">
     <div class="stat-card">
-        <div class="stat-icon blue">📋</div>
         <div class="stat-details">
             <h3>{{ $stats['total'] ?? 0 }}</h3>
-            <p>Réservations totales</p>
+            <p style="color: #667787ff; font-size: 24px;">Réservations totales</p>
         </div>
     </div>
 
     <div class="stat-card">
-        <div class="stat-icon green">✅</div>
         <div class="stat-details">
             <h3>{{ $stats['actives'] ?? 0 }}</h3>
-            <p>Réservations actives</p>
+            <p style="color: #667787ff; font-size: 24px;">Réservations actives</p>
         </div>
     </div>
-
+    
     <div class="stat-card">
-        <div class="stat-icon orange">⏳</div>
         <div class="stat-details">
             <h3>{{ $stats['en_attente'] ?? 0 }}</h3>
-            <p>En attente</p>
+            <p style="color: #667787ff; font-size: 24px;">En attente</p>
         </div>
     </div>
 </div>
 
 <!-- Quick Actions -->
 <div class="quick-actions">
-    <h2>⚡ Actions rapides</h2>
+    <h2> Actions rapides</h2>
     <div class="actions-grid">
         <a href="{{ route('catalogue') }}" class="action-btn">
-            <span>➕</span>
+            <span></span>
             <div>Nouvelle réservation</div>
         </a>
 
         <a href="{{ route('reservations.index') }}" class="action-btn">
-            <span>📋</span>
+            <span></span>
             <div>Mes réservations</div>
         </a>
 {{-- TEMPRORY COMMENT FOR WHEN ITS ADDED!!!! --}}
         {{-- <a href="{{ route('user.incident.report') }}" class="action-btn">
-            <span>⚠️</span>
+            <span></span>
             <div>Signaler un incident</div>
         </a> --}}
     </div>

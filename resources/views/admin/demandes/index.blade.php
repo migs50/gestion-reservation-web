@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 @extends('layouts.admin') {{-- or your admin layout --}}
 
 @section('content')
