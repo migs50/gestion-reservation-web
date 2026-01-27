@@ -205,7 +205,7 @@
 @section('content')
 <div class="detail-container">
     <a href="{{ route('responsable.requests') }}" class="back-link">
-        ← Retour aux demandes
+        Retour aux demandes
     </a>
 
     <div class="detail-card">
@@ -220,7 +220,7 @@
         </div>
 
         <div class="detail-body">
-            <div class="section-title">👤 Informations Demandeur</div>
+            <div class="section-title">Informations Demandeur</div>
             <div class="info-grid">
                 <div class="info-item">
                     <span class="info-label">Nom Complet</span>
@@ -232,7 +232,7 @@
                 </div>
             </div>
 
-            <div class="section-title">🖥️ Ressource Demandée</div>
+            <div class="section-title">Ressource Demandée</div>
             <div class="info-grid">
                 <div class="info-item">
                     <span class="info-label">Nom de la ressource</span>
@@ -244,7 +244,7 @@
                 </div>
             </div>
 
-            <div class="section-title">📅 Période de Réservation</div>
+            <div class="section-title">Période de Réservation</div>
             <div class="info-grid">
                 <div class="info-item">
                     <span class="info-label">Date de Début</span>
@@ -257,7 +257,7 @@
             </div>
 
             @if($reservation->justification)
-                <div class="section-title">📝 Justification de l'utilisateur</div>
+                <div class="section-title">Justification de l'utilisateur</div>
                 <div class="justification-box">
                     "{{ $reservation->justification }}"
                 </div>
@@ -265,32 +265,45 @@
 
             @if($reservation->statut === 'pending')
                 <div class="decision-panel">
-                    <h3>🏁 Prendre une décision</h3>
+                    <h3>Prendre une décision</h3>
                     
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #4b5563; margin-bottom: 10px;">Note de décision (Optionnelle pour approbation, obligatoire pour refus)</label>
-                        <textarea id="note_decision" name="note_decision" class="note-textarea" rows="3" placeholder="Saisissez ici le motif du refus ou une note d'approbation..."></textarea>
-                    </div>
+                    <form id="decisionForm" method="POST">
+                        @csrf
+                        <div style="margin-bottom: 24px;">
+                            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #4b5563; margin-bottom: 10px;">
+                                Justification <span style="color: #ef4444;">(Obligatoire pour le refus)</span>
+                            </label>
+                            <textarea 
+                                name="note_decision" 
+                                class="note-textarea" 
+                                rows="3" 
+                                placeholder="Saisissez ici votre justification..."
+                            ></textarea>
+                            <p style="font-size: 0.75rem; color: #6b7280; margin-top: 8px; font-style: italic;">
+                                Cette note sera envoyée à l'utilisateur et aux administrateurs.
+                            </p>
+                        </div>
 
-                    <div class="action-footer">
-                        <form action="{{ route('responsable.requests.approve', $reservation->id) }}" method="POST" style="flex: 1;" id="approve-form">
-                            @csrf
-                            <input type="hidden" name="note_decision" id="note-approve">
-                            <button type="submit" class="btn-action btn-approve" onclick="document.getElementById('note-approve').value = document.getElementById('note_decision').value; return confirm('Confirmer l\'approbation ?')">
-                                <span>✓</span> Approuver
+                        <div class="action-footer">
+                            <button 
+                                type="button" 
+                                class="btn-action btn-approve" 
+                                onclick="submitDecision('approve')"
+                            >
+                                <span></span> Approuver
                             </button>
-                        </form>
-                        <form action="{{ route('responsable.requests.reject', $reservation->id) }}" method="POST" style="flex: 1;" id="reject-form">
-                            @csrf
-                            <input type="hidden" name="note_decision" id="note-reject">
-                            <button type="submit" class="btn-action btn-reject" onclick="document.getElementById('note-reject').value = document.getElementById('note_decision').value; if(!document.getElementById('note-reject').value){alert('Veuillez saisir une justification pour le refus.'); return false;} return confirm('Confirmer le refus ?')">
-                                <span>✗</span> Refuser
+                            <button 
+                                type="button" 
+                                class="btn-action btn-reject" 
+                                onclick="submitDecision('reject')"
+                            >
+                                <span></span> Refuser
                             </button>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             @elseif($reservation->note_decision)
-                 <div class="section-title">📢 Note de décision enregistrée</div>
+                 <div class="section-title">Note de décision enregistrée</div>
                  <div class="justification-box" style="border-left-color: #94a3b8; background: #f1f5f9;">
                     {{ $reservation->note_decision }}
                 </div>
@@ -298,4 +311,35 @@
         </div>
     </div>
 </div>
+
+<script>
+    function submitDecision(action) {
+        const form = document.getElementById('decisionForm');
+        const noteField = form.querySelector('textarea[name="note_decision"]');
+        const noteValue = noteField.value.trim();
+        
+        // Validation pour le refus
+        if (action === 'reject' && !noteValue) {
+            alert('Vous devez saisir une justification pour refuser cette demande.');
+            noteField.focus();
+            return false;
+        }
+        
+        // Confirmation
+        const confirmMessage = action === 'approve' 
+            ? 'Voulez-vous approuver cette demande ?' 
+            : 'Voulez-vous refuser cette demande ?';
+        
+        if (!confirm(confirmMessage)) {
+            return false;
+        }
+        
+        // Définir l'action du formulaire
+        const reservationId = {{ $reservation->id }};
+        form.action = `/responsable/requests/${reservationId}/${action}`;
+        
+        // Soumettre le formulaire
+        form.submit();
+    }
+</script>
 @endsection

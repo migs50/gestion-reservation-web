@@ -9,16 +9,16 @@
 
 <div class="page-header">
     <h2> Gestion des Utilisateurs ({{ $users->total() }})</h2>
-    <a href="{{ route('admin.users.create') }}" class="btn btn-primary">➕ Nouvel utilisateur</a>
+    <a href="{{ route('admin.users.create') }}" class="btn btn-primary">Nouvel utilisateur</a>
 </div>
 
 <!-- Filtres -->
 <form method="GET" action="{{ route('admin.users.index') }}" class="filters" id="filterForm">
     <select name="role" id="roleFilter" onchange="applyFilters()">
         <option value="">Tous les rôles</option>
-        <option value="utilisateur" {{ request('role') == 'utilisateur' ? 'selected' : '' }}>Utilisateur</option>
+        <option value="Utilisateur" {{ request('role') == 'Utilisateur' ? 'selected' : '' }}>Utilisateur</option>
         <option value="Responsable Technique" {{ request('role') == 'Responsable Technique' ? 'selected' : '' }}>Responsable Technique</option>
-        <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+        <option value="Admin" {{ request('role') == 'Admin' ? 'selected' : '' }}>Admin</option>
     </select>
 
     <input type="text" name="search" id="searchInput" placeholder="Rechercher..." value="{{ request('search') }}">
@@ -80,9 +80,9 @@
         <table class="table" id="usersTable">
         <thead>
             <tr>
-                <th onclick="sortTable(0)">ID ⬍</th>
-                <th onclick="sortTable(1)">Nom ⬍</th>
-                <th onclick="sortTable(2)">Email ⬍</th>
+                <th onclick="sortTable(0)">ID</th>
+                <th onclick="sortTable(1)">Nom</th>
+                <th onclick="sortTable(2)">Email</th>
                 <th>Rôle</th>
                 <th>Organisation</th>
                 <th>Statut</th>
@@ -116,7 +116,7 @@
                 <td>{{ $user->created_at ? $user->created_at->format('d/m/Y') : '-' }}</td>
                 <td>
                     <div style="display: flex; gap: 5px;">
-                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-primary" title="Éditer" style="padding: 5px 10px; font-size: 14px;">✏️</a>
+                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-primary" title="Éditer" style="padding: 5px 10px; font-size: 14px; color: white;">Éditer</a>
                         
                         <form action="{{ route('admin.users.toggleStatus', $user->id) }}" method="POST">
                             @csrf
@@ -124,14 +124,14 @@
                             <button type="submit" class="btn btn-sm {{ $user->statut === 'active' ? 'btn-warning' : 'btn-success' }}" 
                                     title="{{ $user->statut === 'active' ? 'Désactiver' : 'Activer' }}" 
                                     style="padding: 5px 10px; font-size: 14px;">
-                                {{ $user->statut === 'active' ? '🚫' : '✅' }}
+                                {{ $user->statut === 'active' ? 'Désactiver' : 'Activer' }}
                             </button>
                         </form>
 
                         @if($user->id != Auth::id())
                             <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete({{ $user->id }}, '{{ $user->nom }} {{ $user->prenom }}')" 
                                     title="Supprimer" style="padding: 5px 10px; font-size: 14px;">
-                                🗑️
+                                Supprimer
                             </button>
                             <form id="delete-form-{{ $user->id }}" action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display: none;">
                                 @csrf

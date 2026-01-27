@@ -121,7 +121,7 @@ Route::middleware('auth')->group(function () {
     | RESPONSABLE routes (Only Responsable Technique)
     |--------------------------------------------------------------------------
     */
-    Route::middleware('role:Responsable')
+    Route::middleware('role:Responsable Technique,Admin')
         ->prefix('responsable')
         ->name('responsable.')
         ->group(function () {
@@ -155,7 +155,7 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'role:Admin'])
+Route::middleware(['auth', 'role:Admin,Responsable Technique'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
@@ -177,6 +177,7 @@ Route::middleware(['auth', 'role:Admin'])
         Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
         Route::get('/reservations/create', [AdminReservationController::class, 'create'])->name('reservations.create');
         Route::post('/reservations', [AdminReservationController::class, 'store'])->name('reservations.store');
+        Route::get('/reservations/decisions', [AdminReservationController::class, 'decisions'])->name('reservations.decisions');
         Route::get('/reservations/{reservation}', [AdminReservationController::class, 'show'])->name('reservations.show');
         Route::post('/reservations/{reservation}/approve', [AdminReservationController::class, 'approve'])->name('reservations.approve');
         Route::post('/reservations/{reservation}/refuse', [AdminReservationController::class, 'refuse'])->name('reservations.refuse');

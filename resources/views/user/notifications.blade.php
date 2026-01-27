@@ -237,7 +237,7 @@
 
 <!-- Header -->
 <div class="page-header">
-    <h1>🔔 Mes Notifications</h1>
+    <h1>Mes Notifications</h1>
 </div>
 
 
@@ -248,7 +248,6 @@
          onclick="markAsRead({{ $notification->id }})">
         
         <div class="notification-icon {{ $notification->getTypeClass() }}">
-            {{ $notification->getTypeIcon() }}
         </div>
 
         <div class="notification-content">
@@ -264,7 +263,7 @@
             @if($notification->lien)
             <div class="notification-actions">
                 <a href="{{ $notification->lien }}" class="btn btn-primary btn-sm">
-                    Voir détails →
+                    Voir détails
                 </a>
             </div>
             @endif
@@ -272,7 +271,7 @@
     </div>
     @empty
     <div class="empty-state">
-        <span>📭</span>
+        <span></span>
         <h3>Aucune notification</h3>
         <p>Vous n'avez pas de nouvelles notifications pour le moment</p>
     </div>
@@ -314,7 +313,7 @@ function markAsRead(id) {
 
 @if(session('success'))
 <script>
-    alert('✅ {{ session('success') }}');
+    alert('{{ session('success') }}');
 </script>
 @endif
 @endsection

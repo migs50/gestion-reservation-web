@@ -12,7 +12,7 @@ class ResponsableController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'role:Responsable']);
+        $this->middleware(['auth', 'role:Responsable Technique,Admin']);
     }
 
     public function indexRessources(Request $request)
@@ -148,7 +148,7 @@ class ResponsableController extends Controller
             'total' => Reservation::whereIn('ressource_id', $managedIds)->count(),
             'pending' => Reservation::whereIn('ressource_id', $managedIds)->where('statut', 'pending')->count(),
             'approved' => Reservation::whereIn('ressource_id', $managedIds)->whereIn('statut', ['approved', 'active'])->count(),
-            'rejected' => Reservation::whereIn('ressource_id', $managedIds)->where('statut', 'rejected')->count(),
+            'rejected' => Reservation::whereIn('ressource_id', $managedIds)->where('statut', 'refused')->count(),
         ];
 
         $requests = $query->latest()->paginate(10);
@@ -173,6 +173,24 @@ class ResponsableController extends Controller
         // Notify the requester
         $reservation->demandeur->notify(new \App\Notifications\ReservationDecision($reservation));
 
+        // NOUVEAU : Notifier tous les administrateurs
+        $admins = \App\Models\User::whereHas('role', function($q) {
+            $q->where('nom', 'Admin');
+        })->get();
+
+        foreach ($admins as $admin) {
+            \App\Models\Notification::create([
+                'user_id' => $admin->id,
+                'type' => 'decision_responsable',
+                'titre' => 'Approbation de réservation par ' . Auth::user()->nom,
+                'contenu' => "Le responsable " . Auth::user()->nom . " " . Auth::user()->prenom . 
+                            " a approuvé la demande #" . $reservation->id . " pour " . $reservation->ressource->nom . 
+                            ($request->note_decision ? ". Note : " . $request->note_decision : ""),
+                'lu' => false,
+                'lien' => route('admin.reservations.show', $reservation->id)
+            ]);
+        }
+
         \App\Models\Journal::create([
             'acteur_id'  => Auth::id(),
             'objet'      => 'reservation',
@@ -183,7 +201,7 @@ class ResponsableController extends Controller
             'user_agent' => request()->userAgent(),
         ]);
 
-        return redirect()->route('responsable.requests')->with('success', 'Demande approuvée.');
+        return redirect()->route('responsable.requests')->with('success', 'Demande approuvée et administrateurs notifiés.');
     }
 
     public function rejectRequest(Request $request, Reservation $reservation)
@@ -195,13 +213,31 @@ class ResponsableController extends Controller
         ]);
 
         $reservation->update([
-            'statut' => 'rejected',
+            'statut' => 'refused',
             'decideur_id' => Auth::id(),
             'note_decision' => $request->note_decision
         ]);
 
         // Notify the requester
         $reservation->demandeur->notify(new \App\Notifications\ReservationDecision($reservation));
+
+        // NOUVEAU : Notifier tous les administrateurs
+        $admins = \App\Models\User::whereHas('role', function($q) {
+            $q->where('nom', 'Admin');
+        })->get();
+
+        foreach ($admins as $admin) {
+            \App\Models\Notification::create([
+                'user_id' => $admin->id,
+                'type' => 'decision_responsable',
+                'titre' => 'Refus de réservation par ' . Auth::user()->nom,
+                'contenu' => "Le responsable " . Auth::user()->nom . " " . Auth::user()->prenom . 
+                            " a refusé la demande #" . $reservation->id . " pour " . $reservation->ressource->nom . 
+                            ". Motif : " . $request->note_decision,
+                'lu' => false,
+                'lien' => route('admin.reservations.show', $reservation->id)
+            ]);
+        }
 
         \App\Models\Journal::create([
             'acteur_id'  => Auth::id(),
@@ -213,7 +249,7 @@ class ResponsableController extends Controller
             'user_agent' => request()->userAgent(),
         ]);
 
-        return redirect()->route('responsable.requests')->with('success', 'Demande refusée.');
+        return redirect()->route('responsable.requests')->with('success', 'Demande refusée et administrateurs notifiés.');
     }
 
     public function showRequest(Reservation $reservation)

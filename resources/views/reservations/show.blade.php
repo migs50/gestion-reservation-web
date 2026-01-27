@@ -247,7 +247,7 @@
 
 <!-- Back Link -->
 <a href="{{ route('reservations.index') }}" class="back-link">
-    ← Retour aux réservations
+    Retour aux réservations
 </a>
 
 <!-- Reservation Header -->
@@ -261,16 +261,16 @@
             <span class="badge badge-{{ $reservation->statut }}">
                 @switch($reservation->statut)
                     @case('pending')
-                        ⏳ En attente
+                        En attente
                         @break
                     @case('approved')
-                        ✅ Approuvée
+                        Approuvée
                         @break
                     @case('refused')
-                        ❌ Refusée
+                        Refusée
                         @break
                     @case('active')
-                        🔄 Active
+                        Active
                         @break
                     @default
                         {{ ucfirst($reservation->statut) }}
@@ -286,13 +286,13 @@
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger">
-                    🗑️ Annuler la réservation
+                    Annuler la réservation
                 </button>
             </form>
         @endif
 
         <a href="{{ route('user.incidents.create', ['reservation_id' => $reservation->id]) }}" class="btn btn-primary">
-            ⚠️ Signaler un problème
+            Signaler un problème
         </a>
     </div>
 </div>
@@ -300,7 +300,7 @@
 <!-- Alerts -->
 @if($reservation->statut == 'refused' && $reservation->note_decision)
 <div class="alert alert-warning">
-    <strong>⚠️ Motif du refus :</strong><br>
+    <strong>Motif du refus :</strong><br>
     {{ $reservation->note_decision }}
 </div>
 @endif
@@ -311,26 +311,26 @@
     <div>
         <!-- Reservation Details -->
         <div class="details-card" style="margin-bottom: 30px;">
-            <h2>📋 Détails de la réservation</h2>
+            <h2>Détails de la réservation</h2>
             
             <div class="info-grid">
                 <div class="info-item">
                     <span class="info-label">
-                        <span>📅</span> Date de début
+                        <span></span> Date de début
                     </span>
                     <span class="info-value">{{ $reservation->debut?->format('d/m/Y à H:i') }}</span>
                 </div>
 
                 <div class="info-item">
                     <span class="info-label">
-                        <span>📅</span> Date de fin
+                        <span></span> Date de fin
                     </span>
                     <span class="info-value">{{ $reservation->fin?->format('d/m/Y à H:i') }}</span>
                 </div>
 
                 <div class="info-item">
                     <span class="info-label">
-                        <span>⏱️</span> Durée totale
+                        <span></span> Durée totale
                     </span>
                     <span class="info-value">
                         @php
@@ -343,7 +343,7 @@
                 @if($reservation->statut == 'approved' || $reservation->statut == 'active')
                 <div class="info-item">
                     <span class="info-label">
-                        <span>✅</span> Approuvée par
+                        <span></span> Approuvée par
                     </span>
                     <span class="info-value">{{ $reservation->decideur->nom ?? 'Gestionnaire' }}</span>
                 </div>
@@ -353,13 +353,13 @@
 
         <!-- Justification -->
         <div class="details-card" style="margin-bottom: 30px;">
-            <h2>📝 Justification</h2>
+            <h2>Justification</h2>
             <p style="color: #555; line-height: 1.6; white-space: pre-line;">{{ $reservation->justification }}</p>
         </div>
 
         <!-- Timeline -->
         <div class="details-card">
-            <h2>📊 Historique et activités</h2>
+            <h2>Historique et activités</h2>
             
             <div class="timeline">
                 <div class="timeline-item">
@@ -399,11 +399,10 @@
     <div>
         <!-- Resource Info -->
         <div class="details-card" style="margin-bottom: 30px;">
-            <h2>🖥️ Informations sur la ressource</h2>
+            <h2>Informations sur la ressource</h2>
             
             <div style="text-align: center; margin: 20px 0;">
                 <div style="font-size: 64px; margin-bottom: 15px;">
-                    🔧
                 </div>
                 <h3 style="color: #2c3e50; margin-bottom: 5px;">{{ $reservation->ressource->nom }}</h3>
                 <p style="color: #7f8c8d;">{{ $reservation->ressource->categorie->nom ?? 'Informatique' }}</p>
@@ -412,13 +411,13 @@
 
         <!-- Contact Support -->
         <div class="details-card">
-            <h2>💬 Besoin d'aide ?</h2>
+            <h2>Besoin d'aide ?</h2>
             <p style="color: #555; margin-bottom: 15px;">
                 Si vous rencontrez un problème avec votre réservation, n'hésitez pas à nous contacter.
             </p>
             <a href="{{ route('user.incidents.create', ['reservation_id' => $reservation->id]) }}" 
                class="btn btn-primary" style="width: 100%; justify-content: center;">
-                ⚠️ Signaler un incident
+                Signaler un incident
             </a>
         </div>
     </div>

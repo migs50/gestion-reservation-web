@@ -28,7 +28,7 @@
 
 <div class="page-header">
     <h1 class="page-title">
-        <span>💬</span> Modération des Discussions
+        <span></span> Modération des Discussions
     </h1>
 </div>
 
@@ -67,7 +67,7 @@
                                 <form action="{{ route('responsable.messages.hide', $message->id) }}" method="POST">
                                     @csrf
                                     <button type="submit" style="background: #f56565; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;" onclick="return confirm('Masquer ce message ?')">
-                                        🚫 Masquer
+                                        Masquer
                                     </button>
                                 </form>
                             @endif
@@ -77,7 +77,7 @@
             </div>
         @empty
             <div style="text-align: center; padding: 60px; background: white; border-radius: 15px;">
-                <div style="font-size: 64px; margin-bottom: 20px;">💬</div>
+                <div style="font-size: 64px; margin-bottom: 20px;"></div>
                 <h3 style="font-size: 20px; font-weight: 700; color: #2d3748;">Aucune discussion active</h3>
                 <p style="color: #718096; margin-top: 10px;">Les discussions apparaîtront ici lorsqu'un utilisateur en démarrera une.</p>
             </div>

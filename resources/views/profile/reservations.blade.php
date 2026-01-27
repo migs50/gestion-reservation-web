@@ -227,7 +227,7 @@
     <div class="page-header">
         <h1>Mes réservations</h1>
         <a href="{{ route('catalogue') }}" class="navbar-menu a btn-primary" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 25px;">
-            ➕ Nouvelle réservation
+            Nouvelle réservation
         </a>
     </div>
 
@@ -265,21 +265,21 @@
     <!-- Stats Summary -->
     <div class="stats-overview">
         <div class="stat-mini-card">
-            <div class="stat-icon" style="background: #eef2ff; color: #4f46e5;">📊</div>
+            <div class="stat-icon" style="background: #eef2ff; color: #4f46e5;"></div>
             <div class="stat-info">
                 <h3>{{ $reservations->total() }}</h3>
                 <p>Total demandes</p>
             </div>
         </div>
         <div class="stat-mini-card">
-            <div class="stat-icon" style="background: #fff9e6; color: #f1c40f;">⏳</div>
+            <div class="stat-icon" style="background: #fff9e6; color: #f1c40f;"></div>
             <div class="stat-info">
                 <h3>{{ $reservations->where('statut', 'pending')->count() }}</h3>
                 <p>En attente</p>
             </div>
         </div>
         <div class="stat-mini-card">
-            <div class="stat-icon" style="background: #e3fcef; color: #00b894;">✅</div>
+            <div class="stat-icon" style="background: #e3fcef; color: #00b894;"></div>
             <div class="stat-info">
                 <h3>{{ $reservations->whereIn('statut', ['approved', 'active'])->count() }}</h3>
                 <p>Réservations actives</p>
@@ -290,7 +290,7 @@
     <div class="glass-card">
         @if($reservations->isEmpty())
             <div style="text-align: center; padding: 60px 0;">
-                <div style="font-size: 60px; margin-bottom: 20px;">📅</div>
+                <div style="font-size: 60px; margin-bottom: 20px;"></div>
                 <h3 style="color: #2d3436;">Aucune réservation pour le moment</h3>
                 <p style="color: #636e72;">Commencez par explorer notre catalogue de ressources.</p>
                 <a href="{{ route('catalogue') }}" class="btn-action btn-view" style="display: inline-block; margin-top: 20px;">Explorer le catalogue</a>
@@ -313,7 +313,7 @@
                             <td>#{{ $reservation->id }}</td>
                             <td>
                                 <div class="ressource-name">
-                                    🔧 {{ $reservation->ressource->nom ?? 'Ressource inconnue' }}
+                                    {{ $reservation->ressource->nom ?? 'Ressource inconnue' }}
                                 </div>
                             </td>
                             <td>

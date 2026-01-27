@@ -101,4 +101,51 @@ class ReservationController extends Controller
         return back()->with('success', 'Réservation refusée.');
     }
 
+    public function show(Reservation $reservation)
+    {
+        $reservation->load(['ressource', 'demandeur', 'decideur']);
+        return view('admin.reservations.show', compact('reservation'));
+    }
+
+    /**
+     * Afficher toutes les décisions des responsables techniques
+     */
+    public function decisions(Request $request)
+    {
+        $query = Reservation::with(['ressource.manager', 'demandeur', 'decideur'])
+            ->whereNotNull('decideur_id')
+            ->whereIn('statut', ['approved', 'refused']);
+
+        // Filter by decision type
+        if ($request->filled('statut')) {
+            $query->where('statut', $request->statut);
+        }
+
+        // Filter by technician
+        if ($request->filled('decideur_id')) {
+            $query->where('decideur_id', $request->decideur_id);
+        }
+
+        // Search
+        if ($request->filled('search')) {
+            $query->where(function($q) use ($request) {
+                $q->whereHas('demandeur', function($sq) use ($request) {
+                    $sq->where('nom', 'like', '%' . $request->search . '%')
+                       ->orWhere('prenom', 'like', '%' . $request->search . '%');
+                })->orWhereHas('ressource', function($sq) use ($request) {
+                    $sq->where('nom', 'like', '%' . $request->search . '%');
+                });
+            });
+        }
+
+        $decisions = $query->latest('updated_at')->paginate(15);
+        
+        // Get all technicians for filter
+        $decideurs = User::whereHas('role', function($q) {
+            $q->where('nom', 'Responsable Technique');
+        })->orderBy('nom')->get();
+
+        return view('admin.reservations.decisions', compact('decisions', 'decideurs'));
+    }
+
 }

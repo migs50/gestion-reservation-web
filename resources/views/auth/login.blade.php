@@ -10,7 +10,7 @@
 
 <!-- Alert pour démonstration -->
 <div class="alert alert-error" id="loginAlert" style="display: none;">
-    <strong>❌ Erreur de connexion</strong><br>
+    <strong>Erreur de connexion</strong><br>
     Email ou mot de passe incorrect.
 </div>
 

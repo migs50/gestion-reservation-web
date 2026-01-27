@@ -80,12 +80,12 @@
 </style>
 
 <div class="alert alert-success" id="successAlert" style="display: none;">
-    <strong>✅ Email envoyé !</strong><br>
+    <strong>Email envoyé !</strong><br>
     Un lien de réinitialisation a été envoyé à votre adresse email.
 </div>
 
 <div class="info-text">
-    <strong>ℹ️ Comment ça fonctionne ?</strong><br>
+    <strong>Comment ça fonctionne ?</strong><br>
     Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe. 
     Le lien sera valide pendant 60 minutes.
 </div>

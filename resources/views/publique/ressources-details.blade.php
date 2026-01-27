@@ -9,7 +9,7 @@
     .back-link {
         display: inline-flex;
         align-items: center;
-        color: #667eea;
+        color: #2c3e50;
         text-decoration: none;
         margin-bottom: 20px;
         font-weight: 600;
@@ -122,7 +122,7 @@
     }
 </style>
 
-<a href="{{ route('catalogue') }}" class="back-link">← Retour aux ressources</a>
+<a href="{{ route('catalogue') }}" class="back-link">Retour aux ressources</a>
 
 <div class="ressource-details">
     <div class="details-header">

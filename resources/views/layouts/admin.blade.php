@@ -702,8 +702,14 @@ form.form .btn:active {
 
 
                 <li>
-                    <a href="{{ route('admin.reservations.index') }}" class="{{ request()->routeIs('admin.reservations.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.reservations.index') }}" class="{{ request()->routeIs('admin.reservations.index') ? 'active' : '' }}">
                         <span></span> Réservations
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin.reservations.decisions') }}" class="{{ request()->routeIs('admin.reservations.decisions') ? 'active' : '' }}">
+                        <span></span> Décisions Responsables
                     </a>
                 </li>
 
@@ -729,7 +735,7 @@ form.form .btn:active {
         <!-- Top Bar -->
         <div class="topbar">
             <div class="topbar-left">
-                <span class="menu-toggle" onclick="toggleSidebar()">☰</span>
+                <span class="menu-toggle" onclick="toggleSidebar()">Menu</span>
                 <h1>@yield('title', 'Administration')</h1>
             </div>
 

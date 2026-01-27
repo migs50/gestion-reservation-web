@@ -228,7 +228,7 @@
 
 <!-- Recent Reservations -->
 <div class="recent-section">
-    <h2>📌 Réservations récentes</h2>
+    <h2>Réservations récentes</h2>
     
     @if(!empty($recent_reservations) && $recent_reservations->count() > 0)
         @foreach($recent_reservations as $reservation)
@@ -256,12 +256,12 @@
         
         <div style="text-align: center; margin-top: 20px;">
             <a href="{{ route('reservations.index') }}" style="color: #667eea; text-decoration: none; font-weight: 600;">
-                Voir toutes les réservations →
+                Voir toutes les réservations
             </a>
         </div>
     @else
         <div class="empty-state">
-            <span>📭</span>
+            <span></span>
             <p>Aucune réservation récente</p>
             <a href="{{ route('catalogue') }}" style="color: #667eea; text-decoration: none; font-weight: 600;">
                 Créer votre première réservation
@@ -271,7 +271,7 @@
 </div>
 
 <div class="recent-section" style="margin-top: 30px;">
-    <h2>📈 Activité des 7 derniers jours</h2>
+    <h2>Activité des 7 derniers jours</h2>
     <div style="height: 300px; position: relative;">
         <canvas id="userActivityChart"></canvas>
     </div>
@@ -372,7 +372,7 @@ function animateCounters() {
 
 @if(session('success'))
 <script>
-    alert('✅ {{ session('success') }}');
+    alert('{{ session('success') }}');
 </script>
 @endif
 @endsection

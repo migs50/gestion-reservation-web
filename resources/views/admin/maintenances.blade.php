@@ -128,20 +128,20 @@
 </style>
 
 <div class="page-header">
-    <h2>🔧 Maintenance Système</h2>
+    <h2>Maintenance Système</h2>
     <span class="badge badge-success">Système opérationnel</span>
 </div>
 
 @if(session('success'))
 <div class="alert alert-success">
-    <span style="font-size: 20px;">✓</span>
+    <span style="font-size: 20px;"></span>
     <span>{{ session('success') }}</span>
 </div>
 @endif
 
 @if(session('error'))
 <div class="alert alert-danger">
-    <span style="font-size: 20px;">✗</span>
+    <span style="font-size: 20px;"></span>
     <span>{{ session('error') }}</span>
 </div>
 @endif
@@ -151,7 +151,7 @@
     <!-- Cache -->
     <div class="maintenance-card">
         <h3>
-            <span>🗑️</span>
+            <span></span>
             <span>Gestion du Cache</span>
         </h3>
         <p>Vider le cache de l'application pour forcer le rechargement des données et configurations.</p>
@@ -164,19 +164,19 @@
         <form action="{{ route('admin.maintenance.clear-cache') }}" method="POST" style="display: inline;">
             @csrf
             <button type="submit" class="btn btn-warning" onclick="return confirm('Vider le cache ?')">
-                🗑️ Vider le cache
+                Vider le cache
             </button>
         </form>
         
         <button type="button" class="btn btn-secondary" onclick="refreshCacheInfo()">
-            🔄 Actualiser
+            Actualiser
         </button>
     </div>
 
     <!-- Base de données -->
     <div class="maintenance-card">
         <h3>
-            <span>🗄️</span>
+            <span></span>
             <span>Base de données</span>
         </h3>
         <p>Optimiser les tables de la base de données et vérifier l'intégrité des données.</p>
@@ -202,7 +202,7 @@
         <form action="{{ route('admin.maintenance.optimize-db') }}" method="POST" style="margin-top: 15px;">
             @csrf
             <button type="submit" class="btn btn-primary" onclick="return confirm('Optimiser la base de données ?')">
-                ⚡ Optimiser DB
+                Optimiser DB
             </button>
         </form>
     </div>
@@ -210,7 +210,7 @@
     <!-- Logs système -->
     <div class="maintenance-card">
         <h3>
-            <span>📝</span>
+            <span></span>
             <span>Logs Système</span>
         </h3>
         <p>Consulter et gérer les fichiers de logs pour le débogage et l'audit.</p>
@@ -221,13 +221,13 @@
         </div>
 
         <button type="button" class="btn btn-secondary" onclick="toggleLogs()">
-            👁️ Voir les logs
+            Voir les logs
         </button>
         
         <form action="{{ route('admin.maintenance.clear-logs') }}" method="POST" style="display: inline;">
             @csrf
             <button type="submit" class="btn btn-danger" onclick="return confirm('Supprimer tous les logs ?')">
-                🗑️ Purger logs
+                Purger logs
             </button>
         </form>
     </div>
@@ -235,7 +235,7 @@
     <!-- Backups -->
     <div class="maintenance-card">
         <h3>
-            <span>💾</span>
+            <span></span>
             <span>Sauvegardes</span>
         </h3>
         <p>Créer des sauvegardes de la base de données et restaurer des versions précédentes.</p>
@@ -248,7 +248,7 @@
         <form action="{{ route('admin.maintenance.create-backup') }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-primary">
-                💾 Créer backup
+                Créer backup
             </button>
         </form>
     </div>
@@ -257,9 +257,9 @@
 <!-- Viewer des logs (masqué par défaut) -->
 <div class="maintenance-card" id="logsViewer" style="display: none;">
     <h3>
-        <span>📜</span>
+        <span></span>
         <span>Derniers logs système</span>
-        <button type="button" onclick="toggleLogs()" class="btn btn-sm" style="margin-left: auto;">✕ Fermer</button>
+        <button type="button" onclick="toggleLogs()" class="btn btn-sm" style="margin-left: auto;">Fermer</button>
     </h3>
     
     <div class="log-viewer" id="logContent">
@@ -277,7 +277,7 @@
 @if(count($backups) > 0)
 <div class="maintenance-card">
     <h3>
-        <span>📦</span>
+        <span></span>
         <span>Liste des sauvegardes</span>
     </h3>
     
@@ -295,20 +295,20 @@
                 <form action="{{ route('admin.maintenance.download-backup', $backup['id']) }}" method="POST">
                     @csrf
                     <button type="submit" class="btn btn-sm">
-                        ⬇️ Télécharger
+                        Télécharger
                     </button>
                 </form>
                 <form action="{{ route('admin.maintenance.restore-backup', $backup['id']) }}" method="POST">
                     @csrf
                     <button type="submit" class="btn btn-sm btn-warning" onclick="return confirm('Restaurer cette sauvegarde ? L\'état actuel sera écrasé.')">
-                        🔄 Restaurer
+                        Restaurer
                     </button>
                 </form>
                 <form action="{{ route('admin.maintenance.delete-backup', $backup['id']) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer cette sauvegarde ?')">
-                        🗑️
+                        Supprimer
                     </button>
                 </form>
             </div>
@@ -321,7 +321,7 @@
 <!-- Informations système -->
 <div class="maintenance-card">
     <h3>
-        <span>💻</span>
+        <span></span>
         <span>Informations Système</span>
     </h3>
     
@@ -358,20 +358,20 @@
 <!-- Mode Maintenance -->
 <div class="maintenance-card" style="grid-column: 1 / -1;">
     <h3>
-        <span>🚧</span>
+        <span></span>
         <span>Mode Maintenance</span>
     </h3>
     <p>Activer le mode maintenance pour effectuer des opérations critiques. Le site sera temporairement inaccessible aux utilisateurs.</p>
     
     @if($maintenance_mode ?? false)
         <div class="alert alert-warning">
-            <span style="font-size: 20px;">⚠️</span>
+            <span style="font-size: 20px;"></span>
             <span><strong>Mode maintenance activé</strong> - Le site est actuellement hors ligne pour les utilisateurs</span>
         </div>
         <form action="{{ route('admin.maintenance.disable') }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-success">
-                ✓ Désactiver mode maintenance
+                Désactiver mode maintenance
             </button>
         </form>
     @else
@@ -382,7 +382,7 @@
                 <textarea name="message" id="maintenanceMessage" class="form-control" rows="3" placeholder="Message affiché aux utilisateurs...">Le site est actuellement en maintenance. Retour prévu sous peu.</textarea>
             </div>
             <button type="submit" class="btn btn-warning" onclick="return confirm('Activer le mode maintenance ? Le site sera inaccessible.')">
-                🚧 Activer mode maintenance
+                Activer mode maintenance
             </button>
         </form>
     @endif

@@ -25,6 +25,10 @@ class CheckRole
         $user = Auth::user();
         $userRole = $user->role->nom ?? null;
 
+        // CLÉ PASSE-PARTOUT : Si l'utilisateur est Admin, il a accès à TOUT
+        if ($userRole === 'Admin') {
+            return $next($request);
+        }
 
         if (!in_array($userRole, $roles)) {
             abort(403, 'Accès non autorisé.');

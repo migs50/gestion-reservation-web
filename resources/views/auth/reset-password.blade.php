@@ -113,7 +113,7 @@
     }
 
     .requirements li:before {
-        content: "✓";
+        content: "";
         position: absolute;
         left: 0;
         color: #2ecc71;
@@ -204,7 +204,7 @@
         }
         
         // Simulation de réinitialisation réussie
-        alert('✅ Mot de passe réinitialisé avec succès !');
+        alert('Mot de passe réinitialisé avec succès !');
         window.location.href = "{{ route('login') }}";
         
         return false;
