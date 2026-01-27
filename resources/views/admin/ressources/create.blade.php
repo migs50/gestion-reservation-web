@@ -136,7 +136,7 @@ form.form .btn:active {
         </div>
 
         <div class="form-group">
-            <label for="manager_id">Manager (optionnel)</label>
+            <label for="manager_id">Responsable Technique (optionnel)</label>
             <select id="manager_id" name="manager_id">
                 <option value="">Aucun</option>
                 @foreach($managers as $manager)

@@ -30,7 +30,9 @@ class RessourceController extends Controller
     public function create()
     {
         $categories = Categorie::orderBy('nom')->get();
-        $managers   = User::orderBy('nom')->orderBy('prenom')->get(); // filtrer par rôle si besoin
+        $managers   = User::whereHas('role', function($q) {
+            $q->where('nom', 'Responsable Technique');
+        })->orderBy('nom')->orderBy('prenom')->get();
 
         return view('admin.ressources.create', compact('categories', 'managers'));
     }
@@ -51,7 +53,9 @@ class RessourceController extends Controller
     public function edit(Ressource $ressource)
     {
         $categories = Categorie::orderBy('nom')->get();
-        $managers   = User::orderBy('nom')->orderBy('prenom')->get();
+        $managers   = User::whereHas('role', function($q) {
+            $q->where('nom', 'Responsable Technique');
+        })->orderBy('nom')->orderBy('prenom')->get();
 
         return view('admin.ressources.edit', compact('ressource', 'categories', 'managers'));
     }
