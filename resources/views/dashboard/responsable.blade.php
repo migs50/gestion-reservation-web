@@ -38,6 +38,7 @@
         <div class="stat-value"></div>
         <div class="stat-label">Modération</div>
     </div>
+
 </div>
 
 {{-- Main Dashboard Grid --}}

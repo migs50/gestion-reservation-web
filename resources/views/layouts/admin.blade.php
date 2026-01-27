@@ -70,6 +70,12 @@
                 </li>
 
                 <li>
+                    <a href="{{ route('admin.incidents.index') }}" class="{{ request()->routeIs('admin.incidents.*') ? 'active' : '' }}">
+                        <span></span> Incidents
+                    </a>
+                </li>
+
+                <li>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="sidebar-logout-link">

@@ -146,6 +146,9 @@ Route::middleware('auth')->group(function () {
             // Moderation
             Route::get('/discussions', [ResponsableController::class, 'discussions'])->name('discussions');
             Route::post('/messages/{message}/hide', [ResponsableController::class, 'hideMessage'])->name('messages.hide');
+
+            // Incidents
+            Route::get('/incidents', [ResponsableController::class, 'incidents'])->name('incidents');
         });
 });
 
@@ -215,4 +218,10 @@ Route::middleware(['auth', 'role:Admin,Responsable Technique'])
         Route::get('/demandes', [DemandeCompteController::class, 'index'])->name('demandes.index');
         Route::post('/demandes/{demande}/accept', [DemandeCompteController::class, 'accept'])->name('demandes.accept');
         Route::post('/demandes/{demande}/reject', [DemandeCompteController::class, 'reject'])->name('demandes.reject');
+
+        // Admin Incidents
+        Route::get('/incidents', [App\Http\Controllers\Admin\IncidentController::class, 'index'])->name('incidents.index');
+        Route::get('/incidents/{incident}', [App\Http\Controllers\Admin\IncidentController::class, 'show'])->name('incidents.show');
+        Route::patch('/incidents/{incident}/resolve', [App\Http\Controllers\Admin\IncidentController::class, 'resolve'])->name('incidents.resolve');
+        Route::patch('/incidents/{incident}/close', [App\Http\Controllers\Admin\IncidentController::class, 'close'])->name('incidents.close');
     });

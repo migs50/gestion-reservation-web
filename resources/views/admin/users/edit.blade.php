@@ -15,17 +15,17 @@
         @method('PUT')
         
         <div class="form-group">
-            <label>Nom & Prénom</label>
-            <input type="text" value="{{ $user->nom }} {{ $user->prenom }}" disabled style="background: #f8f9fa;">
+            <label style="color: #000000ff;">Nom & Prénom</label>
+            <input type="text" value="{{ $user->nom }} {{ $user->prenom }}" disabled style="background: #000000ff;">
         </div>
 
         <div class="form-group">
-            <label>Email</label>
-            <input type="text" value="{{ $user->email }}" disabled style="background: #f8f9fa;">
+            <label style="color: #000000ff;">Email</label>
+            <input type="text" value="{{ $user->email }}" disabled style="background: #000000ff;">
         </div>
-
+ 
         <div class="form-group">
-            <label for="role_id">Rôle</label>
+            <label for="role_id" style="color: #000000ff;">Rôle</label>
             <select name="role_id" id="role_id" required>
                 @foreach($roles as $role)
                     <option value="{{ $role->id }}" {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>

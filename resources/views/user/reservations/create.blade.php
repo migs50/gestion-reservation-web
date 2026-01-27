@@ -128,7 +128,7 @@ body {
         <h3 style="font-size: 16px; margin-bottom: 12px; color: #475569; display: flex; align-items: center; gap: 8px;">
             ⚙️ Caractéristiques techniques
         </h3>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 14px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 14px; color: #2c3e50;">
             @if($ressource->cpu) <div><strong>CPU:</strong> {{ $ressource->cpu }}</div> @endif
             @if($ressource->ram) <div><strong>RAM:</strong> {{ $ressource->ram }}</div> @endif
             @if($ressource->os) <div><strong>OS:</strong> {{ $ressource->os }}</div> @endif

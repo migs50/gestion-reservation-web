@@ -46,8 +46,13 @@
                             @endif
                         </a>
                     </li>
-                    <li><a href="{{ route('user.incidents.index') }}" class="{{ request()->routeIs('user.incidents.*') ? 'active' : '' }}">Mes Incidents</a></li>
-                    <li><a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Tableau de bord</a></li>
+                      @if(auth()->user()->role && auth()->user()->role->nom === 'Utilisateur')
+                        <li><a href="{{ route('user.incidents.index') }}" class="{{ request()->routeIs('user.incidents.*') ? 'active' : '' }}">Mes Incidents</a></li>
+                    @endif
+                    @if(auth()->user()->role && auth()->user()->role->nom === 'Responsable Technique')
+                        <li><a href="{{ route('responsable.incidents') }}" class="{{ request()->routeIs('responsable.incidents') ? 'active' : '' }}">Incidents Gérés</a></li>
+                    @endif
+                    <li><a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a></li>
                     <li>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:inline;">
                             @csrf

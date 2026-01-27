@@ -385,4 +385,16 @@ class ResponsableController extends Controller
             abort(403);
         }
     }
+    public function incidents()
+    {
+        $user = Auth::user();
+        $managedIds = $user->managedRessources()->pluck('id');
+
+        $incidents = \App\Models\Incident::whereIn('ressource_id', $managedIds)
+            ->with(['declarant', 'ressource', 'assigne'])
+            ->latest()
+            ->paginate(15);
+
+        return view('responsable.incidents', compact('incidents'));
+    }
 }

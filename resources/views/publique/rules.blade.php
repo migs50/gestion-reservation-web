@@ -257,7 +257,7 @@
     <div class="rules-section">
         <h2> 8. Modifications des règles</h2>
         
-        <p>
+        <p style="color: #000000ff;">
             Le Data Center se réserve le droit de modifier ces règles à tout moment. Les utilisateurs seront 
             informés par email de toute modification substantielle. La poursuite de l'utilisation des ressources 
             après notification vaut acceptation des nouvelles règles.

@@ -801,11 +801,7 @@ body.auth-page,
    ======================================== */
 
 /* Si "Se connecter" est un lien ET il y a un bouton */
-.auth-footer a[href*="login"],
-.auth-footer a[href*="connexion"] {
-  /* Ce lien pourrait être masqué si redondant avec le bouton */
-  /* display: none; */
-}
+/* .auth-footer a[href*="login"], .auth-footer a[href*="connexion"] can be used here if needed */
 
 /* Message "Vous avez déjà un compte ?" */
 .auth-footer span,
@@ -1056,18 +1052,37 @@ body.auth-page,
   letter-spacing: -0.01em;
 }
 
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  list-style: none;
+}
+
 .navbar-menu a {
   border-radius: var(--radius-md);
   transition: all var(--transition-fast);
   font-weight: var(--font-semibold);
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--space-sm);
   color: var(--text-muted);
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
-.navbar-menu a:hover {
+.navbar-menu a:hover,
+.navbar-menu a.active {
   background: var(--bg-hover);
   color: var(--text-primary);
   text-decoration: none;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.navbar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* Sidebar */
@@ -1897,8 +1912,8 @@ pre code {
 .navbar-menu {
   display: flex;
   list-style: none;
-  gap: 8px;
-  /* Espacement entre les items */
+  gap: 4px;
+  /* Reduced gap */
   align-items: center;
   margin: 0;
   padding: 0;
@@ -1909,23 +1924,23 @@ pre code {
 }
 
 .navbar-menu li a {
-  padding: 10px 20px;
+  padding: 10px 12px;
+  /* Reduced horizontal padding */
   border-radius: 8px;
   transition: all 0.3s;
   display: block;
   color: rgba(255, 255, 255, 0.8);
   font-weight: 500;
   border: 1px solid transparent;
-  /* Prevent size jump */
+  font-size: 0.9rem;
+  /* Slightly smaller font */
 }
 
 .navbar-menu li a:hover,
 .navbar-menu li a.active,
 .navbar-menu li a[href*="dashboard"].active {
-  /* Ensure dashboard follows rule if active */
   color: white;
   background: rgba(255, 255, 255, 0.15);
-  /* Card effect */
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-weight: 600;

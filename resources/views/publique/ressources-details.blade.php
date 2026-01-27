@@ -122,7 +122,7 @@
     }
 </style>
 
-<a href="{{ route('catalogue') }}" class="back-link">Retour aux ressources</a>
+<a href="{{ route('catalogue') }}" class="back-link" style="color: #eef1f5ff;">Retour aux ressources</a>
 
 <div class="ressource-details">
     <div class="details-header">
