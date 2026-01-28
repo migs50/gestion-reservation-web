@@ -261,11 +261,13 @@
             </div>
 
             @if($notification->lien)
-            <div class="notification-actions">
-                <a href="{{ $notification->lien }}" class="btn btn-primary btn-sm">
-                    Voir détails
-                </a>
-            </div>
+                @if(auth()->user()->role->nom !== 'Responsable Technique')
+                    <div class="notification-actions">
+                        <a href="{{ $notification->lien }}" class="btn btn-primary btn-sm">
+                             Voir détails
+                        </a>
+                    </div>
+                @endif
             @endif
         </div>
     </div>
