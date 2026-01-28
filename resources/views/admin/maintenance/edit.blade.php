@@ -10,7 +10,7 @@
         <h3>Modifier la planification</h3>
     </div>
 
-    <form action="{{ route('admin.maintenance.update', $maintenance) }}" method="POST" class="form">
+    <form action="{{ route('admin.maintenances.update', $maintenance) }}" method="POST" class="form">
         @csrf
         @method('PUT')
 
@@ -61,7 +61,7 @@
 
         <div style="margin-top: 20px; display: flex; gap: 10px;">
             <button type="submit" class="btn btn-primary">Mettre à jour</button>
-            <a href="{{ route('admin.maintenance.index') }}" class="btn" style="background: #95a5a6; color: white;">Annuler</a>
+            <a href="{{ route('admin.maintenances.index') }}" class="btn" style="background: #95a5a6; color: white;">Annuler</a>
         </div>
     </form>
 </div>

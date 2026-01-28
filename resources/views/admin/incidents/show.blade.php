@@ -9,23 +9,6 @@
             <a href="{{ route('admin.incidents.index') }}" class="btn btn-secondary btn-sm" style="margin-right: 10px;">&larr; Retour</a>
             <h3 style="display: inline-block; vertical-align: middle; margin: 0;">{{ $incident->titre }}</h3>
         </div>
-        <div>
-            @if($incident->statut !== 'resolved' && $incident->statut !== 'closed')
-                <form action="{{ route('admin.incidents.resolve', $incident) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('PATCH')
-                    <button type="submit" class="btn btn-success">✅ Résoudre</button>
-                </form>
-            @endif
-
-            @if($incident->statut !== 'closed')
-            <form action="{{ route('admin.incidents.close', $incident) }}" method="POST" style="display:inline; margin-left: 5px;">
-                @csrf
-                @method('PATCH')
-                <button type="submit" class="btn btn-secondary">🔒 Clôturer</button>
-            </form>
-            @endif
-        </div>
     </div>
 
     <div class="card-body" style="padding: 20px;">
@@ -37,8 +20,41 @@
                 <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #e9ecef; white-space: pre-wrap; color: #000000ff;">{{ $incident->description }}</div>
 
                 <div style="margin-top: 30px;">
-                    <h5 style="color: #6c757d; text-transform: uppercase; font-size: 0.85rem; font-weight: 600; margin-bottom: 10px;">Historique / Commentaires</h5>
-                    <p class="text-muted">Fonctionnalité de commentaires à venir...</p>
+                    <h5 style="color: #6c757d; text-transform: uppercase; font-size: 0.85rem; font-weight: 600; margin-bottom: 10px;">Résolution / Suivi</h5>
+                    
+                    @if($incident->resolution_note)
+                        <div class="alert alert-info">
+                            <strong>Note de résolution:</strong><br>
+                            {{ $incident->resolution_note }}
+                        </div>
+                    @endif
+
+                    <div class="card" style="margin-top: 20px; border: 1px solid #e9ecef;">
+                        <div class="card-body">
+                            <h6 class="card-title">Mettre à jour l'incident</h6>
+                            <form action="{{ route('admin.incidents.update', $incident) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                
+                                <div class="form-group mb-3">
+                                    <label for="statut">Statut</label>
+                                    <select name="statut" id="statut" class="form-control">
+                                        <option value="open" {{ $incident->statut == 'open' ? 'selected' : '' }}>Ouvert</option>
+                                        <option value="in_progress" {{ $incident->statut == 'in_progress' ? 'selected' : '' }}>En cours</option>
+                                        <option value="resolved" {{ $incident->statut == 'resolved' ? 'selected' : '' }}>Résolu</option>
+                                        <option value="closed" {{ $incident->statut == 'closed' ? 'selected' : '' }}>Fermé</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="resolution_note">Note / Justification</label>
+                                    <textarea name="resolution_note" id="resolution_note" rows="3" class="form-control" placeholder="Ajouter un commentaire ou une justification...">{{ $incident->resolution_note }}</textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
 

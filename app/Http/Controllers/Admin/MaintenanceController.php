@@ -15,9 +15,16 @@ class MaintenanceController extends Controller
      */
     public function index()
     {
-        $maintenances = Indispo::with('ressource')
-            ->orderBy('debut', 'desc')
-            ->paginate(15);
+        $query = Indispo::with('ressource');
+
+        // Filter for Responsable Technique
+        if (Auth::user()->role && Auth::user()->role->nom === 'Responsable Technique') {
+            $query->whereHas('ressource', function($q) {
+                $q->where('manager_id', Auth::id());
+            });
+        }
+
+        $maintenances = $query->orderBy('debut', 'desc')->paginate(15);
             
         return view('admin.maintenance.index', compact('maintenances'));
     }
@@ -27,7 +34,14 @@ class MaintenanceController extends Controller
      */
     public function create()
     {
-        $ressources = Ressource::where('actif', true)->orderBy('nom')->get();
+        $query = Ressource::where('actif', true);
+        
+        // Filter for Responsable Technique
+        if (Auth::user()->role && Auth::user()->role->nom === 'Responsable Technique') {
+            $query->where('manager_id', Auth::id());
+        }
+
+        $ressources = $query->orderBy('nom')->get();
         return view('admin.maintenance.create', compact('ressources'));
     }
 
@@ -44,7 +58,15 @@ class MaintenanceController extends Controller
             'raison'       => 'required|string|max:500',
         ]);
 
-        Indispo::create([
+        // Authorization check for Responsable
+        $ressource = Ressource::findOrFail($request->ressource_id);
+        if (Auth::user()->role && Auth::user()->role->nom === 'Responsable Technique') {
+            if ($ressource->manager_id !== Auth::id()) {
+                abort(403, 'Vous ne pouvez pas gérer la maintenance de cette ressource.');
+            }
+        }
+
+        $maintenance = Indispo::create([
             'ressource_id' => $request->ressource_id,
             'created_by'   => Auth::id(),
             'type'         => $request->type,
@@ -54,28 +76,58 @@ class MaintenanceController extends Controller
             'actif'        => true,
         ]);
 
-        return redirect()->route('admin.maintenance.index')
+        // Notification: Notify all internal users about the maintenance
+        $usersToNotify = \App\Models\User::whereHas('role', function($q) {
+             $q->where('nom', 'Utilisateur');
+        })->get();
+
+        foreach ($usersToNotify as $user) {
+            \App\Models\Notification::create([
+                'user_id' => $user->id,
+                'type' => 'message',
+                'titre' => 'Maintenance Planifiée',
+                'contenu' => "Une maintenance est prévue sur {$ressource->nom} du {$request->debut} au {$request->fin}.",
+                'lu' => false,
+            ]);
+        }
+
+        return redirect()->route('admin.maintenances.index')
             ->with('success', 'Période de maintenance planifiée avec succès.');
     }
 
-    /**
-     * Show the form for editing the specified maintenance.
-     */
     public function edit(Indispo $maintenance)
     {
-        $ressources = Ressource::where('actif', true)->orderBy('nom')->get();
+        // Authorization check
+        if (Auth::user()->role && Auth::user()->role->nom === 'Responsable Technique') {
+            if ($maintenance->ressource->manager_id !== Auth::id()) {
+                abort(403, 'Non autorisé.');
+            }
+        }
+
+        $query = Ressource::where('actif', true);
+        
+        // Filter for Responsable Technique
+        if (Auth::user()->role && Auth::user()->role->nom === 'Responsable Technique') {
+            $query->where('manager_id', Auth::id());
+        }
+
+        $ressources = $query->orderBy('nom')->get();
         return view('admin.maintenance.edit', compact('maintenance', 'ressources'));
     }
 
-    /**
-     * Update the specified maintenance in storage.
-     */
     public function update(Request $request, Indispo $maintenance)
     {
+        // Authorization check
+        if (Auth::user()->role && Auth::user()->role->nom === 'Responsable Technique') {
+            if ($maintenance->ressource->manager_id !== Auth::id()) {
+                abort(403, 'Non autorisé.');
+            }
+        }
+
         $request->validate([
             'ressource_id' => 'required|exists:ressources,id',
             'type'         => 'required|in:maintenance,inventory,repair,other',
-            'debut'        => 'required|date',
+            'debut'        => 'required|date', // Removed 'start_date' typo if any
             'fin'          => 'required|date|after:debut',
             'raison'       => 'required|string|max:500',
             'actif'        => 'required|boolean',
@@ -83,7 +135,7 @@ class MaintenanceController extends Controller
 
         $maintenance->update($request->all());
 
-        return redirect()->route('admin.maintenance.index')
+        return redirect()->route('admin.maintenances.index')
             ->with('success', 'Maintenance mise à jour avec succès.');
     }
 
@@ -92,9 +144,16 @@ class MaintenanceController extends Controller
      */
     public function destroy(Indispo $maintenance)
     {
+        // Authorization check
+        if (Auth::user()->role && Auth::user()->role->nom === 'Responsable Technique') {
+            if ($maintenance->ressource->manager_id !== Auth::id()) {
+                abort(403, 'Non autorisé.');
+            }
+        }
+
         $maintenance->delete();
 
-        return redirect()->route('admin.maintenance.index')
+        return redirect()->route('admin.maintenances.index')
             ->with('success', 'Période de maintenance supprimée.');
     }
 }

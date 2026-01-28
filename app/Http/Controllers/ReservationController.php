@@ -80,7 +80,26 @@ class ReservationController extends Controller
 
         if ($conflit) {
             return back()->withInput()->withErrors([
-                'debut' => 'Cette ressource n’est pas disponible sur la période choisie.',
+                'debut' => 'Cette ressource n’est pas disponible sur la période choisie (Conflit de réservation).',
+            ]);
+        }
+
+        // Check for Maintenance (Indispo)
+        $maintenance = \App\Models\Indispo::where('ressource_id', $ressource->id)
+            ->where('actif', true)
+            ->where(function ($q) use ($data) {
+                $q->whereBetween('debut', [$data['debut'], $data['fin']])
+                  ->orWhereBetween('fin', [$data['debut'], $data['fin']])
+                  ->orWhere(function ($q2) use ($data) {
+                      $q2->where('debut', '<=', $data['debut'])
+                         ->where('fin', '>=', $data['fin']);
+                  });
+            })
+            ->exists();
+
+        if ($maintenance) {
+            return back()->withInput()->withErrors([
+                'debut' => 'Impossible de réserver : La ressource est en maintenance sur la période choisie.',
             ]);
         }
 

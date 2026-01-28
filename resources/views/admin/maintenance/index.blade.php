@@ -55,8 +55,8 @@
                     </td>
                     <td>
                         <div style="display: flex; gap: 5px;">
-                            <a href="{{ route('admin.maintenance.edit', $maintenance) }}" class="btn btn-sm btn-primary" style="padding: 5px 10px; font-size: 12px;">Modifier</a>
-                            <form action="{{ route('admin.maintenance.destroy', $maintenance) }}" method="POST" onsubmit="return confirm('Supprimer cette planification ?')">
+                            <a href="{{ route('admin.maintenances.edit', $maintenance) }}" class="btn btn-sm btn-primary" style="padding: 5px 10px; font-size: 12px;">Modifier</a>
+                            <form action="{{ route('admin.maintenances.destroy', $maintenance) }}" method="POST" onsubmit="return confirm('Supprimer cette planification ?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger" style="padding: 5px 10px; font-size: 12px;">Supprimer</button>

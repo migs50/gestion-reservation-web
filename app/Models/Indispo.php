@@ -27,4 +27,13 @@ class Indispo extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
     ];
+    public function ressource()
+    {
+        return $this->belongsTo(Ressource::class);
+    }
+
+    public function createur()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

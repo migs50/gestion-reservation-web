@@ -241,12 +241,12 @@ button:active {
 }
 
 .btn-success {
-  background: #676f9d;
+  background: #2ecc71;
   color: white;
 }
 
 .btn-danger {
-  background: #f9b17a;
+  background: #e74c3c;
   color: white;
 }
 

@@ -222,6 +222,7 @@ Route::middleware(['auth', 'role:Admin,Responsable Technique'])
         // Admin Incidents
         Route::get('/incidents', [App\Http\Controllers\Admin\IncidentController::class, 'index'])->name('incidents.index');
         Route::get('/incidents/{incident}', [App\Http\Controllers\Admin\IncidentController::class, 'show'])->name('incidents.show');
+        Route::put('/incidents/{incident}', [App\Http\Controllers\Admin\IncidentController::class, 'update'])->name('incidents.update');
         Route::patch('/incidents/{incident}/resolve', [App\Http\Controllers\Admin\IncidentController::class, 'resolve'])->name('incidents.resolve');
         Route::patch('/incidents/{incident}/close', [App\Http\Controllers\Admin\IncidentController::class, 'close'])->name('incidents.close');
     });

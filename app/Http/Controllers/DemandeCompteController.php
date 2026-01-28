@@ -97,4 +97,18 @@ class DemandeCompteController extends Controller
 
     return back()->with('success', 'Demande acceptée, compte utilisateur créé.');
 }
+
+    /**
+     * Rejeter une demande de compte.
+     */
+    public function reject(DemandeCompte $demande)
+    {
+        $demande->update([
+            'statut'        => 'refused',
+            'decided_by'    => auth()->id(),
+            'note_decision' => 'Demande refusée par l\'administrateur.',
+        ]);
+
+        return back()->with('success', 'La demande a été refusée.');
+    }
 }

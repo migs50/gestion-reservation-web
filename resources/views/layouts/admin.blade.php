@@ -99,10 +99,7 @@
 
                 <div class="user-info">
                     <div class="user-avatar">A</div>
-                    <div>
-                        <div style="font-weight: 600; font-size: 14px;">Admin</div>
-                        <div style="font-size: 12px; color: #676f9d;">Administrateur</div>
-                    </div>
+                    <div style="font-size: 12px; color: #2d3250  ;">Administrateur</div>
                 </div>
             </div>
         </div>

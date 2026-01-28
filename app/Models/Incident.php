@@ -14,7 +14,8 @@ class Incident extends Model
         'assigne_id',
         'titre',
         'description',
-        'statut'
+        'statut',
+        'resolution_note'
     ];
 
     protected $casts = [

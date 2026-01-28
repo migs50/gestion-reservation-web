@@ -3,14 +3,13 @@
 @section('title', 'Planifier une Maintenance')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 
 <div class="card">
     <div class="card-header">
-        <h3>Nouvelle Période d'Indisponibilité</h3>
+        <h3 class="card-title">Nouvelle Période d'Indisponibilité</h3>
     </div>
 
-    <form action="{{ route('admin.maintenance.store') }}" method="POST" class="form">
+    <form action="{{ route('admin.maintenances.store') }}" method="POST" class="form">
         @csrf
 
         <div class="form-group">
@@ -51,7 +50,7 @@
 
         <div style="margin-top: 20px; display: flex; gap: 10px;">
             <button type="submit" class="btn btn-primary">Planifier</button>
-            <a href="{{ route('admin.maintenance.index') }}" class="btn" style="background: #95a5a6; color: white;">Annuler</a>
+            <a href="{{ route('admin.maintenances.index') }}" class="btn" style="background: #95a5a6; color: white;">Annuler</a>
         </div>
     </form>
 </div>
