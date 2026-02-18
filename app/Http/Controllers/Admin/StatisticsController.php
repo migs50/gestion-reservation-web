@@ -17,13 +17,14 @@ class StatisticsController extends Controller
         // 1) Période sélectionnée (1,3,9,30 jours)
         $periode = (int) $request->get('periode', 7);
 
-        $dateFin = $request->filled('date_fin')
-            ? Carbon::parse($request->date_fin)->endOfDay()
-            : now()->endOfDay();
+       // ✅ Corrigé — inclut passé ET futur (30 jours autour d'aujourd'hui)
+$dateFin = $request->filled('date_fin')
+    ? Carbon::parse($request->date_fin)->endOfDay()
+    : Carbon::parse('2099-12-31')->endOfDay(); // tout le futur
 
-        $dateDebut = $request->filled('date_debut')
-            ? Carbon::parse($request->date_debut)->startOfDay()
-            : $dateFin->copy()->subDays($periode - 1)->startOfDay();
+$dateDebut = $request->filled('date_debut')
+    ? Carbon::parse($request->date_debut)->startOfDay()
+    : Carbon::parse('2000-01-01')->startOfDay(); // tout le passé
 
         // Période précédente pour comparer
         $diffDays      = $dateDebut->diffInDays($dateFin) + 1;
